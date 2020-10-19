@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- The listview to display the products -->
+    <!-- The listView to display the products -->
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
