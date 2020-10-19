@@ -75,10 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            products[i] = jsonObject.getString("name") + " " + jsonObject.getString("brand");
+            products[i] = jsonObject.getString("name") + " - " + jsonObject.getString("brand");
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
         listView.setAdapter(arrayAdapter);
+
+        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
     }
 }
