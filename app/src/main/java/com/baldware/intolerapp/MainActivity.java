@@ -2,6 +2,7 @@ package com.baldware.intolerapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //ListEntry entry = (ListEntry) parent.getItemAtPosition(position);
             Log.d("Main", "Swag" + parent.getItemAtPosition(position));
+
+            Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+            startActivity(intent);
         }
     }
 }
