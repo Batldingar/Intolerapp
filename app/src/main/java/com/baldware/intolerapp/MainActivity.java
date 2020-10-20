@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.listView);
+        listView.setOnItemClickListener(new onItemClickListener());
 
         downloadJSON("http://intolerapp.com/austria_service.php");
     }
@@ -82,5 +86,13 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
         Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
+    }
+
+    public class onItemClickListener implements OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //ListEntry entry = (ListEntry) parent.getItemAtPosition(position);
+            Log.d("Main", "Swag" + parent.getItemAtPosition(position));
+        }
     }
 }
