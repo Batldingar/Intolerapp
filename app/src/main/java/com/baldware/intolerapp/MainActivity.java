@@ -97,9 +97,8 @@ public class MainActivity extends AppCompatActivity {
     public class onItemClickListener implements OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //parent.getItemAtPosition(position);
-
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+            intent.putExtra("title", (String)parent.getItemAtPosition(position));
             startActivity(intent);
         }
     }

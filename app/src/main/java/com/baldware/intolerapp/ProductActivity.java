@@ -12,6 +12,9 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
+        String title = getIntent().getStringExtra("title").toString();
+        setTitle(title);
+
         Toast.makeText(this, "Cool!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -6,21 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- The autoCompleteTextView to be used as search bar -->
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_view_fructose"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Fructose" />
 
+    <!-- First rating bar -->
     <RatingBar
-        android:id="@+id/ratingBar1"
+        android:id="@+id/rating_bar_fructose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="@id/autoCompleteTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text_view_fructose"
         android:numStars="5"
         android:rating="3.5"/>
+
+    <!-- divider line -->
+    <View
+        android:id="@+id/divider_fructose"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rating_bar_fructose"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/text_view_glutose"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/divider_fructose"
+        android:layout_centerHorizontal="true"
+        android:text="Glutose" />
+
+    <!-- First rating bar -->
+    <RatingBar
+        android:id="@+id/rating_bar_glutose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text_view_glutose"
+        android:numStars="5"
+        android:rating="2"/>
+
+    <!-- divider line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rating_bar_glutose"
+        android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>
