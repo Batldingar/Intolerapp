@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void downloadJSON(final String urlWebService) {
 
         class JSONHandler implements Runnable {
-            public String jsonResult;
+            private String jsonResult;
 
             @Override
             public void run() {
@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     jsonResult = stringBuilder.toString().trim();
+
+                    bufferedReader.close();
+                    connection.disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -62,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         }
         JSONHandler jsonHandler = new JSONHandler();
         Thread downloadThread = new Thread(jsonHandler);
-        downloadThread.start();
+
         Toast.makeText(this, "Downloading for you...", Toast.LENGTH_SHORT).show();
+
+        downloadThread.start();
 
         while(downloadThread.isAlive()) {} // wait for thread to finish
 
@@ -92,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
     public class onItemClickListener implements OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //ListEntry entry = (ListEntry) parent.getItemAtPosition(position);
-            Log.d("Main", "Swag" + parent.getItemAtPosition(position));
+            //parent.getItemAtPosition(position);
 
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
             startActivity(intent);
