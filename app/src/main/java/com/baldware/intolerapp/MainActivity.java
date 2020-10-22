@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void downloadJSON(final String urlWebService) {
 
         class JSONHandler implements Runnable {
-            private String jsonResult;
+            public String jsonResult;
 
             @Override
             public void run() {
@@ -73,7 +73,11 @@ public class MainActivity extends AppCompatActivity {
         while(downloadThread.isAlive()) {} // wait for thread to finish
 
         try {
-            loadIntoListView(jsonHandler.jsonResult);
+            if(jsonHandler.jsonResult != null) {
+                loadIntoListView(jsonHandler.jsonResult);
+            } else {
+                Toast.makeText(MainActivity.this, "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
