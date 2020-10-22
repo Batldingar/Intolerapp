@@ -2,9 +2,9 @@ package com.baldware.intolerapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -16,65 +16,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new onItemClickListener());
 
-        downloadJSON("http://intolerapp.com/austria_service.php");
-    }
-
-    private void downloadJSON(final String urlWebService) {
-
-        class JSONHandler implements Runnable {
-            public String jsonResult;
-
-            @Override
-            public void run() {
-                try{
-                    URL url = new URL(urlWebService);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    String json;
-
-                    while ((json = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(json + "\n");
-                    }
-
-                    jsonResult = stringBuilder.toString().trim();
-
-                    bufferedReader.close();
-                    connection.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        JSONHandler jsonHandler = new JSONHandler();
-        Thread downloadThread = new Thread(jsonHandler);
-
-        Toast.makeText(this, "Downloading for you...", Toast.LENGTH_SHORT).show();
-
-        downloadThread.start();
-
-        while(downloadThread.isAlive()) {} // wait for thread to finish
+        JSONHandler.start("http://intolerapp.com/austria_service.php");
 
         try {
-            if(jsonHandler.jsonResult != null) {
-                loadIntoListView(jsonHandler.jsonResult);
+            if(JSONHandler.getJson() != null) {
+                loadIntoListView();
             } else {
                 Toast.makeText(MainActivity.this, "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
             }
@@ -83,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadIntoListView(String json) throws JSONException {
-        JSONArray jsonArray = new JSONArray(json);
+    private void loadIntoListView() throws JSONException {
+        JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         String[] products = new String[jsonArray.length()];
 
         for(int i = 0; i < jsonArray.length(); i++) {
@@ -105,5 +65,9 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("title", (String)parent.getItemAtPosition(position));
             startActivity(intent);
         }
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }
