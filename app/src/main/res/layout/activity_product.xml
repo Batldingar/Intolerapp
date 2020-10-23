@@ -33,20 +33,20 @@
         android:background="@android:color/darker_gray"/>
 
     <TextView
-        android:id="@+id/text_view_glutose"
+        android:id="@+id/text_view_glucose"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/divider_fructose"
         android:layout_centerHorizontal="true"
-        android:text="Glutose" />
+        android:text="Glucose" />
 
     <!-- First rating bar -->
     <RatingBar
-        android:id="@+id/rating_bar_glutose"
+        android:id="@+id/rating_bar_glucose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/text_view_glutose"
+        android:layout_below="@id/text_view_glucose"
         android:numStars="5"
         android:rating="2"/>
 
@@ -54,7 +54,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/rating_bar_glutose"
+        android:layout_below="@id/rating_bar_glucose"
         android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>
