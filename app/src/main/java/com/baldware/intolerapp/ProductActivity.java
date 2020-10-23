@@ -13,6 +13,10 @@ public class ProductActivity extends AppCompatActivity {
 
     private RatingBar fructoseRatingBar;
     private RatingBar glucoseRatingBar;
+    private RatingBar histamineRatingBar;
+    private RatingBar lactoseRatingBar;
+    private RatingBar sucroseRatingBar;
+    private RatingBar sorbitolRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,10 @@ public class ProductActivity extends AppCompatActivity {
 
         fructoseRatingBar = findViewById(R.id.rating_bar_fructose);
         glucoseRatingBar = findViewById(R.id.rating_bar_glucose);
+        histamineRatingBar = findViewById(R.id.rating_bar_histamine);
+        lactoseRatingBar = findViewById(R.id.rating_bar_lactose);
+        sucroseRatingBar = findViewById(R.id.rating_bar_sucrose);
+        sorbitolRatingBar = findViewById(R.id.rating_bar_sorbitol);
 
         try {
             loadIntoRatingBars();
@@ -39,5 +47,9 @@ public class ProductActivity extends AppCompatActivity {
         
         fructoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("fructose")));
         glucoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("glucose")));
+        histamineRatingBar.setRating(Float.parseFloat(jsonObject.getString("histamine")));
+        lactoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("lactose")));
+        sucroseRatingBar.setRating(Float.parseFloat(jsonObject.getString("sucrose")));
+        sorbitolRatingBar.setRating(Float.parseFloat(jsonObject.getString("sorbitol")));
     }
 }
