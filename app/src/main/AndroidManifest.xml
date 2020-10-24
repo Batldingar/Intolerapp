@@ -25,6 +25,12 @@
                 <action android:name="android.intent.action.PRODUCT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CreationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATION" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

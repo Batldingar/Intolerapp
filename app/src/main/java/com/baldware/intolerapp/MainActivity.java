@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
+    Button button;
     private static Context context;
 
     @Override
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new onItemClickListener());
+
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new onClickListener());
 
         JSONHandler.start("http://intolerapp.com/austria_service.php");
 
@@ -64,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
             intent.putExtra("title", (String)parent.getItemAtPosition(position));
             intent.putExtra("position", position);
+            startActivity(intent);
+        }
+    }
+
+    public class onClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, CreationActivity.class);
             startActivity(intent);
         }
     }
