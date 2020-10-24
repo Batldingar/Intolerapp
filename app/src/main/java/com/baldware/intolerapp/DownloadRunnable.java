@@ -10,7 +10,7 @@ public class DownloadRunnable implements Runnable {
     @Override
     public void run() {
         try{
-            URL url = new URL(JSONHandler.getWebServiceURL());
+            URL url = new URL(JSONHandler.getDownloadServiceURL());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             StringBuilder stringBuilder = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

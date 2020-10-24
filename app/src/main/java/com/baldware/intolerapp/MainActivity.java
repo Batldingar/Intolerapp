@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
 
-        JSONHandler.start("http://intolerapp.com/austria_service.php");
+        JSONHandler.startDownload("http://intolerapp.com/austria_download_service.php");
 
         try {
             if(JSONHandler.getJson() != null) {

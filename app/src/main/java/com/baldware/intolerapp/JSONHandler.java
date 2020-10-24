@@ -5,10 +5,11 @@ import android.widget.Toast;
 public class JSONHandler {
 
     private static String json;
-    private static String webServiceURL;
+    private static String downloadServiceURL;
+    private static String uploadServiceURL;
 
-    public static void start(String serviceURL) {
-        webServiceURL = serviceURL;
+    public static void startDownload(String webServiceURL) {
+        downloadServiceURL = webServiceURL;
 
         Thread downloadThread = new Thread(new DownloadRunnable());
 
@@ -19,6 +20,18 @@ public class JSONHandler {
         while(downloadThread.isAlive()) {} // wait for thread to finish
     }
 
+    public static void startUpload(String webServiceURL) {
+        uploadServiceURL = webServiceURL;
+
+        Thread uploadThread = new Thread(new UploadRunnable());
+
+        Toast.makeText(MainActivity.getContext(), "Uploading for you...", Toast.LENGTH_SHORT).show();
+
+        uploadThread.start();
+
+        while(uploadThread.isAlive()) {} // wait for thread to finish
+    }
+
     public static String getJson() {
         return json;
     }
@@ -27,7 +40,11 @@ public class JSONHandler {
         JSONHandler.json = json;
     }
 
-    public static String getWebServiceURL() {
-        return webServiceURL;
+    public static String getDownloadServiceURL() {
+        return downloadServiceURL;
+    }
+
+    public static String getUploadServiceURL() {
+        return uploadServiceURL;
     }
 }
