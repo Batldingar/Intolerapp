@@ -45,11 +45,11 @@ public class ProductActivity extends AppCompatActivity {
 
         JSONObject jsonObject = jsonArray.getJSONObject(getIntent().getIntExtra("position", 0));
         
-        fructoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("fructose")));
-        glucoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("glucose")));
-        histamineRatingBar.setRating(Float.parseFloat(jsonObject.getString("histamine")));
-        lactoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("lactose")));
-        sucroseRatingBar.setRating(Float.parseFloat(jsonObject.getString("sucrose")));
-        sorbitolRatingBar.setRating(Float.parseFloat(jsonObject.getString("sorbitol")));
+        fructoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("fructoseRating")));
+        glucoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("glucoseRating")));
+        histamineRatingBar.setRating(Float.parseFloat(jsonObject.getString("histamineRating")));
+        lactoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("lactoseRating")));
+        sucroseRatingBar.setRating(Float.parseFloat(jsonObject.getString("sucroseRating")));
+        sorbitolRatingBar.setRating(Float.parseFloat(jsonObject.getString("sorbitolRating")));
     }
 }
