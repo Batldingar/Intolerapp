@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Intolerapp</string>
-    <string name="button_text">Create a new product!</string>
+    <string name="button_text">Add the product!</string>
 </resources>

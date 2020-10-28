@@ -6,31 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- The autoCompleteTextView to be used as search bar -->
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
+    <!-- The editText (text input) for the product name -->
+    <EditText
+        android:id="@+id/productName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
-    <!-- The button that starts the creation activity -->
+    <!-- The editText (text input) for the product brand -->
+    <EditText
+        android:id="@+id/productBrand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_below="@id/productName"/>
+
+    <!-- The button that triggers the data upload -->
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/autoCompleteTextView"
+        android:layout_below="@id/productBrand"
         android:text="@string/button_text" />
-
-    <!-- The listView to display the products -->
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/button" />
 
 </RelativeLayout>

@@ -26,9 +26,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CreationActivity">
+        <activity android:name=".AdditionActivity">
             <intent-filter>
-                <action android:name="android.intent.action.CREATION" />
+                <action android:name="android.intent.action.ADDITION" />
             </intent-filter>
         </activity>
     </application>

@@ -1,5 +1,7 @@
 package com.baldware.intolerapp;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -16,16 +18,17 @@ public class UploadRunnable implements Runnable {
 
     @Override
     public void run() {
-        InputStream inputStream = null;
         OutputStream outputStream = null;
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
 
         try{
             URL url = new URL(JSONHandler.getUploadServiceURL());
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", "test_product");
-            jsonObject.put("brand", "test_brand");
+
+            jsonObject.put("name", AdditionActivity.getProductName());
+            jsonObject.put("brand", AdditionActivity.getProductBrand());
+
             String message = jsonObject.toString();
 
             connection = (HttpURLConnection) url.openConnection();
@@ -46,15 +49,11 @@ public class UploadRunnable implements Runnable {
             outputStream = new BufferedOutputStream(connection.getOutputStream());
             outputStream.write(message.getBytes());
             outputStream.flush();
-
-            // Read the response
-            inputStream = new BufferedInputStream(connection.getInputStream());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 outputStream.close();
-                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
