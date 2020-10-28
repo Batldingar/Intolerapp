@@ -25,15 +25,11 @@ public class JSONHandler {
 
         Thread uploadThread = new Thread(new UploadRunnable());
 
-        Toast.makeText(MainActivity.getContext(), "Uploading for you...", Toast.LENGTH_SHORT).show();
-
         uploadThread.start();
 
         while(uploadThread.isAlive()) {} // wait for thread to finish
 
         Toast.makeText(MainActivity.getContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
-
-        // TODO: create intent to return to activity main
     }
 
     public static String getJson() {

@@ -1,6 +1,7 @@
 package com.baldware.intolerapp;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 

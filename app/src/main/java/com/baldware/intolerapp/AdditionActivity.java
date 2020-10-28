@@ -29,6 +29,9 @@ public class AdditionActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             JSONHandler.startUpload("http://intolerapp.com/austria_upload_service.php");
+
+            // Close the activity
+            finish();
         }
     }
 

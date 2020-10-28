@@ -33,6 +33,13 @@ public class ProductActivity extends AppCompatActivity {
         sucroseRatingBar = findViewById(R.id.rating_bar_sucrose);
         sorbitolRatingBar = findViewById(R.id.rating_bar_sorbitol);
 
+        fructoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
+        glucoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
+        histamineRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
+        lactoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
+        sucroseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
+        sorbitolRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
+
         try {
             loadIntoRatingBars();
         } catch (JSONException e) {
@@ -51,5 +58,12 @@ public class ProductActivity extends AppCompatActivity {
         lactoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("lactoseRating")));
         sucroseRatingBar.setRating(Float.parseFloat(jsonObject.getString("sucroseRating")));
         sorbitolRatingBar.setRating(Float.parseFloat(jsonObject.getString("sorbitolRating")));
+    }
+
+    private class onRatingBarChangeListener implements RatingBar.OnRatingBarChangeListener {
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+        }
     }
 }

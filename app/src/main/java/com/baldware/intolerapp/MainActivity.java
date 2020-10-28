@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         JSONHandler.startDownload("http://intolerapp.com/austria_download_service.php");
 
