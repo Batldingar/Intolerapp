@@ -2,6 +2,10 @@ package com.baldware.intolerapp;
 
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class JSONHandler {
 
     private static String json;
@@ -50,6 +54,30 @@ public class JSONHandler {
 
     public static void setJson(String json) {
         JSONHandler.json = json;
+    }
+
+    public static JSONArray getJsonArray() {
+        JSONArray jsonArray = null;
+
+        try {
+            jsonArray = new JSONArray(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonArray;
+    }
+
+    public static JSONObject getJsonObject(int index) {
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject =getJsonArray().getJSONObject(index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 
     public static String getDownloadServiceURL() {

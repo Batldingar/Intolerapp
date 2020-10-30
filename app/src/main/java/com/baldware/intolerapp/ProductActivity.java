@@ -1,13 +1,12 @@
 package com.baldware.intolerapp;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,6 +51,25 @@ public class ProductActivity extends AppCompatActivity {
         sucroseRatingBar = findViewById(R.id.rating_bar_sucrose);
         sorbitolRatingBar = findViewById(R.id.rating_bar_sorbitol);
 
+        TextView fructoseTextView = findViewById(R.id.text_view_fructose);
+        TextView glucoseTextView = findViewById(R.id.text_view_glucose);
+        TextView histamineTextView = findViewById(R.id.text_view_histamine);
+        TextView lactoseTextView = findViewById(R.id.text_view_lactose);
+        TextView sucroseTextView = findViewById(R.id.text_view_sucrose);
+        TextView sorbitolTextView = findViewById(R.id.text_view_sorbitol);
+
+        try {
+            JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
+            fructoseTextView.setText(getResources().getString(R.string.fructose_text) + " (" + jsonObject.getInt("fructoseRatingCount") + "x Ratings)");
+            glucoseTextView.setText(getResources().getString(R.string.glucose_text) + " (" + jsonObject.getInt("glucoseRatingCount") + "x Ratings)");
+            histamineTextView.setText(getResources().getString(R.string.histamine_text) + " (" + jsonObject.getInt("histamineRatingCount") + "x Ratings)");
+            lactoseTextView.setText(getResources().getString(R.string.lactose_text) + " (" + jsonObject.getInt("lactoseRatingCount") + "x Ratings)");
+            sucroseTextView.setText(getResources().getString(R.string.sucrose_text) + " (" + jsonObject.getInt("sucroseRatingCount") + "x Ratings)");
+            sorbitolTextView.setText(getResources().getString(R.string.sorbitol_text) + " (" + jsonObject.getInt("sorbitolRatingCount") + "x Ratings)");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         fructoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
         glucoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
         histamineRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
@@ -83,9 +101,7 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void loadIntoRatingBars() throws JSONException {
-        JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
-
-        JSONObject jsonObject = jsonArray.getJSONObject(getIntent().getIntExtra("position", 0));
+        JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
         
         fructoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("fructoseRating")));
         glucoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("glucoseRating")));
@@ -145,8 +161,7 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             JSONHandler.startRating("http://intolerapp.com/austria_rating_service.php");
-
-            // TODO: load the new values into the rating bars
+            finish();
         }
     }
 
