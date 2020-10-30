@@ -32,6 +32,18 @@ public class JSONHandler {
         Toast.makeText(MainActivity.getContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
     }
 
+    public static void startRating(String webServiceURL) {
+        uploadServiceURL = webServiceURL;
+
+        Thread ratingThread = new Thread(new RatingRunnable());
+
+        ratingThread.start();
+
+        while(ratingThread.isAlive()) {} // wait for thread to finish
+
+        Toast.makeText(MainActivity.getContext(), "Rating successful!", Toast.LENGTH_SHORT).show();
+    }
+
     public static String getJson() {
         return json;
     }

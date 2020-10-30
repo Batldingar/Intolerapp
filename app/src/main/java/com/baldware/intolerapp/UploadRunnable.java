@@ -54,7 +54,9 @@ public class UploadRunnable implements Runnable {
             e.printStackTrace();
         } finally {
             try {
-                outputStream.close();
+                if(outputStream!=null) {
+                    outputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

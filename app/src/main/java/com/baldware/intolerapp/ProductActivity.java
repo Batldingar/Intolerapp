@@ -17,6 +17,9 @@ import org.json.JSONObject;
 
 public class ProductActivity extends AppCompatActivity {
 
+    private static String name;
+    private static String brand;
+
     private RatingBar fructoseRatingBar;
     private RatingBar glucoseRatingBar;
     private RatingBar histamineRatingBar;
@@ -38,8 +41,9 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        String title = getIntent().getStringExtra("title");
-        setTitle(title);
+        name = getIntent().getStringExtra("name");
+        brand = getIntent().getStringExtra("brand");
+        setTitle(name + " - " + brand);
 
         fructoseRatingBar = findViewById(R.id.rating_bar_fructose);
         glucoseRatingBar = findViewById(R.id.rating_bar_glucose);
@@ -61,6 +65,13 @@ public class ProductActivity extends AppCompatActivity {
         lactoseRatingBar.setTag(3);
         sucroseRatingBar.setTag(4);
         sorbitolRatingBar.setTag(5);
+
+        fructoseRating = -1;
+        glucoseRating = -1;
+        histamineRating = -1;
+        lactoseRating = -1;
+        sucroseRating = -1;
+        sorbitolRating = -1;
 
         try {
             loadIntoRatingBars();
@@ -133,8 +144,18 @@ public class ProductActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            Toast.makeText(getApplicationContext(), "You rated!", Toast.LENGTH_LONG).show();
+            JSONHandler.startRating("http://intolerapp.com/austria_rating_service.php");
+
+            // TODO: load the new values into the rating bars
         }
+    }
+
+    public static String getName() {
+        return name;
+    }
+
+    public static String getBrand() {
+        return brand;
     }
 
     public static float getFructoseRating() {

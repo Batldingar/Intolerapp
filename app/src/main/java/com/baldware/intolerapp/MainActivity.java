@@ -73,7 +73,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
-            intent.putExtra("title", (String)parent.getItemAtPosition(position));
+
+            JSONArray jsonArray = null;
+            JSONObject jsonObject = null;
+            try {
+                jsonArray = new JSONArray(JSONHandler.getJson());
+                jsonObject = jsonArray.getJSONObject(position);
+                intent.putExtra("name", jsonObject.getString("name"));
+                intent.putExtra("brand", jsonObject.getString("brand"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             intent.putExtra("position", position);
             startActivity(intent);
         }

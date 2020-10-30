@@ -25,6 +25,8 @@ public class RatingRunnable implements Runnable {
                     jsonObject.put("lactose", ProductActivity.getLactoseRating());
                     jsonObject.put("sucrose", ProductActivity.getSucroseRating());
                     jsonObject.put("sorbitol", ProductActivity.getSorbitolRating());
+                    jsonObject.put("name", ProductActivity.getName());
+                    jsonObject.put("brand", ProductActivity.getBrand());
 
                     String message = jsonObject.toString();
 
