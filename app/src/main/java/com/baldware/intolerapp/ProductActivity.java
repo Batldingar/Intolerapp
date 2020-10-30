@@ -1,7 +1,13 @@
 package com.baldware.intolerapp;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,12 +24,21 @@ public class ProductActivity extends AppCompatActivity {
     private RatingBar sucroseRatingBar;
     private RatingBar sorbitolRatingBar;
 
+    private static float fructoseRating;
+    private static float glucoseRating;
+    private static float histamineRating;
+    private static float lactoseRating;
+    private static float sucroseRating;
+    private static float sorbitolRating;
+
+    private boolean buttonInitialized;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        String title = getIntent().getStringExtra("title").toString();
+        String title = getIntent().getStringExtra("title");
         setTitle(title);
 
         fructoseRatingBar = findViewById(R.id.rating_bar_fructose);
@@ -40,11 +55,20 @@ public class ProductActivity extends AppCompatActivity {
         sucroseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
         sorbitolRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
 
+        fructoseRatingBar.setTag(0);
+        glucoseRatingBar.setTag(1);
+        histamineRatingBar.setTag(2);
+        lactoseRatingBar.setTag(3);
+        sucroseRatingBar.setTag(4);
+        sorbitolRatingBar.setTag(5);
+
         try {
             loadIntoRatingBars();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        buttonInitialized = false;
     }
 
     private void loadIntoRatingBars() throws JSONException {
@@ -64,6 +88,76 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
 
+            if(fromUser) {
+                // Add the button
+                if (!buttonInitialized) {
+                    RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                    layoutParams.addRule(RelativeLayout.BELOW, sorbitolRatingBar.getId());
+
+                    Button button = new Button(getApplicationContext());
+                    button.setText(R.string.rating_button_text);
+                    button.setOnClickListener(new onClickListener());
+
+                    relativeLayout.addView(button, layoutParams);
+
+                    buttonInitialized = true;
+                }
+
+                // Store the local values
+                switch ((int) ratingBar.getTag()) {
+                    case 0:
+                        fructoseRating = fructoseRatingBar.getRating();
+                        break;
+                    case 1:
+                        glucoseRating = glucoseRatingBar.getRating();
+                        break;
+                    case 2:
+                        histamineRating = histamineRatingBar.getRating();
+                        break;
+                    case 3:
+                        lactoseRating = lactoseRatingBar.getRating();
+                        break;
+                    case 4:
+                        sucroseRating = sucroseRatingBar.getRating();
+                        break;
+                    case 5:
+                        sorbitolRating = sorbitolRatingBar.getRating();
+                        break;
+                }
+            }
         }
+    }
+
+    private class onClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getApplicationContext(), "You rated!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static float getFructoseRating() {
+        return fructoseRating;
+    }
+
+    public static float getGlucoseRating() {
+        return glucoseRating;
+    }
+
+    public static float getHistamineRating() {
+        return histamineRating;
+    }
+
+    public static float getLactoseRating() {
+        return lactoseRating;
+    }
+
+    public static float getSucroseRating() {
+        return sucroseRating;
+    }
+
+    public static float getSorbitolRating() {
+        return sorbitolRating;
     }
 }

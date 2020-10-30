@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/relativeLayout"
     tools:context=".MainActivity">
 
     <!-- Fructose -->
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Fructose" />
+        android:text="@string/fructose_text" />
 
     <RatingBar
         android:id="@+id/rating_bar_fructose"
@@ -38,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@id/divider_fructose"
         android:layout_centerHorizontal="true"
-        android:text="Glucose" />
+        android:text="@string/glucose_text" />
 
     <RatingBar
         android:id="@+id/rating_bar_glucose"
@@ -63,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@id/divider_glucose"
         android:layout_centerHorizontal="true"
-        android:text="Histamine" />
+        android:text="@string/histamine_text" />
 
     <RatingBar
         android:id="@+id/rating_bar_histamine"
@@ -88,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@id/divider_histamine"
         android:layout_centerHorizontal="true"
-        android:text="Lactose" />
+        android:text="@string/lactose_text" />
 
     <RatingBar
         android:id="@+id/rating_bar_lactose"
@@ -113,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@id/divider_lactose"
         android:layout_centerHorizontal="true"
-        android:text="Sucrose" />
+        android:text="@string/sucrose_text" />
 
     <RatingBar
         android:id="@+id/rating_bar_sucrose"
@@ -138,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@id/divider_sucrose"
         android:layout_centerHorizontal="true"
-        android:text="Sorbitol" />
+        android:text="@string/sorbitol_text" />
 
     <RatingBar
         android:id="@+id/rating_bar_sorbitol"
