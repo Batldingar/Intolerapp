@@ -10,5 +10,5 @@
     <string name="lactose_text">Lactose</string>
     <string name="sucrose_text">Sucrose</string>
     <string name="sorbitol_text">Sorbitol</string>
-    <string name="search_hint">Search products and brands</string>
+    <string name="search_hint">Search products/brands</string>
 </resources>

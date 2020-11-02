@@ -57,9 +57,8 @@ public class AdditionActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
             }else {
                 JSONHandler.startUpload("http://intolerapp.com/austria_upload_service.php");
+                finish();
             }
-
-            finish();
         }
     }
 

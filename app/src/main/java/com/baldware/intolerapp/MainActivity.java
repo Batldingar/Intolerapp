@@ -5,15 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -37,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new onItemClickListener());
+        listView.setOnItemLongClickListener(new onItemLongClickListener());
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new onClickListener());
@@ -105,6 +113,34 @@ public class MainActivity extends AppCompatActivity {
 
             intent.putExtra("position", position);
             startActivity(intent);
+        }
+    }
+
+    public class onItemLongClickListener implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            EditText editText = new EditText(getContext());
+            editText.setText("Report the product?");
+            editText.setBackgroundColor(Color.RED);
+
+            Button button1 = new Button(getContext());
+            button1.setText("Yes");
+
+            button1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: add report logic
+                }
+            });
+
+            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+            RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams button1Params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            button1Params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, editText.getId());
+
+            relativeLayout.addView(editText, editTextParams);
+            relativeLayout.addView(button1, button1Params);
+            return true;
         }
     }
 
