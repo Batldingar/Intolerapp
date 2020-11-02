@@ -1,9 +1,15 @@
 package com.baldware.intolerapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -77,18 +83,7 @@ public class MainActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Log.d("Main", "Query: " + newText);
-                return false;
-            }
-        });
+        searchView.setOnQueryTextListener(new SearchViewListener());
 
         return true;
     }
@@ -132,28 +127,48 @@ public class MainActivity extends AppCompatActivity {
     public class onItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            EditText editText = new EditText(getContext());
-            editText.setText("Report the product?");
-            editText.setBackgroundColor(Color.RED);
-
-            Button button1 = new Button(getContext());
-            button1.setText("Yes");
-
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: add report logic
-                }
-            });
-
-            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
-            RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            RelativeLayout.LayoutParams button1Params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            button1Params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, editText.getId());
-
-            relativeLayout.addView(editText, editTextParams);
-            relativeLayout.addView(button1, button1Params);
+            ReportDialogFragment reportDialogFragment = ReportDialogFragment.newInstance("Report");
+            reportDialogFragment.show(getSupportFragmentManager(), "report");
             return true;
+        }
+    }
+
+    public static class ReportDialogFragment extends DialogFragment {
+        public ReportDialogFragment() {
+            // Empty constructor required
+        }
+
+        public static ReportDialogFragment newInstance(String title) {
+            ReportDialogFragment reportDialogFragment = new ReportDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            reportDialogFragment.setArguments(args);
+            return reportDialogFragment;
+        }
+
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            String title = getArguments().getString("title");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(title)
+                    .setMessage(R.string.report_text)
+                    .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setNegativeButton(R.string.negative_button_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+
+            return builder.create();
         }
     }
 
