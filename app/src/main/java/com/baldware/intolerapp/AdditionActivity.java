@@ -5,8 +5,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AdditionActivity extends AppCompatActivity {
 
@@ -28,9 +33,32 @@ public class AdditionActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            JSONHandler.startUpload("http://intolerapp.com/austria_upload_service.php");
+            boolean productExists = false;
 
-            // Close the activity
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(JSONHandler.getJson());
+
+                for(int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    if(jsonObject.getString("name").equals(productNameInput.getText().toString())) {
+                        if(jsonObject.getString("brand").equals(productBrandInput.getText().toString())) {
+                            productExists = true;
+                            break;
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if(productExists) {
+                Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
+            }else {
+                JSONHandler.startUpload("http://intolerapp.com/austria_upload_service.php");
+            }
+
             finish();
         }
     }
