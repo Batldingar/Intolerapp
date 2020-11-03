@@ -38,35 +38,34 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
-    FloatingActionButton floatingActionButton;
+    private static ListView listView;
     private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getApplicationContext();
         setContentView(R.layout.activity_main);
+
+        context = getApplicationContext();
 
         listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new onItemClickListener());
         listView.setOnItemLongClickListener(new onItemLongClickListener());
 
-        floatingActionButton = findViewById(R.id.floatingActionButton);
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new onClickListener());
+
+        loadData();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+    public static void loadData() {
         JSONHandler.startDownload("http://intolerapp.com/austria_download_service.php");
 
         try {
             if(JSONHandler.getJson() != null) {
                 loadIntoListView();
             } else {
-                Toast.makeText(MainActivity.this, "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loadIntoListView() throws JSONException {
+    private static void loadIntoListView() throws JSONException {
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         String[] products = new String[jsonArray.length()];
 
@@ -97,10 +96,10 @@ public class MainActivity extends AppCompatActivity {
             products[i] = jsonObject.getString("name") + " - " + jsonObject.getString("brand");
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
         listView.setAdapter(arrayAdapter);
 
-        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
     }
 
     public class onItemClickListener implements OnItemClickListener {
@@ -108,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
 
-            JSONArray jsonArray = null;
-            JSONObject jsonObject = null;
+            JSONArray jsonArray;
+            JSONObject jsonObject;
             try {
                 jsonArray = new JSONArray(JSONHandler.getJson());
                 jsonObject = jsonArray.getJSONObject(position);
@@ -146,9 +145,13 @@ public class MainActivity extends AppCompatActivity {
             return reportDialogFragment;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-            String title = getArguments().getString("title");
+            String title = null;
+            if (getArguments() != null) {
+                title = getArguments().getString("title");
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(title)

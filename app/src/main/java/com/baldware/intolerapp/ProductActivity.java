@@ -161,6 +161,7 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             JSONHandler.startRating("http://intolerapp.com/austria_rating_service.php");
+            MainActivity.loadData();
             finish();
         }
     }

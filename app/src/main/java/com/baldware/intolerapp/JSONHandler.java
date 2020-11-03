@@ -12,6 +12,10 @@ public class JSONHandler {
     private static String downloadServiceURL;
     private static String uploadServiceURL;
 
+    // TODO: Instead of waiting all the start... methods should create a progress spinner
+    // also: look up why the search hint is not showing in the search bar (probably due to missing meta tag)
+    // also: fix all the warnings
+
     public static void startDownload(String webServiceURL) {
         downloadServiceURL = webServiceURL;
 

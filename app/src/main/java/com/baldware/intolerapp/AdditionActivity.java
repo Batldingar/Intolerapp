@@ -1,7 +1,6 @@
 package com.baldware.intolerapp;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +14,9 @@ import org.json.JSONObject;
 
 public class AdditionActivity extends AppCompatActivity {
 
-    private static EditText productNameInput;
-    private static EditText productBrandInput;
+    private static String productNameInput;
+    private static String productBrandInput;
+
     private Button button;
 
     @Override
@@ -24,49 +24,56 @@ public class AdditionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addition);
 
-        productNameInput = findViewById(R.id.productName);
-        productBrandInput = findViewById(R.id.productBrand);
         button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
     }
 
     private class onClickListener implements View.OnClickListener{
+
         @Override
         public void onClick(View v) {
-            boolean productExists = false;
+            productNameInput = ((EditText)findViewById(R.id.productName)).getText().toString();
+            productBrandInput = ((EditText)findViewById(R.id.productBrand)).getText().toString();
 
-            JSONArray jsonArray = null;
-            try {
-                jsonArray = new JSONArray(JSONHandler.getJson());
+            if (!productNameInput.equals("") && !productBrandInput.equals("")) {
+                boolean productExists = false;
 
-                for(int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                JSONArray jsonArray;
+                try {
+                    jsonArray = new JSONArray(JSONHandler.getJson());
 
-                    if(jsonObject.getString("name").equals(productNameInput.getText().toString())) {
-                        if(jsonObject.getString("brand").equals(productBrandInput.getText().toString())) {
-                            productExists = true;
-                            break;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                        if (jsonObject.getString("name").equals(productNameInput)) {
+                            if (jsonObject.getString("brand").equals(productBrandInput)) {
+                                productExists = true;
+                                break;
+                            }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
-            if(productExists) {
-                Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
-            }else {
-                JSONHandler.startUpload("http://intolerapp.com/austria_upload_service.php");
-                finish();
+                if (productExists) {
+                    Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
+                } else {
+                    JSONHandler.startUpload("http://intolerapp.com/austria_upload_service.php");
+                    MainActivity.loadData();
+                    finish();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Name and brand can't be empty", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     public static String getProductName() {
-        return productNameInput.getText().toString();
+        return productNameInput;
     }
 
     public static String getProductBrand() {
-        return productBrandInput.getText().toString();
+        return productBrandInput;
     }
 }
