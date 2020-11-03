@@ -60,12 +60,12 @@ public class ProductActivity extends AppCompatActivity {
 
         try {
             JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
-            fructoseTextView.setText(getResources().getString(R.string.fructose_text) + " (" + jsonObject.getInt("fructoseRatingCount") + "x Ratings)");
-            glucoseTextView.setText(getResources().getString(R.string.glucose_text) + " (" + jsonObject.getInt("glucoseRatingCount") + "x Ratings)");
-            histamineTextView.setText(getResources().getString(R.string.histamine_text) + " (" + jsonObject.getInt("histamineRatingCount") + "x Ratings)");
-            lactoseTextView.setText(getResources().getString(R.string.lactose_text) + " (" + jsonObject.getInt("lactoseRatingCount") + "x Ratings)");
-            sucroseTextView.setText(getResources().getString(R.string.sucrose_text) + " (" + jsonObject.getInt("sucroseRatingCount") + "x Ratings)");
-            sorbitolTextView.setText(getResources().getString(R.string.sorbitol_text) + " (" + jsonObject.getInt("sorbitolRatingCount") + "x Ratings)");
+            fructoseTextView.setText(getResources().getString(R.string.fructose_text, jsonObject.getInt("fructoseRatingCount")));
+            glucoseTextView.setText(getResources().getString(R.string.glucose_text, jsonObject.getInt("glucoseRatingCount")));
+            histamineTextView.setText(getResources().getString(R.string.histamine_text, jsonObject.getInt("histamineRatingCount")));
+            lactoseTextView.setText(getResources().getString(R.string.lactose_text, jsonObject.getInt("lactoseRatingCount")));
+            sucroseTextView.setText(getResources().getString(R.string.sucrose_text, jsonObject.getInt("sucroseRatingCount")));
+            sorbitolTextView.setText(getResources().getString(R.string.sorbitol_text, jsonObject.getInt("sorbitolRatingCount")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
