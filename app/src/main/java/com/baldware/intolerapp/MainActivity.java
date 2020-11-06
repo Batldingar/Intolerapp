@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             if(JSONHandler.getJson() != null) {
-                loadIntoListView();
+                loadJSONIntoListView();
             } else {
                 Toast.makeText(getContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
             }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private static void loadIntoListView() throws JSONException {
+    public static void loadJSONIntoListView() throws JSONException {
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         String[] products = new String[jsonArray.length()];
 
@@ -101,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
         Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void loadArrayIntoListView(String[] array) {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, array);
+        listView.setAdapter(arrayAdapter);
     }
 
     public class onItemClickListener implements OnItemClickListener {

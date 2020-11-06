@@ -26,17 +26,25 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
         //When this is called again (because of a new letter) then restart the thread with the new string
         //Give the results back somehow
         //Look for multithreading opportunities
-
-        try {
-            search("Pa");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        //Make the searched objects clickable
+        if(!newText.equals("")) {
+            try {
+                MainActivity.loadArrayIntoListView(search(newText));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if(JSONHandler.getJson() != null) {
+            try {
+                MainActivity.loadJSONIntoListView();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         return false;
     }
 
-    private ArrayList<Pair> search(String pattern) throws JSONException {
+    private String[] search(String pattern) throws JSONException {
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         ArrayList<Pair> resultList = new ArrayList<>();
 
@@ -73,11 +81,13 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
         // Sort the products
         quickSort(resultList, 0, resultList.size()-1);
 
-        for(Pair pair : resultList) {
-            Log.d("Main", "Result: " + pair.first + " Value: " + pair.second);
+        // Prepare the for return
+        String[] resultArray = new String[resultList.size()];
+        for(int i = 0; i < resultList.size(); i++) {
+            resultArray[i] = (String)resultList.get(i).first;
         }
 
-        return resultList;
+        return resultArray;
     }
 
     private void quickSort(ArrayList<Pair> pairArrayList, int low, int high) {
