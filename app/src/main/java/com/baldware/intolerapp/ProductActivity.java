@@ -1,5 +1,8 @@
 package com.baldware.intolerapp;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,11 +112,35 @@ public class ProductActivity extends AppCompatActivity {
         lactoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("lactoseRating")));
         sucroseRatingBar.setRating(Float.parseFloat(jsonObject.getString("sucroseRating")));
         sorbitolRatingBar.setRating(Float.parseFloat(jsonObject.getString("sorbitolRating")));
+
+        setColor(fructoseRatingBar);
+        setColor(glucoseRatingBar);
+        setColor(histamineRatingBar);
+        setColor(lactoseRatingBar);
+        setColor(sucroseRatingBar);
+        setColor(sorbitolRatingBar);
+    }
+
+    private void setColor(RatingBar ratingBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(ratingBar.getRating()<=1.0) {
+                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsRed)));
+            } else if(ratingBar.getRating()<=2.0) {
+                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsOrange)));
+            } else if(ratingBar.getRating()<=3.0) {
+                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsYellow)));
+            } else if(ratingBar.getRating()<=4.0) {
+                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsLime)));
+            } else {
+                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsGreen)));
+            }
+        }
     }
 
     private class onRatingBarChangeListener implements RatingBar.OnRatingBarChangeListener {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            setColor(ratingBar);
 
             if(fromUser) {
                 // Add the button
