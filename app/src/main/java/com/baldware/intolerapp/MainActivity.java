@@ -37,6 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private static ListView listView;
@@ -103,8 +105,15 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
     }
 
-    public static void loadArrayIntoListView(String[] array) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, array);
+    public static void loadSearchIntoListView() {
+        ArrayList<String[]> result = SearchViewListener.getSearchResult();
+        String[] resultArray = new String[result.size()];
+
+        for(int i = 0; i < result.size(); i++) {
+            resultArray[i] = result.get(i)[0];
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, resultArray);
         listView.setAdapter(arrayAdapter);
     }
 
@@ -115,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
 
             JSONArray jsonArray;
             JSONObject jsonObject;
+
+            int itemPosition = position;
+
+            if(SearchViewListener.getSearchResult()!=null) {
+                position = Integer.parseInt(SearchViewListener.getSearchResult().get(position)[2]);
+            }
+
             try {
                 jsonArray = new JSONArray(JSONHandler.getJson());
                 jsonObject = jsonArray.getJSONObject(position);
@@ -181,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // OnClickListener for the Floating Addition Button
     public class onClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {

@@ -10,9 +10,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SearchViewListener implements SearchView.OnQueryTextListener {
+
+    private static ArrayList<String[]> searchResult;
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -20,21 +22,16 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        // TODO: Implement the following tasks
-        //Start Thread that starts the sorting
-        //When thread is finished it should automatically put the text into the listview
-        //When this is called again (because of a new letter) then restart the thread with the new string
-        //Give the results back somehow
-        //Look for multithreading opportunities
-        //Make the searched objects clickable
         if(!newText.equals("")) {
             try {
-                MainActivity.loadArrayIntoListView(search(newText));
+                search(newText);
+                MainActivity.loadSearchIntoListView();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else if(JSONHandler.getJson() != null) {
             try {
+                searchResult = null;
                 MainActivity.loadJSONIntoListView();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -44,9 +41,9 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
         return false;
     }
 
-    private String[] search(String pattern) throws JSONException {
+    private void search(String pattern) throws JSONException {
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
-        ArrayList<Pair> resultList = new ArrayList<>();
+        searchResult = new ArrayList<>();
 
         // Perform search and valuation
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -66,32 +63,24 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
             if(productContains || brandContains) {
                 String fullName = product + " - " + brand;
                 if (productContains && brandContains) {
-                    resultList.add(new Pair(fullName, Math.min(lowerCaseProduct.indexOf(lowerCasePattern), lowerCaseBrand.indexOf(lowerCasePattern))));
+                    searchResult.add(new String[]{fullName, Integer.toString(Math.min(lowerCaseProduct.indexOf(lowerCasePattern), lowerCaseBrand.indexOf(lowerCasePattern))), Integer.toString(i)});
                 } else {
                     // If one doesn't contain the pattern then the other one has to
                     if (productContains) {
-                        resultList.add(new Pair(fullName, lowerCaseProduct.indexOf(lowerCasePattern)));
+                        searchResult.add(new String[]{fullName, Integer.toString(lowerCaseProduct.indexOf(lowerCasePattern)), Integer.toString(i)});
                     } else {
-                        resultList.add(new Pair(fullName, lowerCaseBrand.indexOf(lowerCasePattern)));
+                        searchResult.add(new String[]{fullName, Integer.toString(lowerCaseBrand.indexOf(lowerCasePattern)), Integer.toString(i)});
                     }
                 }
             }
         }
 
         // Sort the products
-        quickSort(resultList, 0, resultList.size()-1);
-
-        // Prepare the for return
-        String[] resultArray = new String[resultList.size()];
-        for(int i = 0; i < resultList.size(); i++) {
-            resultArray[i] = (String)resultList.get(i).first;
-        }
-
-        return resultArray;
+        quickSort(searchResult, 0, searchResult.size()-1);
     }
 
-    private void quickSort(ArrayList<Pair> pairArrayList, int low, int high) {
-        if (pairArrayList == null || pairArrayList.size() == 0) {
+    private void quickSort(ArrayList<String[]> stringArrayList, int low, int high) {
+        if (stringArrayList == null || stringArrayList.size() == 0) {
             return;
         }
 
@@ -101,23 +90,23 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
 
         // pick the pivot
         int middle = low + (high - low) / 2;
-        int pivot = (int)pairArrayList.get(middle).second;
+        int pivot = Integer.parseInt(stringArrayList.get(middle)[1]);
 
         // make left < pivot and right > pivot
         int i = low, j = high;
         while (i <= j) {
-            while ((int)pairArrayList.get(i).second < pivot) {
+            while (Integer.parseInt(stringArrayList.get(i)[1]) < pivot) {
                 i++;
             }
 
-            while ((int)pairArrayList.get(j).second > pivot) {
+            while (Integer.parseInt(stringArrayList.get(j)[1]) > pivot) {
                 j--;
             }
 
             if (i <= j) {
-                Pair temp = pairArrayList.get(i);
-                pairArrayList.set(i, pairArrayList.get(j));
-                pairArrayList.set(j, temp);
+                String[] temp = stringArrayList.get(i);
+                stringArrayList.set(i, stringArrayList.get(j));
+                stringArrayList.set(j, temp);
                 i++;
                 j--;
             }
@@ -125,9 +114,13 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
 
         // recursively sort two sub parts
         if (low < j)
-            quickSort(pairArrayList, low, j);
+            quickSort(stringArrayList, low, j);
 
         if (high > i)
-            quickSort(pairArrayList, i, high);
+            quickSort(stringArrayList, i, high);
+    }
+
+    public static ArrayList<String[]> getSearchResult() {
+        return searchResult;
     }
 }
