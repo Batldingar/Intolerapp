@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -79,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchViewListener());
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.menu) {
+            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
+            ruleDialogFragment.show(getSupportFragmentManager(), "rules");
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static void loadJSONIntoListView() throws JSONException {
@@ -184,6 +195,40 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
+            return builder.create();
+        }
+    }
+
+    public static class RuleDialogFragment extends DialogFragment {
+        public RuleDialogFragment() {
+            // Empty constructor required
+        }
+
+        public static RuleDialogFragment newInstance(String title) {
+            RuleDialogFragment ruleDialogFragment = new RuleDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            ruleDialogFragment.setArguments(args);
+            return ruleDialogFragment;
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            String title = null;
+            if (getArguments() != null) {
+                title = getArguments().getString("title");
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(title)
+                    .setMessage(R.string.rule_text)
+                    .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
             return builder.create();
         }
     }
