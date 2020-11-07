@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,7 +117,7 @@ public class ProductActivity extends AppCompatActivity {
             if(fromUser) {
                 // Add the button
                 if (!buttonInitialized) {
-                    RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+                    RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                     layoutParams.addRule(RelativeLayout.BELOW, sorbitolRatingBar.getId());

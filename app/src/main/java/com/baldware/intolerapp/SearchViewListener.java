@@ -1,14 +1,11 @@
 package com.baldware.intolerapp;
 
-import android.util.Log;
-import android.util.Pair;
 import android.widget.SearchView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SearchViewListener implements SearchView.OnQueryTextListener {
