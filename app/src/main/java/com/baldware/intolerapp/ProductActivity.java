@@ -1,6 +1,7 @@
 package com.baldware.intolerapp;
 
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;

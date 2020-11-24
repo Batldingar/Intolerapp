@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static ListView listView;
     private static Context context;
+    private static SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new onItemClickListener());
         listView.setOnItemLongClickListener(new onItemLongClickListener());
+
+        swipeRefreshLayout = findViewById(R.id.SwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new onRefreshListener());
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new onClickListener());
@@ -153,6 +158,14 @@ public class MainActivity extends AppCompatActivity {
             ReportDialogFragment reportDialogFragment = ReportDialogFragment.newInstance("Report");
             reportDialogFragment.show(getSupportFragmentManager(), "report");
             return true;
+        }
+    }
+
+    public class onRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
+        @Override
+        public void onRefresh() {
+            MainActivity.loadData();
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
