@@ -12,14 +12,10 @@ public class JSONHandler {
     private static String downloadServiceURL;
     private static String uploadServiceURL;
 
-    // TODO: Instead of waiting all the start... methods should create a progress spinner
-
     public static void startDownload(String webServiceURL) {
         downloadServiceURL = webServiceURL;
 
         Thread downloadThread = new Thread(new DownloadRunnable());
-
-        Toast.makeText(MainActivity.getContext(), "Downloading for you...", Toast.LENGTH_SHORT).show();
 
         downloadThread.start();
 

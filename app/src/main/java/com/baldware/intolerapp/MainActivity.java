@@ -59,11 +59,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void loadData() {
+        Toast.makeText(MainActivity.getContext(), "Updating products...", Toast.LENGTH_SHORT).show();
+
         JSONHandler.startDownload("http://intolerapp.com/austria_download_service.php");
 
         try {
             if(JSONHandler.getJson() != null) {
                 loadJSONIntoListView();
+                Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
             }
@@ -108,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
         listView.setAdapter(arrayAdapter);
-
-        Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
     }
 
     public static void loadSearchIntoListView() {
