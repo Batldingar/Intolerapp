@@ -4,7 +4,6 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class JSONHandler {
 
@@ -64,18 +63,6 @@ public class JSONHandler {
         }
 
         return jsonArray;
-    }
-
-    public static JSONObject getJsonObject(int index) {
-        JSONObject jsonObject = null;
-
-        try {
-            jsonObject =getJsonArray().getJSONObject(index);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonObject;
     }
 
     public static String getDownloadServiceURL() {

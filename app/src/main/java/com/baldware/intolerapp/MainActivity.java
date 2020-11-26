@@ -133,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
             JSONArray jsonArray;
             JSONObject jsonObject;
 
-            int itemPosition = position;
-
             if(SearchViewListener.getSearchResult()!=null) {
                 position = Integer.parseInt(SearchViewListener.getSearchResult().get(position)[2]);
             }
@@ -162,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class onRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
+    public static class onRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         public void onRefresh() {
             MainActivity.loadData();

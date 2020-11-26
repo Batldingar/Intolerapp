@@ -17,7 +17,7 @@ public class DownloadRunnable implements Runnable {
             String json;
 
             while ((json = bufferedReader.readLine()) != null) {
-                stringBuilder.append(json + "\n");
+                stringBuilder.append(json).append("\n");
             }
 
             JSONHandler.setJson(stringBuilder.toString().trim());

@@ -12,7 +12,7 @@
     <string name="sorbitol_text">Sorbitol (%1$dx Ratings)</string>
     <string name="search_hint">Search products/brands</string>
     <string name="report_text">Report the product?</string>
-    <string name="rule_text">The contents of Intolerapp are unrestrictedly user-generated.\nBaldware does not guarantee the correctness of the displayed information and is also not liable for problems that arise from the use of the app.\nIf you ever experience health problems after eating, seek professional medical advice immediately.</string>
+    <string name="rule_text">The contents of Intolerapp are unrestricted user-generated.\nBaldware does not guarantee the correctness of the displayed information and is also not liable for problems that arise from the use of the app.\nIf you ever experience health problems after eating, seek professional medical advice immediately.</string>
     <string name="positive_button_text">Yes</string>
     <string name="negative_button_text">No</string>
 </resources>

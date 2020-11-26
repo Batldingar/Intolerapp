@@ -17,14 +17,12 @@ public class AdditionActivity extends AppCompatActivity {
     private static String productNameInput;
     private static String productBrandInput;
 
-    private Button button;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addition);
 
-        button = findViewById(R.id.button);
+        Button button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
     }
 
