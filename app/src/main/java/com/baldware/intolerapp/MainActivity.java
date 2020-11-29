@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public static void loadData() {
         Toast.makeText(MainActivity.getContext(), "Updating products...", Toast.LENGTH_SHORT).show();
 
-        JSONHandler.startDownload("http://intolerapp.com/austria_download_service.php");
+        JSONHandler.startDownload(Constants.DOWNLOAD_URL);
 
         try {
             if(JSONHandler.getJson() != null) {

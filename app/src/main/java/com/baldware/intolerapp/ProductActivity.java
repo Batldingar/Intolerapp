@@ -186,7 +186,7 @@ public class ProductActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            JSONHandler.startRating("http://intolerapp.com/austria_rating_service.php");
+            JSONHandler.startRating(Constants.RATING_URL);
             MainActivity.loadData();
             finish();
         }
