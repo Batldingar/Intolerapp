@@ -1,4 +1,4 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.activities;
 
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.baldware.intolerapp.Constants;
+import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;

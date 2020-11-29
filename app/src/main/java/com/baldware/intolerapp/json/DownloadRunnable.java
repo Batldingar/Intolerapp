@@ -1,4 +1,6 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.json;
+
+import com.baldware.intolerapp.json.JSONHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

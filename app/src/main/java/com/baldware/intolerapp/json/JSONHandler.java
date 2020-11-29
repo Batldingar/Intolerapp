@@ -1,6 +1,8 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.json;
 
 import android.widget.Toast;
+
+import com.baldware.intolerapp.activities.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,7 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.json;
+
+import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONObject;
 

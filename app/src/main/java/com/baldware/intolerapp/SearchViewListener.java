@@ -2,6 +2,9 @@ package com.baldware.intolerapp;
 
 import android.widget.SearchView;
 
+import com.baldware.intolerapp.activities.MainActivity;
+import com.baldware.intolerapp.json.JSONHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

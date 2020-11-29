@@ -1,4 +1,4 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,6 +24,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baldware.intolerapp.Constants;
+import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.SearchViewListener;
+import com.baldware.intolerapp.activities.AdditionActivity;
+import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;

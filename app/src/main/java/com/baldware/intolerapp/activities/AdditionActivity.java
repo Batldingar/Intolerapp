@@ -1,4 +1,4 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.baldware.intolerapp.Constants;
+import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
