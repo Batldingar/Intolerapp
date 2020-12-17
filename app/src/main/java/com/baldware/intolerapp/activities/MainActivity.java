@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -31,6 +34,7 @@ import com.baldware.intolerapp.activities.AdditionActivity;
 import com.baldware.intolerapp.activities.ProductActivity;
 import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,11 +42,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private static ListView listView;
     private static Context context;
     private static SwipeRefreshLayout swipeRefreshLayout;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new onClickListener());
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener());
 
         loadData();
     }
@@ -99,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menu) {
-            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
-            ruleDialogFragment.show(getSupportFragmentManager(), "rules");
+            drawerLayout.openDrawer(GravityCompat.END);
         }
 
         return super.onOptionsItemSelected(item);
@@ -257,6 +266,22 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
             startActivity(intent);
+        }
+    }
+
+    public class onNavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch(item.getItemId()) {
+                case R.id.nav_legal_notice:{
+                    RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
+                    ruleDialogFragment.show(getSupportFragmentManager(), "rules");
+                    break;
+                }
+            }
+            //drawerLayout.closeDrawer(GravityCompat.END);
+            return false;
         }
     }
 
