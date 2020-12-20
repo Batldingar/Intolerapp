@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity{
         loadData();
     }
 
+    // Downloads the product data and calls loadJSONIntoListView
     public static void loadData() {
         Toast.makeText(MainActivity.getContext(), "Updating products...", Toast.LENGTH_SHORT).show();
 
@@ -91,6 +92,34 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    // Gets the json data from the JSONHandler and loads it into the listView
+    public static void loadJSONIntoListView() throws JSONException {
+        JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
+        String[] products = new String[jsonArray.length()];
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            products[i] = jsonObject.getString("name") + " - " + jsonObject.getString("brand");
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
+        listView.setAdapter(arrayAdapter);
+    }
+
+    // Loads search results into the listView
+    public static void loadSearchIntoListView() {
+        ArrayList<String[]> result = SearchViewListener.getSearchResult();
+        String[] resultArray = new String[result.size()];
+
+        for(int i = 0; i < result.size(); i++) {
+            resultArray[i] = result.get(i)[0];
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, resultArray);
+        listView.setAdapter(arrayAdapter);
+    }
+
+    // Creates the top bar (the menu consisting of search bar and buttons)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -106,6 +135,7 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
+    // Runs commands when pressing a button in the top bar menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menu) {
@@ -115,31 +145,7 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public static void loadJSONIntoListView() throws JSONException {
-        JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
-        String[] products = new String[jsonArray.length()];
-
-        for(int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            products[i] = jsonObject.getString("name") + " - " + jsonObject.getString("brand");
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
-        listView.setAdapter(arrayAdapter);
-    }
-
-    public static void loadSearchIntoListView() {
-        ArrayList<String[]> result = SearchViewListener.getSearchResult();
-        String[] resultArray = new String[result.size()];
-
-        for(int i = 0; i < result.size(); i++) {
-            resultArray[i] = result.get(i)[0];
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, resultArray);
-        listView.setAdapter(arrayAdapter);
-    }
-
+    // For the listView
     public class onItemClickListener implements OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -166,6 +172,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    // For the listView
     public class onItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -175,6 +182,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    // For the swipeRefreshLayout
     public static class onRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         public void onRefresh() {
@@ -183,6 +191,33 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    // For the floatingActionButton
+    public class onClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    // For the navigationView
+    public class onNavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch(item.getItemId()) {
+                case R.id.nav_legal_notice:{
+                    RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
+                    ruleDialogFragment.show(getSupportFragmentManager(), "rules");
+                    break;
+                }
+            }
+            //drawerLayout.closeDrawer(GravityCompat.END);
+            return false;
+        }
+    }
+
+    // The reportDialogFragment
     public static class ReportDialogFragment extends DialogFragment {
         public ReportDialogFragment() {
             // Empty constructor required
@@ -226,6 +261,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    // The ruleDialogFragment
     public static class RuleDialogFragment extends DialogFragment {
         public RuleDialogFragment() {
             // Empty constructor required
@@ -257,31 +293,6 @@ public class MainActivity extends AppCompatActivity{
                         }
                     });
             return builder.create();
-        }
-    }
-
-    // OnClickListener for the Floating Addition Button
-    public class onClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    public class onNavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch(item.getItemId()) {
-                case R.id.nav_legal_notice:{
-                    RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
-                    ruleDialogFragment.show(getSupportFragmentManager(), "rules");
-                    break;
-                }
-            }
-            //drawerLayout.closeDrawer(GravityCompat.END);
-            return false;
         }
     }
 
