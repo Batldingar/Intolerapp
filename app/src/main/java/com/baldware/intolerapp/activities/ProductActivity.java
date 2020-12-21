@@ -1,6 +1,7 @@
 package com.baldware.intolerapp.activities;
 
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,13 @@ public class ProductActivity extends AppCompatActivity {
     private RatingBar sucroseRatingBar;
     private RatingBar sorbitolRatingBar;
 
+    private TextView fructoseTextView;
+    private TextView glucoseTextView;
+    private TextView histamineTextView;
+    private TextView lactoseTextView;
+    private TextView sucroseTextView;
+    private TextView sorbitolTextView;
+
     private static float fructoseRating;
     private static float glucoseRating;
     private static float histamineRating;
@@ -57,12 +65,12 @@ public class ProductActivity extends AppCompatActivity {
         sucroseRatingBar = findViewById(R.id.rating_bar_sucrose);
         sorbitolRatingBar = findViewById(R.id.rating_bar_sorbitol);
 
-        TextView fructoseTextView = findViewById(R.id.text_view_fructose);
-        TextView glucoseTextView = findViewById(R.id.text_view_glucose);
-        TextView histamineTextView = findViewById(R.id.text_view_histamine);
-        TextView lactoseTextView = findViewById(R.id.text_view_lactose);
-        TextView sucroseTextView = findViewById(R.id.text_view_sucrose);
-        TextView sorbitolTextView = findViewById(R.id.text_view_sorbitol);
+        fructoseTextView = findViewById(R.id.text_view_fructose);
+        glucoseTextView = findViewById(R.id.text_view_glucose);
+        histamineTextView = findViewById(R.id.text_view_histamine);
+        lactoseTextView = findViewById(R.id.text_view_lactose);
+        sucroseTextView = findViewById(R.id.text_view_sucrose);
+        sorbitolTextView = findViewById(R.id.text_view_sorbitol);
 
         try {
             JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
@@ -146,6 +154,10 @@ public class ProductActivity extends AppCompatActivity {
             setColor(ratingBar);
 
             if(fromUser) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsBlack)));
+                }
+
                 // Add the button
                 if (!buttonInitialized) {
                     RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
@@ -166,21 +178,27 @@ public class ProductActivity extends AppCompatActivity {
                 switch ((int) ratingBar.getTag()) {
                     case 0:
                         fructoseRating = fructoseRatingBar.getRating();
+                        fructoseTextView.setText(R.string.fructose_rating);
                         break;
                     case 1:
                         glucoseRating = glucoseRatingBar.getRating();
+                        glucoseTextView.setText(R.string.glucose_rating);
                         break;
                     case 2:
                         histamineRating = histamineRatingBar.getRating();
+                        histamineTextView.setText(R.string.histamine_rating);
                         break;
                     case 3:
                         lactoseRating = lactoseRatingBar.getRating();
+                        lactoseTextView.setText(R.string.lactose_rating);
                         break;
                     case 4:
                         sucroseRating = sucroseRatingBar.getRating();
+                        sucroseTextView.setText(R.string.sucrose_rating);
                         break;
                     case 5:
                         sorbitolRating = sorbitolRatingBar.getRating();
+                        sorbitolTextView.setText(R.string.sorbitol_rating);
                         break;
                 }
             }

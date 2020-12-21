@@ -10,6 +10,12 @@
     <string name="lactose_text">Lactose (%1$dx Ratings)</string>
     <string name="sucrose_text">Sucrose (%1$dx Ratings)</string>
     <string name="sorbitol_text">Sorbitol (%1$dx Ratings)</string>
+    <string name="fructose_rating">New Fructose Rating</string>
+    <string name="glucose_rating">New Glucose Rating</string>
+    <string name="histamine_rating">New Histamine Rating</string>
+    <string name="lactose_rating">New Lactose Rating</string>
+    <string name="sucrose_rating">New Sucrose Rating</string>
+    <string name="sorbitol_rating">New Sorbitol Rating</string>
     <string name="search_hint">Search products/brands</string>
     <string name="report_text">Report the product?</string>
     <string name="rule_text">The contents of Intolerapp are unrestrictedly user-generated.\nBaldware does not guarantee the correctness of the displayed information and is also not liable for problems that arise from the use of the app.\nIf you ever experience health problems after eating, seek professional medical advice immediately.</string>
