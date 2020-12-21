@@ -3,9 +3,12 @@ package com.baldware.intolerapp.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -210,6 +213,19 @@ public class MainActivity extends AppCompatActivity{
                 case R.id.nav_legal_notice:{
                     RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
                     ruleDialogFragment.show(getSupportFragmentManager(), "rules");
+                    break;
+                }
+                case R.id.nav_share_app:{
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Share", "https://play.google.com/store/apps/details?id=com.baldware.intolerapp");
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(context, "Copied link to clipboard!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case R.id.nav_rate_app:{
+                    Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+                    playStoreIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.baldware.intolerapp"));
+                    startActivity(playStoreIntent);
                     break;
                 }
             }

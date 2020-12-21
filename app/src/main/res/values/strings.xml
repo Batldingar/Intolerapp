@@ -16,4 +16,6 @@
     <string name="positive_button_text">Yes</string>
     <string name="negative_button_text">No</string>
     <string name="legal_notice">Legal Notice</string>
+    <string name="rate_app">Rate the app</string>
+    <string name="share_app">Share the app</string>
 </resources>

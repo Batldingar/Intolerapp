@@ -3,6 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_legal_notice" android:title="@string/legal_notice"/>
-
+        <item android:id="@+id/nav_share_app" android:title="@string/share_app"/>
+        <item android:id="@+id/nav_rate_app" android:title="@string/rate_app"/>
     </group>
 </menu>
