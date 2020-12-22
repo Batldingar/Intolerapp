@@ -8,6 +8,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,7 +76,28 @@ public class MainActivity extends AppCompatActivity{
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener());
 
+        loadFirstStartUpMessage();
         loadData();
+    }
+
+    // Loads message for first start up if necessary
+    private void loadFirstStartUpMessage(){
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        boolean firstStartUp = sharedPreferences.getBoolean(getString(R.string.firstStartUpFlag), true);
+
+        if(firstStartUp) {
+            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.start_up_message_title), getResources().getString(R.string.start_up_message_text));
+            ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.start_up_message_title));
+
+            disableFirstStartUpMessage();
+        }
+    }
+
+    private void disableFirstStartUpMessage() {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.firstStartUpFlag), false);
+        editor.apply();
     }
 
     // Downloads the product data and calls loadJSONIntoListView
@@ -211,8 +233,8 @@ public class MainActivity extends AppCompatActivity{
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch(item.getItemId()) {
                 case R.id.nav_legal_notice:{
-                    RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Rules");
-                    ruleDialogFragment.show(getSupportFragmentManager(), "rules");
+                    RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.rules_title), getResources().getString(R.string.rule_text));
+                    ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.rules_title));
                     break;
                 }
                 case R.id.nav_share_app:{
@@ -284,10 +306,11 @@ public class MainActivity extends AppCompatActivity{
             // Empty constructor required
         }
 
-        public static RuleDialogFragment newInstance(String title) {
+        public static RuleDialogFragment newInstance(String title, String message) {
             RuleDialogFragment ruleDialogFragment = new RuleDialogFragment();
             Bundle args = new Bundle();
             args.putString("title", title);
+            args.putString("message", message);
             ruleDialogFragment.setArguments(args);
             return ruleDialogFragment;
         }
@@ -296,14 +319,16 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             String title = null;
+            String message = null;
             if (getArguments() != null) {
                 title = getArguments().getString("title");
+                message = getArguments().getString("message");
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(title)
-                    .setMessage(R.string.rule_text)
-                    .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
+                    .setMessage(message)
+                    .setPositiveButton(R.string.acceptance_button_text, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
