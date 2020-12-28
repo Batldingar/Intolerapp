@@ -232,6 +232,11 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch(item.getItemId()) {
+                case R.id.nav_settings:{
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    break;
+                }
                 case R.id.nav_legal_notice:{
                     RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.rules_title), getResources().getString(R.string.rule_text));
                     ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.rules_title));

@@ -30,4 +30,12 @@
     <string name="rate_app">Rate the app</string>
     <string name="share_app">Share the app</string>
     <string name="firstStartUpFlag">com.baldware.intolerapp.firstStartUpFlag</string>
+    <string name="radio_fructose">Fructose</string>
+    <string name="radio_glucose">Glucose</string>
+    <string name="radio_histamine">Histamine</string>
+    <string name="radio_lactose">Lactose</string>
+    <string name="radio_sucrose">Sucrose</string>
+    <string name="radio_sorbitol">Sorbitol</string>
+    <string name="title_settings">Select your main intolerance</string>
+    <string name="settings_button_text">Apply selection</string>
 </resources>
