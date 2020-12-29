@@ -38,4 +38,6 @@
     <string name="radio_sorbitol">Sorbitol</string>
     <string name="title_settings">Select your main intolerance</string>
     <string name="settings_button_text">Apply selection</string>
+    <string name="settings_applied_text">Your selection has been applied</string>
+    <string name="settingsFlag">com.baldware.intolerapp.settingsFlag</string>
 </resources>

@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity{
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener());
 
         loadFirstStartUpMessage();
+        loadSettings();
         loadData();
     }
 
@@ -86,18 +87,30 @@ public class MainActivity extends AppCompatActivity{
         boolean firstStartUp = sharedPreferences.getBoolean(getString(R.string.firstStartUpFlag), true);
 
         if(firstStartUp) {
-            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.start_up_message_title), getResources().getString(R.string.start_up_message_text));
+            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.start_up_message_title), getString(R.string.start_up_message_text));
             ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.start_up_message_title));
 
             disableFirstStartUpMessage();
         }
     }
 
+    // Disables the first start up message after the first start up has occured
     private void disableFirstStartUpMessage() {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.firstStartUpFlag), false);
         editor.apply();
+    }
+
+    // Loads settings (main intolerance preferences)
+    private void loadSettings(){
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.settingsFlag), Context.MODE_PRIVATE);
+        String mainIntolerance = sharedPreferences.getString(getString(R.string.settingsFlag), null);
+
+        if(mainIntolerance != null) {
+            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Your Main-Intolerance:", mainIntolerance);
+            ruleDialogFragment.show(getSupportFragmentManager(), "Your Main-Intolerance:");
+        }
     }
 
     // Downloads the product data and calls loadJSONIntoListView

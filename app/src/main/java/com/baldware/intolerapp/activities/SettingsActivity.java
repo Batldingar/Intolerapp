@@ -1,12 +1,16 @@
 package com.baldware.intolerapp.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,7 +46,11 @@ public class SettingsActivity extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO: Add button code
+                        RadioButton radioButton = findViewById(group.getCheckedRadioButtonId());
+                        saveSelection(radioButton.getText().toString());
+
+                        Toast.makeText(getApplicationContext(), R.string.settings_applied_text, Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 
@@ -51,5 +59,12 @@ public class SettingsActivity extends AppCompatActivity {
                 buttonInitialized = true;
             }
         }
+    }
+
+    private void saveSelection(String selection) {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.settingsFlag), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.settingsFlag), selection);
+        editor.apply();
     }
 }
