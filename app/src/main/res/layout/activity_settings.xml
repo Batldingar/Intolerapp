@@ -28,6 +28,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
+            android:id="@+id/radio_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_none" />
+
+        <RadioButton
             android:id="@+id/radio_fructose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
