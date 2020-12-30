@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity{
     private static SwipeRefreshLayout swipeRefreshLayout;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private String mainIntolerance;
 
     // Initializes everything on start up
     @Override
@@ -75,7 +77,6 @@ public class MainActivity extends AppCompatActivity{
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener());
 
         loadFirstStartUpMessage();
-        loadSettings();
         loadData();
     }
 
@@ -101,14 +102,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Loads settings (main intolerance preferences)
-    private void loadSettings(){
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.settingsFlag), Context.MODE_PRIVATE);
-        String mainIntolerance = sharedPreferences.getString(getString(R.string.settingsFlag), null);
+    private static String getMainIntolerance(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.settingsFlag), Context.MODE_PRIVATE);
+        String mainIntolerance = sharedPreferences.getString(context.getString(R.string.settingsFlag), context.getString(R.string.radio_none));
 
-        if(mainIntolerance != null) {
-            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Your Main-Intolerance:", mainIntolerance);
-            ruleDialogFragment.show(getSupportFragmentManager(), "Your Main-Intolerance:");
-        }
+        return mainIntolerance;
     }
 
     // Downloads the product data and calls loadJSONIntoListView
@@ -140,9 +138,13 @@ public class MainActivity extends AppCompatActivity{
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
-        // TODO
         StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, products);
-        listView.setAdapter(starListViewAdapter);
+
+        if(getMainIntolerance().equals(context.getString(R.string.radio_none))) {
+            listView.setAdapter(arrayAdapter);
+        } else {
+            listView.setAdapter(starListViewAdapter);
+        }
     }
 
     // Loads search results into the listView

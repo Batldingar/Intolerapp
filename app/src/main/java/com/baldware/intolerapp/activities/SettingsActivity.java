@@ -49,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
                         RadioButton radioButton = findViewById(group.getCheckedRadioButtonId());
                         saveSelection(radioButton.getText().toString());
 
+                        MainActivity.loadData();
                         Toast.makeText(getApplicationContext(), R.string.settings_applied_text, Toast.LENGTH_SHORT).show();
                         finish();
                     }
