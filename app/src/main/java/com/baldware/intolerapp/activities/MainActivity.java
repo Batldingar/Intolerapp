@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,11 +30,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.baldware.intolerapp.Constants;
+import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
-import com.baldware.intolerapp.SearchViewListener;
-import com.baldware.intolerapp.activities.AdditionActivity;
-import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.customTools.SearchViewListener;
+import com.baldware.intolerapp.customTools.StarListViewAdapter;
 import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -142,7 +140,9 @@ public class MainActivity extends AppCompatActivity{
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
-        listView.setAdapter(arrayAdapter);
+        // TODO
+        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, products);
+        listView.setAdapter(starListViewAdapter);
     }
 
     // Loads search results into the listView

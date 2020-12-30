@@ -1,4 +1,4 @@
-package com.baldware.intolerapp;
+package com.baldware.intolerapp.customTools;
 
 public class Constants {
 

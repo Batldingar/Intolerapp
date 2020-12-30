@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.baldware.intolerapp.Constants;
+import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.json.JSONHandler;
 

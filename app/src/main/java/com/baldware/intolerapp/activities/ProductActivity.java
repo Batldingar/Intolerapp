@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.baldware.intolerapp.Constants;
+import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.json.JSONHandler;
 
