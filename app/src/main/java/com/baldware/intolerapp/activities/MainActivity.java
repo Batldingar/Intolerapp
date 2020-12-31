@@ -157,7 +157,13 @@ public class MainActivity extends AppCompatActivity{
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, resultArray);
-        listView.setAdapter(arrayAdapter);
+        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, resultArray);
+
+        if(getMainIntolerance().equals(context.getString(R.string.radio_none))) {
+            listView.setAdapter(arrayAdapter);
+        } else {
+            listView.setAdapter(starListViewAdapter);
+        }
     }
 
     // Creates the top bar (the menu consisting of search bar and buttons)
