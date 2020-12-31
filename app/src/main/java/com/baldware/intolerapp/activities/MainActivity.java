@@ -31,10 +31,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.baldware.intolerapp.customTools.Constants;
+import com.baldware.intolerapp.Constants;
 import com.baldware.intolerapp.R;
-import com.baldware.intolerapp.customTools.SearchViewListener;
-import com.baldware.intolerapp.customTools.StarListViewAdapter;
+import com.baldware.intolerapp.SearchViewListener;
 import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity{
     private static SwipeRefreshLayout swipeRefreshLayout;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private String mainIntolerance;
 
     // Initializes everything on start up
     @Override
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity{
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener());
 
         loadFirstStartUpMessage();
+        loadSettings();
         loadData();
     }
 
@@ -102,11 +101,14 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Loads settings (main intolerance preferences)
-    private static String getMainIntolerance(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.settingsFlag), Context.MODE_PRIVATE);
-        String mainIntolerance = sharedPreferences.getString(context.getString(R.string.settingsFlag), context.getString(R.string.radio_none));
+    private void loadSettings(){
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.settingsFlag), Context.MODE_PRIVATE);
+        String mainIntolerance = sharedPreferences.getString(getString(R.string.settingsFlag), null);
 
-        return mainIntolerance;
+        if(mainIntolerance != null) {
+            RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance("Your Main-Intolerance:", mainIntolerance);
+            ruleDialogFragment.show(getSupportFragmentManager(), "Your Main-Intolerance:");
+        }
     }
 
     // Downloads the product data and calls loadJSONIntoListView
@@ -138,13 +140,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
-        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, products);
-
-        if(getMainIntolerance().equals(context.getString(R.string.radio_none))) {
-            listView.setAdapter(arrayAdapter);
-        } else {
-            listView.setAdapter(starListViewAdapter);
-        }
+        listView.setAdapter(arrayAdapter);
     }
 
     // Loads search results into the listView
@@ -157,13 +153,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, resultArray);
-        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, resultArray);
-
-        if(getMainIntolerance().equals(context.getString(R.string.radio_none))) {
-            listView.setAdapter(arrayAdapter);
-        } else {
-            listView.setAdapter(starListViewAdapter);
-        }
+        listView.setAdapter(arrayAdapter);
     }
 
     // Creates the top bar (the menu consisting of search bar and buttons)
