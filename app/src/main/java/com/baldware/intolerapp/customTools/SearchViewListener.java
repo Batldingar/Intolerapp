@@ -62,6 +62,7 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
             // Only check if either product or brand contain the pattern
             if(productContains || brandContains) {
                 String fullName = product + " - " + brand;
+                // Store in searchResultStrings: fullName, evaluationRating and index [0, 1, 2]
                 if (productContains && brandContains) {
                     searchResult.add(new String[]{fullName, Integer.toString(Math.min(lowerCaseProduct.indexOf(lowerCasePattern), lowerCaseBrand.indexOf(lowerCasePattern))), Integer.toString(i)});
                 } else {
