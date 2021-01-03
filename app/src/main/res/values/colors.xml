@@ -9,4 +9,5 @@
     <color name="starsLime">#b3ff03</color>
     <color name="starsGreen">#00ff33</color>
     <color name="starsBlue">#03A9F4</color>
+    <color name="black">#000000</color>
 </resources>

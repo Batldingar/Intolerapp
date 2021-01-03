@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity{
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         String[] products = new String[jsonArray.length()];
         double[] ratings = new double[jsonArray.length()];
+        int[] counts = new int[jsonArray.length()];
 
         for(int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -139,26 +140,32 @@ public class MainActivity extends AppCompatActivity{
 
             if(getMainIntolerance().equals(context.getString(R.string.radio_fructose))) {
                 ratings[i] = jsonObject.getDouble("fructoseRating");
-            }
+                counts[i] = jsonObject.getInt("fructoseRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_glucose))) {
                 ratings[i] = jsonObject.getDouble("glucoseRating");
-            }
+                counts[i] = jsonObject.getInt("glucoseRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_histamine))) {
                 ratings[i] = jsonObject.getDouble("histamineRating");
-            }
+                counts[i] = jsonObject.getInt("histamineRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_lactose))) {
                 ratings[i] = jsonObject.getDouble("lactoseRating");
-            }
+                counts[i] = jsonObject.getInt("lactoseRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_sucrose))) {
                 ratings[i] = jsonObject.getDouble("sucroseRating");
-            }
-            if(getMainIntolerance().equals(context.getString(R.string.radio_sucrose))) {
+                counts[i] = jsonObject.getInt("sucroseRatingCount");
+            } else
+            if(getMainIntolerance().equals(context.getString(R.string.radio_sorbitol))) {
                 ratings[i] = jsonObject.getDouble("sorbitolRating");
+                counts[i] = jsonObject.getInt("sorbitolRatingCount");
             }
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, products);
-        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, products, ratings);
+        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, products, ratings, counts, getMainIntolerance());
 
         if(getMainIntolerance().equals(context.getString(R.string.radio_none))) {
             listView.setAdapter(arrayAdapter);
@@ -173,31 +180,38 @@ public class MainActivity extends AppCompatActivity{
         ArrayList<String[]> result = SearchViewListener.getSearchResult();
         String[] resultArray = new String[result.size()];
         double[] ratings = new double[result.size()];
+        int[] counts = new int[jsonArray.length()];
 
         for(int i = 0; i < result.size(); i++) {
             resultArray[i] = result.get(i)[0];
             if(getMainIntolerance().equals(context.getString(R.string.radio_fructose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("fructoseRating");
-            }
+                counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("fructoseRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_glucose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("glucoseRating");
-            }
+                counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("glucoseRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_histamine))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("histamineRating");
-            }
+                counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("histamineRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_lactose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("lactoseRating");
-            }
+                counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("lactoseRatingCount");
+            } else
             if(getMainIntolerance().equals(context.getString(R.string.radio_sucrose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("sucroseRating");
-            }
-            if(getMainIntolerance().equals(context.getString(R.string.radio_sucrose))) {
-                ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("sucroseRating");
+                counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("sucroseRatingCount");
+            } else
+            if(getMainIntolerance().equals(context.getString(R.string.radio_sorbitol))) {
+                ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("sorbitolRating");
+                counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("sorbitolRatingCount");
             }
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, resultArray);
-        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, resultArray, ratings);
+        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(getContext(), R.layout.star_listview_item, R.id.star_listView_textView, resultArray, ratings, counts, getMainIntolerance());
 
         if(getMainIntolerance().equals(context.getString(R.string.radio_none))) {
             listView.setAdapter(arrayAdapter);
