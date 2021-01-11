@@ -61,7 +61,7 @@ public class AdditionActivity extends AppCompatActivity {
                 if (productExists) {
                     Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                 } else {
-                    JSONHandler.startUpload(Constants.UPLOAD_URL);
+                    JSONHandler.startUpload();
                     MainActivity.loadData();
                     finish();
                 }

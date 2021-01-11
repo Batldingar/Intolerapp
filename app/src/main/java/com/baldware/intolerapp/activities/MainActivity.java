@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity{
     public static void loadData() {
         Toast.makeText(MainActivity.getContext(), "Updating products...", Toast.LENGTH_SHORT).show();
 
-        JSONHandler.startDownload(Constants.DOWNLOAD_URL);
+        JSONHandler.startDownload();
 
         try {
             if(JSONHandler.getJson() != null) {
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity{
     public class onItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            ReportDialogFragment reportDialogFragment = ReportDialogFragment.newInstance("Report");
+            ReportDialogFragment reportDialogFragment = ReportDialogFragment.newInstance("Report", listView.getItemAtPosition(position).toString());
             reportDialogFragment.show(getSupportFragmentManager(), "report");
             return true;
         }
@@ -342,10 +342,11 @@ public class MainActivity extends AppCompatActivity{
             // Empty constructor required
         }
 
-        public static ReportDialogFragment newInstance(String title) {
+        public static ReportDialogFragment newInstance(String title, String product) {
             ReportDialogFragment reportDialogFragment = new ReportDialogFragment();
             Bundle args = new Bundle();
             args.putString("title", title);
+            args.putString("product", product);
             reportDialogFragment.setArguments(args);
             return reportDialogFragment;
         }
@@ -354,17 +355,21 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             String title = null;
+            String productName = null;
+
             if (getArguments() != null) {
                 title = getArguments().getString("title");
+                productName = getArguments().getString("product");
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            String product = productName;
             builder.setTitle(title)
                     .setMessage(R.string.report_text)
                     .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            JSONHandler.startReport(product);
                         }
                     })
                     .setNegativeButton(R.string.negative_button_text, new DialogInterface.OnClickListener() {

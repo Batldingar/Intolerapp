@@ -207,7 +207,7 @@ public class ProductActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            JSONHandler.startRating(Constants.RATING_URL);
+            JSONHandler.startRating();
             MainActivity.loadData();
             finish();
         }

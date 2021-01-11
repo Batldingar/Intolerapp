@@ -1,5 +1,6 @@
 package com.baldware.intolerapp.json;
 
+import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import java.io.BufferedReader;
@@ -12,7 +13,7 @@ public class DownloadRunnable implements Runnable {
     @Override
     public void run() {
         try{
-            URL url = new URL(JSONHandler.getDownloadServiceURL());
+            URL url = new URL(Constants.DOWNLOAD_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             StringBuilder stringBuilder = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

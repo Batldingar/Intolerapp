@@ -1,6 +1,7 @@
 package com.baldware.intolerapp.json;
 
 import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ public class RatingRunnable implements Runnable {
                 HttpURLConnection connection;
 
                 try {
-                    URL url = new URL(JSONHandler.getUploadServiceURL());
+                    URL url = new URL(Constants.RATING_URL);
 
                     JSONObject jsonObject = new JSONObject();
 

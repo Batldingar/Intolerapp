@@ -2,7 +2,6 @@ package com.baldware.intolerapp.json;
 
 import com.baldware.intolerapp.activities.AdditionActivity;
 import com.baldware.intolerapp.customTools.Constants;
-import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONObject;
 
@@ -12,7 +11,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class UploadRunnable implements Runnable {
+public class ReportRunnable implements Runnable {
+
+    private String reportProduct;
+
+    public ReportRunnable (String reportProduct) {
+        this.reportProduct = reportProduct;
+    }
 
     @Override
     public void run() {
@@ -20,12 +25,11 @@ public class UploadRunnable implements Runnable {
         HttpURLConnection connection;
 
         try{
-            URL url = new URL(Constants.UPLOAD_URL);
+            URL url = new URL(Constants.REPORT_URL);
 
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("name", AdditionActivity.getProductName());
-            jsonObject.put("brand", AdditionActivity.getProductBrand());
+            jsonObject.put("name", reportProduct);
 
             String message = jsonObject.toString();
 
@@ -33,7 +37,7 @@ public class UploadRunnable implements Runnable {
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
             connection.setRequestMethod("POST");
-            connection.setDoInput(true);
+            //connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setFixedLengthStreamingMode(message.getBytes().length);
 

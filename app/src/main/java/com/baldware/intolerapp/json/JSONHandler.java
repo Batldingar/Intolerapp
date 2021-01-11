@@ -10,24 +10,16 @@ import org.json.JSONException;
 public class JSONHandler {
 
     private static String json;
-    private static String downloadServiceURL;
-    private static String uploadServiceURL;
 
-    public static void startDownload(String webServiceURL) {
-        downloadServiceURL = webServiceURL;
-
+    public static void startDownload() {
         Thread downloadThread = new Thread(new DownloadRunnable());
-
         downloadThread.start();
 
         while(downloadThread.isAlive()) {} // wait for thread to finish
     }
 
-    public static void startUpload(String webServiceURL) {
-        uploadServiceURL = webServiceURL;
-
+    public static void startUpload() {
         Thread uploadThread = new Thread(new UploadRunnable());
-
         uploadThread.start();
 
         while(uploadThread.isAlive()) {} // wait for thread to finish
@@ -35,16 +27,22 @@ public class JSONHandler {
         Toast.makeText(MainActivity.getContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
     }
 
-    public static void startRating(String webServiceURL) {
-        uploadServiceURL = webServiceURL;
-
+    public static void startRating() {
         Thread ratingThread = new Thread(new RatingRunnable());
-
         ratingThread.start();
 
         while(ratingThread.isAlive()) {} // wait for thread to finish
 
         Toast.makeText(MainActivity.getContext(), "Rating successful!", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void startReport(String reportProduct) {
+        Thread reportThread = new Thread(new ReportRunnable(reportProduct));
+        reportThread.start();
+
+        while(reportThread.isAlive()) {} // wait for thread to finish
+
+        Toast.makeText(MainActivity.getContext(), "Product has been reported!", Toast.LENGTH_SHORT).show();
     }
 
     public static String getJson() {
@@ -65,13 +63,5 @@ public class JSONHandler {
         }
 
         return jsonArray;
-    }
-
-    public static String getDownloadServiceURL() {
-        return downloadServiceURL;
-    }
-
-    public static String getUploadServiceURL() {
-        return uploadServiceURL;
     }
 }
