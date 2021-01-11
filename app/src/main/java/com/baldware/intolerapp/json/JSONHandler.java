@@ -45,6 +45,15 @@ public class JSONHandler {
         Toast.makeText(MainActivity.getContext(), "Product has been reported!", Toast.LENGTH_SHORT).show();
     }
 
+    public static void startImageUpload(String encodedImage) {
+        Thread imageUploadThread = new Thread(new ImageUploadRunnable(encodedImage));
+        imageUploadThread.start();
+
+        while(imageUploadThread.isAlive()) {} // wait for thread to finish
+
+        Toast.makeText(MainActivity.getContext(), "Picture has been uploaded!", Toast.LENGTH_SHORT).show();
+    }
+
     public static String getJson() {
         return json;
     }

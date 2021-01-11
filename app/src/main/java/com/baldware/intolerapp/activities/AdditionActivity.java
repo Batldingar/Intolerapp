@@ -1,6 +1,10 @@
 package com.baldware.intolerapp.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,11 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.json.ImageUploadRunnable;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 public class AdditionActivity extends AppCompatActivity {
 
@@ -61,6 +68,7 @@ public class AdditionActivity extends AppCompatActivity {
                 if (productExists) {
                     Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                 } else {
+                    JSONHandler.startImageUpload(encodeImage());
                     JSONHandler.startUpload();
                     MainActivity.loadData();
                     finish();
@@ -69,6 +77,17 @@ public class AdditionActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Name and brand can't be empty", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private String encodeImage() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.lasagne);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        return encodedImage;
     }
 
     public static String getProductName() {

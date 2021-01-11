@@ -6,13 +6,28 @@
     android:id="@+id/relativeLayout"
     tools:context=".activities.ProductActivity">
 
+    <ImageView
+        android:id="@+id/product_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/lasagne"/>
+
+    <View
+        android:id="@+id/divider_product_image"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/product_image_view"
+        android:background="@android:color/darker_gray"/>
+
     <!-- Fructose -->
     <TextView
         android:id="@+id/text_view_fructose"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/divider_product_image"
         android:text="@string/fructose_text" />
 
     <RatingBar
