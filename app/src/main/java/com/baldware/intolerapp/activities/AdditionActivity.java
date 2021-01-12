@@ -1,15 +1,15 @@
 package com.baldware.intolerapp.activities;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.baldware.intolerapp.customTools.BitmapHandler;
@@ -36,6 +36,9 @@ public class AdditionActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
+
+        ImageView imageView = findViewById(R.id.addition_image_view);
+        imageView.setOnClickListener(new onImageClickListener());
     }
 
     private class onClickListener implements View.OnClickListener{
@@ -79,6 +82,42 @@ public class AdditionActivity extends AppCompatActivity {
             }
         }
     }
+
+    private class onImageClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            selectImage();
+        }
+    }
+
+    private void selectImage() {
+        final CharSequence[] options = {"Take photo", "Choose from gallery", "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select a product picture");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int itemID) {
+                switch(itemID) {
+                    case 0: // take photo
+                        Intent takePhoto = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(takePhoto, 0);
+                        break;
+                    case 1: // choose from gallery
+                        Intent choosePhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(choosePhoto , 1);
+                        break;
+                    case 2: // cancel
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        }).show();
+    }
+
+
 
     public static String getProductName() {
         return productNameInput;
