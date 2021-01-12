@@ -11,15 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:padding="5dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/lasagne"/>
+        android:scaleType="centerInside" />
 
     <View
         android:id="@+id/divider_product_image"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/product_image_view"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <!-- Fructose -->
     <TextView

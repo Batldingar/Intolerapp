@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.json.ImageUploadRunnable;
@@ -68,7 +69,7 @@ public class AdditionActivity extends AppCompatActivity {
                 if (productExists) {
                     Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                 } else {
-                    JSONHandler.startImageUpload(encodeImage());
+                    JSONHandler.startImageUpload(BitmapHandler.createUploadable(R.drawable.lasagne));
                     JSONHandler.startUpload();
                     MainActivity.loadData();
                     finish();
@@ -77,17 +78,6 @@ public class AdditionActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Name and brand can't be empty", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private String encodeImage() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.lasagne);
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-        return encodedImage;
     }
 
     public static String getProductName() {

@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity{
     private static SwipeRefreshLayout swipeRefreshLayout;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private String mainIntolerance;
 
     // Initializes everything on start up
     @Override

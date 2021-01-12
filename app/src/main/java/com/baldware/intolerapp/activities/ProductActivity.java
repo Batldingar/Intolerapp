@@ -3,9 +3,11 @@ package com.baldware.intolerapp.activities;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,10 +15,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.json.JSONHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -111,6 +115,15 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         buttonInitialized = false;
+
+        // Fill the imageView
+        ImageView imageView = findViewById(R.id.product_image_view);
+
+        JSONHandler.startImageDownload(name, brand);
+
+        if(JSONHandler.getImage() != null) {
+            imageView.setImageBitmap(BitmapHandler.createShowable(JSONHandler.getImage()));
+        }
     }
 
     private void loadIntoRatingBars() throws JSONException {
