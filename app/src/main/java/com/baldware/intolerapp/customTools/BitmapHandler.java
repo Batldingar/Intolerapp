@@ -12,9 +12,7 @@ import java.io.ByteArrayOutputStream;
 public class BitmapHandler {
 
     // Takes an image (by id), converts, compresses and encodes it and returns it as a string ready to be uploaded
-    public static String createUploadable(int imageID) {
-        Bitmap bitmap = BitmapFactory.decodeResource(MainActivity.getContext().getResources(), imageID);
-
+    public static String createUploadable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();

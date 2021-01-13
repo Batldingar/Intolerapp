@@ -40,6 +40,7 @@ public class AdditionActivity extends AppCompatActivity {
     private static String productNameInput;
     private static String productBrandInput;
     private ImageView imageView;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,33 +62,37 @@ public class AdditionActivity extends AppCompatActivity {
             productBrandInput = ((EditText)findViewById(R.id.productBrand)).getText().toString();
 
             if (!productNameInput.equals("") && !productBrandInput.equals("")) {
-                boolean productExists = false;
+                if(bitmap != null) {
+                    boolean productExists = false;
 
-                JSONArray jsonArray;
-                try {
-                    jsonArray = new JSONArray(JSONHandler.getJson());
+                    JSONArray jsonArray;
+                    try {
+                        jsonArray = new JSONArray(JSONHandler.getJson());
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                        if (jsonObject.getString("name").equals(productNameInput)) {
-                            if (jsonObject.getString("brand").equals(productBrandInput)) {
-                                productExists = true;
-                                break;
+                            if (jsonObject.getString("name").equals(productNameInput)) {
+                                if (jsonObject.getString("brand").equals(productBrandInput)) {
+                                    productExists = true;
+                                    break;
+                                }
                             }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-                if (productExists) {
-                    Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
+                    if (productExists) {
+                        Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
+                    } else {
+                        JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap));
+                        JSONHandler.startUpload();
+                        MainActivity.loadData();
+                        finish();
+                    }
                 } else {
-                    JSONHandler.startImageUpload(BitmapHandler.createUploadable(R.drawable.lasagne));
-                    JSONHandler.startUpload();
-                    MainActivity.loadData();
-                    finish();
+                    Toast.makeText(getApplicationContext(), "There has to be a product picture", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(getApplicationContext(), "Name and brand can't be empty", Toast.LENGTH_SHORT).show();
@@ -147,6 +152,7 @@ public class AdditionActivity extends AppCompatActivity {
                 case 0: // take photo
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        bitmap = selectedImage;
                         imageView.setImageBitmap(selectedImage);
                     }
                     break;
