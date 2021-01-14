@@ -251,20 +251,8 @@ public class MainActivity extends AppCompatActivity{
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
 
-            JSONArray jsonArray;
-            JSONObject jsonObject;
-
             if(SearchViewListener.getSearchResult()!=null) {
                 position = Integer.parseInt(SearchViewListener.getSearchResult().get(position)[2]);
-            }
-
-            try {
-                jsonArray = new JSONArray(JSONHandler.getJson());
-                jsonObject = jsonArray.getJSONObject(position);
-                intent.putExtra("name", jsonObject.getString("name"));
-                intent.putExtra("brand", jsonObject.getString("brand"));
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
 
             intent.putExtra("position", position);
@@ -419,6 +407,31 @@ public class MainActivity extends AppCompatActivity{
                         }
                     });
             return builder.create();
+        }
+    }
+
+    // Gets the json data from the JSONHandler and loads it into the listView
+    public static void showProduct(Context context, String productName, String productBrand){
+        JSONArray jsonArray = null;
+        int position = -1;
+
+        try {
+            jsonArray = new JSONArray(JSONHandler.getJson());
+            for(int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (productName.equals(jsonObject.getString("name")) && productBrand.equals(jsonObject.getString("brand"))) {
+                    position = i;
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(position!=-1) {
+            Intent intent = new Intent(getContext(), ProductActivity.class);
+            intent.putExtra("position", position);
+            context.startActivity(intent);
         }
     }
 

@@ -57,10 +57,6 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        name = getIntent().getStringExtra("name");
-        brand = getIntent().getStringExtra("brand");
-        setTitle(name + " - " + brand);
-
         fructoseRatingBar = findViewById(R.id.rating_bar_fructose);
         glucoseRatingBar = findViewById(R.id.rating_bar_glucose);
         histamineRatingBar = findViewById(R.id.rating_bar_histamine);
@@ -77,6 +73,9 @@ public class ProductActivity extends AppCompatActivity {
 
         try {
             JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
+            name = jsonObject.getString("name");
+            brand = jsonObject.getString("brand");
+
             fructoseTextView.setText(getResources().getString(R.string.fructose_text, jsonObject.getInt("fructoseRatingCount")));
             glucoseTextView.setText(getResources().getString(R.string.glucose_text, jsonObject.getInt("glucoseRatingCount")));
             histamineTextView.setText(getResources().getString(R.string.histamine_text, jsonObject.getInt("histamineRatingCount")));
@@ -86,6 +85,8 @@ public class ProductActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        setTitle(name + " - " + brand);
 
         fructoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
         glucoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());

@@ -89,6 +89,7 @@ public class AdditionActivity extends AppCompatActivity {
                         JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap));
                         JSONHandler.startUpload();
                         MainActivity.loadData();
+                        MainActivity.showProduct(AdditionActivity.this, productNameInput, productBrandInput);
                         finish();
                     }
                 } else {
