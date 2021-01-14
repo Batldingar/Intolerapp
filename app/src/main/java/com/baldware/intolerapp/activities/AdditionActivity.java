@@ -150,9 +150,9 @@ public class AdditionActivity extends AppCompatActivity {
 
         if(resultCode != RESULT_CANCELED) {
             switch (requestCode) {
-                case 0: // take photo
+                case 0: // take picture
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        Bitmap selectedImage = Bitmap.createScaledBitmap((Bitmap) data.getExtras().get("data"), 500, 500, false);
                         bitmap = selectedImage;
                         imageView.setImageBitmap(selectedImage);
                     }

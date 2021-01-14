@@ -1,5 +1,6 @@
 package com.baldware.intolerapp.activities;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONArray;
@@ -119,6 +121,7 @@ public class ProductActivity extends AppCompatActivity {
 
         // Fill the imageView
         ImageView imageView = findViewById(R.id.product_image_view);
+        imageView.setOnClickListener(new onImageClickListener());
 
         JSONHandler.startImageDownload(name, brand);
 
@@ -215,6 +218,15 @@ public class ProductActivity extends AppCompatActivity {
                         break;
                 }
             }
+        }
+    }
+
+    private class onImageClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(ProductActivity.this, PictureActivity.class);
+            intent.putExtra("title", getTitle());
+            startActivity(intent);
         }
     }
 
