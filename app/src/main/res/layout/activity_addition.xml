@@ -28,13 +28,14 @@
         android:importantForAutofill="no" />
 
     <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"
         android:id="@+id/addition_image_view"
-        android:layout_width="match_parent"
         android:layout_below="@id/productBrand"
-        android:scaleType="fitStart"
-        android:src="@drawable/ic_baseline_portrait_24"
-        android:layout_height="80dp">
-    </ImageView>
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_portrait_24" />
 
     <!-- The button that triggers the data upload -->
     <Button
