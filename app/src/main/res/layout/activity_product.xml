@@ -15,24 +15,24 @@
         android:scaleType="fitXY" />
 
     <RelativeLayout
-        android:layout_width="140dp"
+        android:layout_width="160dp"
         android:layout_height="120dp"
-        android:layout_alignParentLeft="true">
+        android:layout_toLeftOf="@+id/product_image_view">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:text="Non digestible"/>
+            android:text="Non digestible"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="140dp"
+        android:layout_width="160dp"
         android:layout_height="120dp"
-        android:layout_alignParentRight="true">
+        android:layout_toRightOf="@+id/product_image_view">>
 
         <TextView
             android:layout_width="wrap_content"
