@@ -123,12 +123,15 @@ public class AdditionActivity extends AppCompatActivity {
                         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                             takePicture();
                         } else {
-                            ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+                            ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.CAMERA}, 0);
                         }
                         break;
                     case 1: // choose from gallery
-                        Intent choosePicture = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(choosePicture , 1);
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                            selectPicture();
+                        } else {
+                            ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                        }
                         break;
                     case 2: // cancel
                         dialog.dismiss();
@@ -143,6 +146,11 @@ public class AdditionActivity extends AppCompatActivity {
         startActivityForResult(takePicture, 0);
     }
 
+    private void selectPicture() {
+        Intent choosePicture = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(choosePicture , 1);
+    }
+
     // After calling startActivityForResults in takePicture()
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -152,9 +160,9 @@ public class AdditionActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 0: // take picture
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = Bitmap.createScaledBitmap((Bitmap) data.getExtras().get("data"), 500, 500, false);
-                        bitmap = selectedImage;
-                        imageView.setImageBitmap(selectedImage);
+                        Bitmap scaledImage = Bitmap.createScaledBitmap((Bitmap) data.getExtras().get("data"), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
+                        bitmap = scaledImage;
+                        imageView.setImageBitmap(scaledImage);
                     }
                     break;
                 case 1: // choose from gallery
@@ -167,7 +175,9 @@ public class AdditionActivity extends AppCompatActivity {
                                 cursor.moveToFirst();
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                Bitmap scaledImage = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(picturePath), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
+                                bitmap = scaledImage;
+                                imageView.setImageBitmap(scaledImage);
                                 cursor.close();
                             }
                         }
@@ -183,11 +193,19 @@ public class AdditionActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
-            case 1: {
+            case 0: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     takePicture();
                 } else {
                     Toast.makeText(AdditionActivity.this, "Camera permissions denied: Unable to take a picture.", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    selectPicture();
+                } else {
+                    Toast.makeText(AdditionActivity.this, "Gallery permissions denied: Unable to select a picture.", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
