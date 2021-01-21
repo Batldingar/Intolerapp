@@ -149,7 +149,6 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void setColor(RatingBar ratingBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if(ratingBar.getRating()<=1.0) {
                 ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsRed)));
             } else if(ratingBar.getRating()<=2.0) {
@@ -161,7 +160,6 @@ public class ProductActivity extends AppCompatActivity {
             } else {
                 ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsGreen)));
             }
-        }
     }
 
     private class onRatingBarChangeListener implements RatingBar.OnRatingBarChangeListener {

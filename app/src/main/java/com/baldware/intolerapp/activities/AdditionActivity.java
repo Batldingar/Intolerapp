@@ -7,9 +7,13 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.util.Output;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +38,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class AdditionActivity extends AppCompatActivity {
 
@@ -161,6 +172,7 @@ public class AdditionActivity extends AppCompatActivity {
                 case 0: // take picture
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap scaledImage = Bitmap.createScaledBitmap((Bitmap) data.getExtras().get("data"), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
+
                         bitmap = scaledImage;
                         imageView.setImageBitmap(scaledImage);
                     }
@@ -175,14 +187,85 @@ public class AdditionActivity extends AppCompatActivity {
                                 cursor.moveToFirst();
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                Bitmap scaledImage = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(picturePath), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
+                                cursor.close();
+
+                                ParcelFileDescriptor parcelFileDescriptor = null;
+                                try {
+                                    parcelFileDescriptor = getApplicationContext().getContentResolver().openFileDescriptor(selectedImage, "r", null);
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(parcelFileDescriptor.getStatSize() > Constants.MAX_PICTURE_SIZE) {
+                                    Toast.makeText(AdditionActivity.this, "File can't be bigger than 12MB", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+
+                                File cacheDir = getApplicationContext().getCacheDir(); // cacheDir stores application specific files temporarily (android may delete them to recover space)
+                                File file = null;
+                                try {
+                                     file = File.createTempFile("picture", ".tmp", cacheDir);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                // Read from the photo in the gallery
+                                InputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+
+                                // Write in our custom file (so we don't have to work with the real one)
+                                OutputStream outputStream = null;
+                                try {
+                                     outputStream = new FileOutputStream(file);
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+
+                                // Write date from the OutputStream into the reading InputStream
+                                try {
+                                    copyContent(inputStream, outputStream);
+                                    // file should now hold a copy of the selected gallery picture
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                try {
+                                    if(inputStream!=null) {
+                                        inputStream.close();
+                                    }
+                                    if(outputStream!=null) {
+                                        outputStream.close();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Bitmap scaledImage = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(file.getPath()), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
                                 bitmap = scaledImage;
                                 imageView.setImageBitmap(scaledImage);
                                 cursor.close();
+                                file.delete();
                             }
                         }
                     }
                     break;
+            }
+        }
+    }
+
+    private void copyContent(InputStream dst, OutputStream src) throws Exception
+    {
+        try {
+            int n;
+            while ((n = dst.read()) != -1) {
+                src.write(n);
+            }
+        }
+        finally {
+            if (dst != null) {
+                dst.close();
+            }
+            if (src != null) {
+                src.close();
             }
         }
     }

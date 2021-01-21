@@ -68,7 +68,6 @@ public class StarListViewAdapter extends ArrayAdapter<String> {
     }
 
     private void setColor(RatingBar ratingBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if(ratingBar.getRating()<=1.0) {
                 ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.starsRed)));
             } else if(ratingBar.getRating()<=2.0) {
@@ -80,6 +79,5 @@ public class StarListViewAdapter extends ArrayAdapter<String> {
             } else {
                 ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.starsGreen)));
             }
-        }
     }
 }
