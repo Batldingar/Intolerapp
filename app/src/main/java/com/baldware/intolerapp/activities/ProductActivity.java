@@ -169,7 +169,7 @@ public class ProductActivity extends AppCompatActivity {
 
             if(fromUser) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsBlue)));
+                    ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
                 }
 
                 // Add the button
