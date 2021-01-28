@@ -65,6 +65,7 @@ public class AdditionActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
+        //Hallo
 
         imageView = findViewById(R.id.addition_image_view);
         imageView.setOnClickListener(new onImageClickListener());
