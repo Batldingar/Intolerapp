@@ -37,6 +37,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -208,30 +211,30 @@ public class AdditionActivity extends AppCompatActivity {
                                 }
 
                                 // Read from the photo in the gallery
-                                InputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+                                BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(parcelFileDescriptor.getFileDescriptor()));
 
                                 // Write in our custom file (so we don't have to work with the real one)
-                                OutputStream outputStream = null;
+                                BufferedOutputStream bufferedOutputStream = null;
                                 try {
-                                     outputStream = new FileOutputStream(file);
+                                    bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 }
 
                                 // Write date from the OutputStream into the reading InputStream
                                 try {
-                                    copyContent(inputStream, outputStream);
+                                    copyContent(bufferedInputStream, bufferedOutputStream);
                                     // file should now hold a copy of the selected gallery picture
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                                 try {
-                                    if(inputStream!=null) {
-                                        inputStream.close();
+                                    if(bufferedInputStream!=null) {
+                                        bufferedInputStream.close();
                                     }
-                                    if(outputStream!=null) {
-                                        outputStream.close();
+                                    if(bufferedOutputStream!=null) {
+                                        bufferedOutputStream.close();
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -249,7 +252,7 @@ public class AdditionActivity extends AppCompatActivity {
         }
     }
 
-    private void copyContent(InputStream dst, OutputStream src) throws Exception
+    private void copyContent(BufferedInputStream dst, BufferedOutputStream src) throws Exception
     {
         try {
             double start = System.nanoTime();
