@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.icu.util.Output;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -241,8 +243,10 @@ public class AdditionActivity extends AppCompatActivity {
                                 }
 
                                 Bitmap scaledImage = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(file.getPath()), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
-                                bitmap = scaledImage;
-                                imageView.setImageBitmap(scaledImage);
+
+                                bitmap = fixOrientation(scaledImage, file.getAbsolutePath()); // returns scaledImage if nothing has changed
+                                imageView.setImageBitmap(bitmap);
+
                                 file.delete();
                             }
                         }
@@ -255,8 +259,6 @@ public class AdditionActivity extends AppCompatActivity {
     private void copyContent(BufferedInputStream dst, BufferedOutputStream src) throws Exception
     {
         try {
-            double start = System.nanoTime();
-
             WriteRunnable writeRunnable = new WriteRunnable(src);
             Thread thread1 = new Thread(writeRunnable);
             thread1.start();
@@ -274,9 +276,6 @@ public class AdditionActivity extends AppCompatActivity {
                     }
                 }
             }
-
-            double end = System.nanoTime();
-            Log.d("Addition", "Time: " + (end - start)/1000000);
 
             writeRunnable.stop();
         }
@@ -352,6 +351,49 @@ public class AdditionActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    public static Bitmap fixOrientation(Bitmap bitmap, String image_absolute_path){
+        ExifInterface ei = null;
+        try {
+            ei = new ExifInterface(image_absolute_path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotate(bitmap, 90);
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotate(bitmap, 180);
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotate(bitmap, 270);
+
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                return flip(bitmap, true, false);
+
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                return flip(bitmap, false, true);
+
+            default:
+                return bitmap;
+        }
+    }
+
+    public static Bitmap rotate(Bitmap bitmap, float degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    public static Bitmap flip(Bitmap bitmap, boolean horizontal, boolean vertical) {
+        Matrix matrix = new Matrix();
+        matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     public static String getProductName() {
