@@ -185,8 +185,6 @@ public class AdditionActivity extends AppCompatActivity {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
                                 cursor.close();
 
                                 ParcelFileDescriptor parcelFileDescriptor = null;
@@ -242,7 +240,6 @@ public class AdditionActivity extends AppCompatActivity {
                                 Bitmap scaledImage = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(file.getPath()), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
                                 bitmap = scaledImage;
                                 imageView.setImageBitmap(scaledImage);
-                                cursor.close();
                                 file.delete();
                             }
                         }
@@ -255,10 +252,30 @@ public class AdditionActivity extends AppCompatActivity {
     private void copyContent(InputStream dst, OutputStream src) throws Exception
     {
         try {
+            double start = System.nanoTime();
+
+            WriteRunnable writeRunnable = new WriteRunnable(src);
+            Thread thread1 = new Thread(writeRunnable);
+            thread1.start();
+
             int n;
+            boolean didProcess;
+
             while ((n = dst.read()) != -1) {
-                src.write(n);
+                didProcess = false;
+
+                while(!didProcess) {
+                    if (!writeRunnable.hasNewByte) {
+                        writeRunnable.setNextByte(n);
+                        didProcess = true;
+                    }
+                }
             }
+
+            double end = System.nanoTime();
+            Log.d("Addition", "Time: " + (end - start)/1000000);
+
+            writeRunnable.stop();
         }
         finally {
             if (dst != null) {
@@ -266,6 +283,45 @@ public class AdditionActivity extends AppCompatActivity {
             }
             if (src != null) {
                 src.close();
+            }
+        }
+    }
+
+    private class WriteRunnable implements Runnable {
+
+        private OutputStream src;
+        private int nextByte;
+        private boolean hasNewByte;
+        private boolean isRunning;
+
+        public WriteRunnable(OutputStream src) {
+            this.src = src;
+
+            hasNewByte = false;
+            isRunning = true;
+        }
+
+        public void setNextByte(int nextByte) {
+            this.nextByte = nextByte;
+
+            hasNewByte = true;
+        }
+
+        public void stop() {
+            this.isRunning = false;
+        }
+
+        @Override
+        public void run() {
+            while(isRunning) {
+                if(hasNewByte) {
+                    try {
+                        src.write(nextByte);
+                        hasNewByte = false;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

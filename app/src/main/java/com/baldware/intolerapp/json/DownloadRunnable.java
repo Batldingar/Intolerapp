@@ -1,5 +1,6 @@
 package com.baldware.intolerapp.json;
 
+import com.baldware.intolerapp.activities.MainActivity;
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.json.JSONHandler;
 
