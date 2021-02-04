@@ -65,7 +65,6 @@ public class AdditionActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
-        //Hallo
 
         imageView = findViewById(R.id.addition_image_view);
         imageView.setOnClickListener(new onImageClickListener());
@@ -105,8 +104,7 @@ public class AdditionActivity extends AppCompatActivity {
                     } else {
                         JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap));
                         JSONHandler.startUpload();
-                        MainActivity.loadData();
-                        MainActivity.showProduct(AdditionActivity.this, productNameInput, productBrandInput);
+                        MainActivity.loadData(productNameInput, productBrandInput);
                         finish();
                     }
                 } else {

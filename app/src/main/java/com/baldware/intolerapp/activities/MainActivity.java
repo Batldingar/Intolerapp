@@ -111,19 +111,13 @@ public class MainActivity extends AppCompatActivity{
     // Downloads the product data and calls loadJSONIntoListView
     public static void loadData() {
         Toast.makeText(MainActivity.getContext(), "Updating products...", Toast.LENGTH_SHORT).show();
-
         JSONHandler.startDownload();
+    }
 
-        try {
-            if(JSONHandler.getJson() != null) {
-                loadJSONIntoListView();
-                Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    // Downloads the product data and calls loadJSONIntoListView, then shows the product
+    public static void loadData(String productName, String productBrand) {
+        Toast.makeText(MainActivity.getContext(), "Updating products...", Toast.LENGTH_SHORT).show();
+        JSONHandler.startDownload(productName, productBrand);
     }
 
     // Gets the json data from the JSONHandler and loads it into the listView
@@ -284,7 +278,7 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 0);
         }
     }
 
@@ -410,8 +404,8 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    // Gets the json data from the JSONHandler and loads it into the listView
-    public static void showProduct(Context context, String productName, String productBrand){
+    // Uses name and brand to find product in json and opens it in a product activity
+    public static void showProduct(String productName, String productBrand){
         JSONArray jsonArray = null;
         int position = -1;
 
@@ -429,8 +423,9 @@ public class MainActivity extends AppCompatActivity{
         }
 
         if(position!=-1) {
-            Intent intent = new Intent(getContext(), ProductActivity.class);
+            Intent intent = new Intent(context, ProductActivity.class);
             intent.putExtra("position", position);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necessary because showProduct is being called from the downloadRunnable (= outside of an activity)
             context.startActivity(intent);
         }
     }

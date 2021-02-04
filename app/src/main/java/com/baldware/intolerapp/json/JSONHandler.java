@@ -1,5 +1,7 @@
 package com.baldware.intolerapp.json;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.MainActivity;
@@ -15,8 +17,11 @@ public class JSONHandler {
     public static void startDownload() {
         Thread downloadThread = new Thread(new DownloadRunnable());
         downloadThread.start();
+    }
 
-        while(downloadThread.isAlive()) {} // wait for thread to finish
+    public static void startDownload(String productName, String productBrand) {
+        Thread downloadThread = new Thread(new DownloadRunnable(productName, productBrand));
+        downloadThread.start();
     }
 
     public static void startUpload() {
