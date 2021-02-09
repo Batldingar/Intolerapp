@@ -1,10 +1,19 @@
 package com.baldware.intolerapp.json;
 
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.AdditionActivity;
+import com.baldware.intolerapp.activities.MainActivity;
+import com.baldware.intolerapp.activities.PictureActivity;
+import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -69,7 +78,17 @@ public class ImageDownloadRunnable implements Runnable {
                 stringBuilder.append(json).append("\n");
             }
 
-            JSONHandler.setImage(stringBuilder.toString());
+            // ----- Download is finished -----
+
+            Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
+            handler.post(new Runnable() { // post on UIThread
+                @Override
+                public void run() {
+                    //Asynchronously sets the imageView in a product activity and picture activity
+                    Bitmap image = BitmapHandler.createShowable(stringBuilder.toString());
+                    ProductActivity.setImageViewBitmap(image);
+                }
+            });
 
             bufferedReader.close();
             connection.disconnect();

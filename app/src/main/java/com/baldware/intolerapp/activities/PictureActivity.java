@@ -1,6 +1,8 @@
 package com.baldware.intolerapp.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +16,7 @@ import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.json.JSONHandler;
 
 public class PictureActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +29,6 @@ public class PictureActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.picture_image_view);
 
-        if(JSONHandler.getImage() != null) {
-            imageView.setImageBitmap(BitmapHandler.createShowable(JSONHandler.getImage()));
-        }
+        // TODO: Fix this
     }
 }

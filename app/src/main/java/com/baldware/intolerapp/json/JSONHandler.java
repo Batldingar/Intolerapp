@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.MainActivity;
+import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.customTools.BitmapHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +14,6 @@ import org.json.JSONException;
 public class JSONHandler {
 
     private static String json;
-    private static String image;
 
     public static void startDownload() {
         Thread downloadThread = new Thread(new DownloadRunnable());
@@ -61,8 +62,6 @@ public class JSONHandler {
     public static void startImageDownload(String productName, String productBrand) {
         Thread imageDownloadThread = new Thread(new ImageDownloadRunnable(productName, productBrand));
         imageDownloadThread.start();
-
-        while(imageDownloadThread.isAlive()) {} // wait for thread to finish
     }
 
     public static String getJson() {
@@ -71,14 +70,6 @@ public class JSONHandler {
 
     public static void setJson(String json) {
         JSONHandler.json = json;
-    }
-
-    public static String getImage() {
-        return image;
-    }
-
-    public static void setImage(String image) {
-        JSONHandler.image = image;
     }
 
     public static JSONArray getJsonArray() {

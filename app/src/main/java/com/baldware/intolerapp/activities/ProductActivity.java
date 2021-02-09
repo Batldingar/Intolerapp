@@ -2,6 +2,7 @@ package com.baldware.intolerapp.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +52,8 @@ public class ProductActivity extends AppCompatActivity {
     private static float lactoseRating;
     private static float sucroseRating;
     private static float sorbitolRating;
+
+    private static ImageView imageView;
 
     private boolean buttonInitialized;
 
@@ -120,13 +123,13 @@ public class ProductActivity extends AppCompatActivity {
         buttonInitialized = false;
 
         // Fill the imageView
-        ImageView imageView = findViewById(R.id.product_image_view);
+        imageView = findViewById(R.id.product_image_view);
         imageView.setOnClickListener(new onImageClickListener());
 
         JSONHandler.startImageDownload(name, brand);
 
-        if(JSONHandler.getImage() != null) {
-            imageView.setImageBitmap(BitmapHandler.createShowable(JSONHandler.getImage()));
+        if(imageView.getDrawable() == null) {
+            imageView.setImageResource(R.drawable.ic_baseline_more_horiz_24);
         }
     }
 
@@ -267,5 +270,9 @@ public class ProductActivity extends AppCompatActivity {
 
     public static float getSorbitolRating() {
         return sorbitolRating;
+    }
+
+    public static void setImageViewBitmap(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
     }
 }
