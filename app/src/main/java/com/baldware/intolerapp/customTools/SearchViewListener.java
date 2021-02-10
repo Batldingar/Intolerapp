@@ -21,6 +21,7 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
 
     public SearchViewListener(Context context, ListView listView) {
         this.context = context;
+        this.listView = listView;
     }
 
     @Override
