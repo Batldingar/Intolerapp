@@ -1,6 +1,7 @@
 package com.baldware.intolerapp.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,8 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
                         RadioButton radioButton = findViewById(group.getCheckedRadioButtonId());
                         saveSelection(radioButton.getText().toString());
 
-                        MainActivity.loadData();
                         Toast.makeText(getApplicationContext(), R.string.settings_applied_text, Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 });

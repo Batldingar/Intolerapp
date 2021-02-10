@@ -1,5 +1,6 @@
 package com.baldware.intolerapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -53,7 +54,7 @@ public class ProductActivity extends AppCompatActivity {
     private static float sucroseRating;
     private static float sorbitolRating;
 
-    private static ImageView imageView;
+    private ImageView imageView;
 
     private boolean buttonInitialized;
 
@@ -126,7 +127,7 @@ public class ProductActivity extends AppCompatActivity {
         imageView = findViewById(R.id.product_image_view);
         imageView.setOnClickListener(new onImageClickListener());
 
-        JSONHandler.startImageDownload(name, brand);
+        JSONHandler.startImageDownload(this, name, brand);
 
         if(imageView.getDrawable() == null) {
             imageView.setImageResource(R.drawable.ic_baseline_more_horiz_24);
@@ -226,7 +227,7 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(ProductActivity.this, PictureActivity.class);
-            intent.putExtra("title", getTitle());
+            intent.putExtra("title", getTitle()); 
             startActivity(intent);
         }
     }
@@ -234,8 +235,10 @@ public class ProductActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            JSONHandler.startRating();
-            MainActivity.loadData();
+            JSONHandler.startRating(getApplicationContext());
+
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
             finish();
         }
     }
@@ -272,7 +275,7 @@ public class ProductActivity extends AppCompatActivity {
         return sorbitolRating;
     }
 
-    public static void setImageViewBitmap(Bitmap bitmap) {
+    public void setImageViewBitmap(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
     }
 }

@@ -1,5 +1,7 @@
 package com.baldware.intolerapp.customTools;
 
+import android.content.Context;
+import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.baldware.intolerapp.activities.MainActivity;
@@ -13,7 +15,13 @@ import java.util.ArrayList;
 
 public class SearchViewListener implements SearchView.OnQueryTextListener {
 
+    private Context context;
+    private ListView listView;
     private static ArrayList<String[]> searchResult;
+
+    public SearchViewListener(Context context, ListView listView) {
+        this.context = context;
+    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -25,14 +33,14 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
         if(!newText.equals("")) {
             try {
                 search(newText);
-                MainActivity.loadSearchIntoListView();
+                MainActivity.loadSearchIntoListView(context, listView);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else if(JSONHandler.getJson() != null) {
             try {
                 searchResult = null;
-                MainActivity.loadJSONIntoListView();
+                MainActivity.loadJSONIntoListView(context, listView);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

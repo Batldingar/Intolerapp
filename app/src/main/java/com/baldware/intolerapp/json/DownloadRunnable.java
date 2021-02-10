@@ -1,7 +1,10 @@
 package com.baldware.intolerapp.json;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.style.AlignmentSpan;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.MainActivity;
@@ -17,14 +20,19 @@ import java.net.URL;
 
 public class DownloadRunnable implements Runnable {
 
+    private Context context;
+    private ListView listView;
     private String productName;
     private String productBrand;
 
-    public DownloadRunnable() {
-
+    public DownloadRunnable(Context context, ListView listView) {
+        this.context = context;
+        this.listView = listView;
     }
 
-    public DownloadRunnable(String productName, String productBrand) {
+    public DownloadRunnable(Context context, ListView listView, String productName, String productBrand) {
+        this.context = context;
+        this.listView = listView;
         this.productName = productName;
         this.productBrand = productBrand;
     }
@@ -54,14 +62,15 @@ public class DownloadRunnable implements Runnable {
 
         Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
         handler.post(new Runnable() { // post on UIThread
+
             @Override
             public void run() {
                 try {
                     if(JSONHandler.getJson() != null) {
-                        MainActivity.loadJSONIntoListView();
-                        Toast.makeText(MainActivity.getContext(), "Done!", Toast.LENGTH_SHORT).show();
+                        MainActivity.loadJSONIntoListView(context, listView);
+                        Toast.makeText(context, "Done!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.getContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -73,7 +82,7 @@ public class DownloadRunnable implements Runnable {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.showProduct(productName, productBrand);
+                    MainActivity.showProduct(context, productName, productBrand);
                 }
             });
         }

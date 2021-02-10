@@ -26,10 +26,12 @@ import java.net.URL;
 
 public class ImageDownloadRunnable implements Runnable {
 
+    private ProductActivity productActivity;
     private String productName;
     private String productBrand;
 
-    public ImageDownloadRunnable(String productName, String productBrand) {
+    public ImageDownloadRunnable(ProductActivity productActivity, String productName, String productBrand) {
+        this.productActivity = productActivity;
         this.productName = productName;
         this.productBrand = productBrand;
     }
@@ -86,7 +88,7 @@ public class ImageDownloadRunnable implements Runnable {
                 public void run() {
                     //Asynchronously sets the imageView in a product activity and picture activity
                     Bitmap image = BitmapHandler.createShowable(stringBuilder.toString());
-                    ProductActivity.setImageViewBitmap(image);
+                    productActivity.setImageViewBitmap(image);
                 }
             });
 

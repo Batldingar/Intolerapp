@@ -1,7 +1,9 @@
 package com.baldware.intolerapp.json;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.MainActivity;
@@ -15,41 +17,41 @@ public class JSONHandler {
 
     private static String json;
 
-    public static void startDownload() {
-        Thread downloadThread = new Thread(new DownloadRunnable());
+    public static void startDownload(Context context, ListView listView) {
+        Thread downloadThread = new Thread(new DownloadRunnable(context, listView));
         downloadThread.start();
     }
 
-    public static void startDownload(String productName, String productBrand) {
-        Thread downloadThread = new Thread(new DownloadRunnable(productName, productBrand));
+    public static void startDownload(Context context, ListView listView, String productName, String productBrand) {
+        Thread downloadThread = new Thread(new DownloadRunnable(context, listView, productName, productBrand));
         downloadThread.start();
     }
 
-    public static void startUpload() {
+    public static void startUpload(Context context) {
         Thread uploadThread = new Thread(new UploadRunnable());
         uploadThread.start();
 
         while(uploadThread.isAlive()) {} // wait for thread to finish
 
-        Toast.makeText(MainActivity.getContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Addition successful!", Toast.LENGTH_SHORT).show();
     }
 
-    public static void startRating() {
+    public static void startRating(Context context) {
         Thread ratingThread = new Thread(new RatingRunnable());
         ratingThread.start();
 
         while(ratingThread.isAlive()) {} // wait for thread to finish
 
-        Toast.makeText(MainActivity.getContext(), "Rating successful!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Rating successful!", Toast.LENGTH_SHORT).show();
     }
 
-    public static void startReport(String reportProduct) {
+    public static void startReport(Context context, String reportProduct) {
         Thread reportThread = new Thread(new ReportRunnable(reportProduct));
         reportThread.start();
 
         while(reportThread.isAlive()) {} // wait for thread to finish
 
-        Toast.makeText(MainActivity.getContext(), "Product has been reported!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Product has been reported!", Toast.LENGTH_SHORT).show();
     }
 
     public static void startImageUpload(String encodedImage) {
@@ -59,8 +61,8 @@ public class JSONHandler {
         while(imageUploadThread.isAlive()) {} // wait for thread to finish
     }
 
-    public static void startImageDownload(String productName, String productBrand) {
-        Thread imageDownloadThread = new Thread(new ImageDownloadRunnable(productName, productBrand));
+    public static void startImageDownload(ProductActivity productActivity, String productName, String productBrand) {
+        Thread imageDownloadThread = new Thread(new ImageDownloadRunnable(productActivity, productName, productBrand));
         imageDownloadThread.start();
     }
 

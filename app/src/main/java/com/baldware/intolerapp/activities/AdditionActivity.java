@@ -103,8 +103,16 @@ public class AdditionActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                     } else {
                         JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap));
-                        JSONHandler.startUpload();
-                        MainActivity.loadData(productNameInput, productBrandInput);
+                        JSONHandler.startUpload(getApplicationContext());
+
+                        Bundle data = new Bundle();
+                        data.putString("productName", productNameInput);
+                        data.putString("productBrand", productBrandInput);
+
+                        Intent intent = new Intent();
+                        intent.putExtras(data);
+                        setResult(RESULT_OK, intent);
+
                         finish();
                     }
                 } else {
