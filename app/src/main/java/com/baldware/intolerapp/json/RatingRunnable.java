@@ -13,6 +13,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class RatingRunnable implements Runnable {
+
+    private String name;
+    private String brand;
+
+    public RatingRunnable(String name, String brand) {
+        this.name = name;
+        this.brand = brand;
+    }
+
             @Override
             public void run() {
                 OutputStream outputStream = null;
@@ -29,8 +38,8 @@ public class RatingRunnable implements Runnable {
                     jsonObject.put("lactose", ProductActivity.getLactoseRating());
                     jsonObject.put("sucrose", ProductActivity.getSucroseRating());
                     jsonObject.put("sorbitol", ProductActivity.getSorbitolRating());
-                    jsonObject.put("name", ProductActivity.getName());
-                    jsonObject.put("brand", ProductActivity.getBrand());
+                    jsonObject.put("name", name);
+                    jsonObject.put("brand", brand);
 
                     String message = jsonObject.toString();
 

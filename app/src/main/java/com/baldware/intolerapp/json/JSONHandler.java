@@ -36,8 +36,8 @@ public class JSONHandler {
         Toast.makeText(context, "Addition successful!", Toast.LENGTH_SHORT).show();
     }
 
-    public static void startRating(Context context) {
-        Thread ratingThread = new Thread(new RatingRunnable());
+    public static void startRating(Context context, String name, String brand) {
+        Thread ratingThread = new Thread(new RatingRunnable(name, brand));
         ratingThread.start();
 
         while(ratingThread.isAlive()) {} // wait for thread to finish

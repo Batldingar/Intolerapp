@@ -48,13 +48,6 @@
             </intent-filter>
         </activity>
 
-        <!-- PictureActivity -->
-        <activity android:name=".activities.PictureActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.PICTURE" />
-            </intent-filter>
-        </activity>
-
     </application>
 
 </manifest>
