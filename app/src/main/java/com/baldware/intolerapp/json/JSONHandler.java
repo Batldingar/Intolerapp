@@ -46,12 +46,8 @@ public class JSONHandler {
     }
 
     public static void startReport(Context context, String reportProduct) {
-        Thread reportThread = new Thread(new ReportRunnable(reportProduct));
+        Thread reportThread = new Thread(new ReportRunnable(context, reportProduct));
         reportThread.start();
-
-        while(reportThread.isAlive()) {} // wait for thread to finish
-
-        Toast.makeText(context, "Product has been reported!", Toast.LENGTH_SHORT).show();
     }
 
     public static void startImageUpload(String encodedImage) {
