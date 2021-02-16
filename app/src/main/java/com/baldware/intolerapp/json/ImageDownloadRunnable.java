@@ -2,6 +2,7 @@ package com.baldware.intolerapp.json;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.ProductActivity;
 import com.baldware.intolerapp.customTools.BitmapHandler;
@@ -32,8 +33,11 @@ public class ImageDownloadRunnable implements Runnable {
     @Override
     public void run() {
         OutputStream outputStream = null;
-        HttpURLConnection connection;
+        BufferedReader bufferedReader = null;
+        HttpURLConnection connection = null;
+        Boolean scriptSuccess = false;
 
+        while(!scriptSuccess) {
         try{
             URL url = new URL(Constants.IMAGE_DOWNLOAD_URL);
 
@@ -65,12 +69,16 @@ public class ImageDownloadRunnable implements Runnable {
 
             // Read the incoming json (from Server)
             StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String json;
+            bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String imageSourceLine;
 
             // Not really necessary since there is only one image = only one line
-            while ((json = bufferedReader.readLine()) != null) {
-                stringBuilder.append(json).append("\n");
+            while ((imageSourceLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(imageSourceLine).append("\n");
+            }
+
+            if(!stringBuilder.toString().equals("")) {
+                scriptSuccess = true;
             }
 
             // ----- Download is finished -----
@@ -80,22 +88,28 @@ public class ImageDownloadRunnable implements Runnable {
                 @Override
                 public void run() {
                     //Asynchronously sets the imageView in a product activity and picture activity
-                    productActivity.setProductImage(BitmapHandler.createShowable(stringBuilder.toString()));
+                    if(!stringBuilder.toString().equals("")) {
+                        productActivity.setProductImage(BitmapHandler.createShowable(stringBuilder.toString()));
+                    }
                 }
             });
-
-            bufferedReader.close();
-            connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
             try {
-                if(outputStream!=null) {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                if (outputStream != null) {
                     outputStream.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
         }
     }
 }

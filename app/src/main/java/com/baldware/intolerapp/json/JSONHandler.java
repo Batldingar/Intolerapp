@@ -17,11 +17,13 @@ public class JSONHandler {
 
     private static String json;
 
+    // TODO: DONE
     public static void startDownload(Context context, ListView listView) {
         Thread downloadThread = new Thread(new DownloadRunnable(context, listView));
         downloadThread.start();
     }
 
+    // TODO: DONE
     public static void startDownload(Context context, ListView listView, String productName, String productBrand) {
         Thread downloadThread = new Thread(new DownloadRunnable(context, listView, productName, productBrand));
         downloadThread.start();
@@ -45,6 +47,7 @@ public class JSONHandler {
         Toast.makeText(context, "Rating successful!", Toast.LENGTH_SHORT).show();
     }
 
+    // TODO: DONE
     public static void startReport(Context context, String reportProduct) {
         Thread reportThread = new Thread(new ReportRunnable(context, reportProduct));
         reportThread.start();
@@ -57,6 +60,7 @@ public class JSONHandler {
         while(imageUploadThread.isAlive()) {} // wait for thread to finish
     }
 
+    // TODO: DONE
     public static void startImageDownload(ProductActivity productActivity, String productName, String productBrand) {
         Thread imageDownloadThread = new Thread(new ImageDownloadRunnable(productActivity, productName, productBrand));
         imageDownloadThread.start();

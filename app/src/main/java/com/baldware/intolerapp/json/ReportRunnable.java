@@ -74,6 +74,26 @@ public class ReportRunnable implements Runnable {
                     scriptSuccess = true;
                 }
             }
+
+            // ----- Download is finished -----
+
+            Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
+
+            if(scriptSuccess) {
+                handler.post(new Runnable() { // post on UIThread
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "Product has been reported!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                handler.post(new Runnable() { // post on UIThread
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "Currently unable to report the product!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -90,26 +110,6 @@ public class ReportRunnable implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        // ----- Download is finished -----
-
-        Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
-
-        if(scriptSuccess) {
-            handler.post(new Runnable() { // post on UIThread
-                @Override
-                public void run() {
-                    Toast.makeText(context, "Product has been reported!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            handler.post(new Runnable() { // post on UIThread
-                @Override
-                public void run() {
-                    Toast.makeText(context, "Currently unable to report the product!", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 }

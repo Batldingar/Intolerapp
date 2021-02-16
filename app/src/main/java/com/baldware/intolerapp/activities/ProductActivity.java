@@ -144,7 +144,6 @@ public class ProductActivity extends AppCompatActivity {
         imageView = findViewById(R.id.product_image_view);
         imageView.setOnClickListener(new onImageClickListener(this));
 
-
         if(image==null) {
             JSONHandler.startImageDownload(this, name, brand);
 
