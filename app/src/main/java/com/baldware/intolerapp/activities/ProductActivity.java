@@ -1,29 +1,38 @@
 package com.baldware.intolerapp.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.json.JSONHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ProductActivity extends AppCompatActivity {
 
-    private static String name;
-    private static String brand;
+    private String name;
+    private String brand;
 
     private RatingBar fructoseRatingBar;
     private RatingBar glucoseRatingBar;
@@ -46,6 +55,11 @@ public class ProductActivity extends AppCompatActivity {
     private static float sucroseRating;
     private static float sorbitolRating;
 
+    private ImageView imageView;
+    private Bitmap image;
+
+    OnBackPressedCallback callback;
+
     private boolean buttonInitialized;
 
     @Override
@@ -53,10 +67,19 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        name = getIntent().getStringExtra("name");
-        brand = getIntent().getStringExtra("brand");
-        setTitle(name + " - " + brand);
+        // Callback for when the back button is pressed when the picture layout is opened
+        callback = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                reinitialize();
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
 
+        initialize();
+    }
+
+    private void initialize() {
         fructoseRatingBar = findViewById(R.id.rating_bar_fructose);
         glucoseRatingBar = findViewById(R.id.rating_bar_glucose);
         histamineRatingBar = findViewById(R.id.rating_bar_histamine);
@@ -73,6 +96,9 @@ public class ProductActivity extends AppCompatActivity {
 
         try {
             JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
+            name = jsonObject.getString("name");
+            brand = jsonObject.getString("brand");
+
             fructoseTextView.setText(getResources().getString(R.string.fructose_text, jsonObject.getInt("fructoseRatingCount")));
             glucoseTextView.setText(getResources().getString(R.string.glucose_text, jsonObject.getInt("glucoseRatingCount")));
             histamineTextView.setText(getResources().getString(R.string.histamine_text, jsonObject.getInt("histamineRatingCount")));
@@ -82,6 +108,8 @@ public class ProductActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        setTitle(name + " - " + brand);
 
         fructoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
         glucoseRatingBar.setOnRatingBarChangeListener(new onRatingBarChangeListener());
@@ -111,6 +139,27 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         buttonInitialized = false;
+
+        // Fill the imageView
+        imageView = findViewById(R.id.product_image_view);
+        imageView.setOnClickListener(new onImageClickListener(this));
+
+
+        if(image==null) {
+            JSONHandler.startImageDownload(this, name, brand);
+
+            if (imageView.getDrawable() == null) {
+                imageView.setImageResource(R.drawable.ic_baseline_more_horiz_24);
+            }
+        } else {
+            imageView.setImageBitmap(image);
+        }
+    }
+
+    private void reinitialize() {
+        callback.setEnabled(false);
+        setContentView(R.layout.activity_product);
+        initialize();
     }
 
     private void loadIntoRatingBars() throws JSONException {
@@ -132,7 +181,6 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void setColor(RatingBar ratingBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if(ratingBar.getRating()<=1.0) {
                 ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsRed)));
             } else if(ratingBar.getRating()<=2.0) {
@@ -144,7 +192,6 @@ public class ProductActivity extends AppCompatActivity {
             } else {
                 ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsGreen)));
             }
-        }
     }
 
     private class onRatingBarChangeListener implements RatingBar.OnRatingBarChangeListener {
@@ -154,7 +201,7 @@ public class ProductActivity extends AppCompatActivity {
 
             if(fromUser) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsBlue)));
+                    ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
                 }
 
                 // Add the button
@@ -204,21 +251,42 @@ public class ProductActivity extends AppCompatActivity {
         }
     }
 
-    private class onClickListener implements View.OnClickListener{
+    private class onImageClickListener implements View.OnClickListener{
+
+        private ProductActivity productActivity;
+
+        public onImageClickListener(ProductActivity productActivity) {
+            this.productActivity = productActivity;
+        }
+
         @Override
         public void onClick(View v) {
-            JSONHandler.startRating(Constants.RATING_URL);
-            MainActivity.loadData();
-            finish();
+            if(image!=null) {
+                callback.setEnabled(true);
+                setContentView(R.layout.activity_picture);
+
+                ImageView imageView = findViewById(R.id.picture_image_view);
+                imageView.setImageBitmap(image);
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        reinitialize();
+                    }
+                });
+            }
         }
     }
 
-    public static String getName() {
-        return name;
-    }
+    private class onClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            JSONHandler.startRating(getApplicationContext(), name, brand);
 
-    public static String getBrand() {
-        return brand;
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     public static float getFructoseRating() {
@@ -243,5 +311,13 @@ public class ProductActivity extends AppCompatActivity {
 
     public static float getSorbitolRating() {
         return sorbitolRating;
+    }
+
+    public void setProductImage(Bitmap image) {
+        //Save the image locally
+        this.image = image;
+
+        //Fill the imageView
+        imageView.setImageBitmap(image);
     }
 }

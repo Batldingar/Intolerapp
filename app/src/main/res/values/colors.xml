@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5CFF90</color>
-    <color name="colorPrimaryDark">#51e07f</color>
-    <color name="colorAccent">#639987</color>
+    <color name="colorPrimary">#BC3ACE</color>
+    <color name="colorPrimaryDark">#9E2BBB</color>
+    <color name="colorAccent">#643283</color>
     <color name="starsRed">#ff0800</color>
     <color name="starsOrange">#ffab03</color>
     <color name="starsYellow">#fffb03</color>
     <color name="starsLime">#b3ff03</color>
     <color name="starsGreen">#00ff33</color>
     <color name="starsBlue">#03A9F4</color>
+    <color name="black">#000000</color>
 </resources>

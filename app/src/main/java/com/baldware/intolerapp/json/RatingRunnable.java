@@ -1,6 +1,7 @@
 package com.baldware.intolerapp.json;
 
 import com.baldware.intolerapp.activities.ProductActivity;
+import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONObject;
@@ -12,13 +13,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class RatingRunnable implements Runnable {
+
+    private String name;
+    private String brand;
+
+    public RatingRunnable(String name, String brand) {
+        this.name = name;
+        this.brand = brand;
+    }
+
             @Override
             public void run() {
                 OutputStream outputStream = null;
                 HttpURLConnection connection;
 
                 try {
-                    URL url = new URL(JSONHandler.getUploadServiceURL());
+                    URL url = new URL(Constants.RATING_URL);
 
                     JSONObject jsonObject = new JSONObject();
 
@@ -28,8 +38,8 @@ public class RatingRunnable implements Runnable {
                     jsonObject.put("lactose", ProductActivity.getLactoseRating());
                     jsonObject.put("sucrose", ProductActivity.getSucroseRating());
                     jsonObject.put("sorbitol", ProductActivity.getSorbitolRating());
-                    jsonObject.put("name", ProductActivity.getName());
-                    jsonObject.put("brand", ProductActivity.getBrand());
+                    jsonObject.put("name", name);
+                    jsonObject.put("brand", brand);
 
                     String message = jsonObject.toString();
 

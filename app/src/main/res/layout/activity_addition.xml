@@ -27,13 +27,23 @@
         android:layout_below="@id/productName"
         android:importantForAutofill="no" />
 
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"
+        android:id="@+id/addition_image_view"
+        android:layout_below="@id/productBrand"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_portrait_24" />
+
     <!-- The button that triggers the data upload -->
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/productBrand"
+        android:layout_below="@id/addition_image_view"
         android:text="@string/add_button_text" />
 
 </RelativeLayout>
