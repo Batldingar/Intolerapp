@@ -102,8 +102,8 @@ public class AdditionActivity extends AppCompatActivity {
                     if (productExists) {
                         Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                     } else {
-                        JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap));
-                        JSONHandler.startUpload(getApplicationContext());
+                        JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap), productNameInput, productBrandInput);
+                        JSONHandler.startUpload(getApplicationContext(), productNameInput, productBrandInput);
 
                         Bundle data = new Bundle();
                         data.putString("productName", productNameInput);
@@ -401,13 +401,5 @@ public class AdditionActivity extends AppCompatActivity {
         Matrix matrix = new Matrix();
         matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
-
-    public static String getProductName() {
-        return productNameInput;
-    }
-
-    public static String getProductBrand() {
-        return productBrandInput;
     }
 }

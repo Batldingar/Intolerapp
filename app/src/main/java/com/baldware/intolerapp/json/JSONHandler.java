@@ -17,27 +17,23 @@ public class JSONHandler {
 
     private static String json;
 
-    // TODO: DONE
     public static void startDownload(MainActivity mainActivity, ListView listView) {
         Thread downloadThread = new Thread(new DownloadRunnable(mainActivity, listView));
         downloadThread.start();
     }
 
-    // TODO: DONE
     public static void startDownload(MainActivity mainActivity, ListView listView, String productName, String productBrand) {
         Thread downloadThread = new Thread(new DownloadRunnable(mainActivity, listView, productName, productBrand));
         downloadThread.start();
     }
 
-    public static void startUpload(Context context) {
-        Thread uploadThread = new Thread(new UploadRunnable());
+    // TODO: Make fully asynchronous (should call open the product page itself)
+    public static void startUpload(Context context, String name, String brand) {
+        Thread uploadThread = new Thread(new UploadRunnable(context, name, brand));
         uploadThread.start();
-
-        while(uploadThread.isAlive()) {} // wait for thread to finish
-
-        Toast.makeText(context, "Addition successful!", Toast.LENGTH_SHORT).show();
     }
 
+    // TODO: Make fully asynchronous (should call reload json itself)
     public static void startRating(Context context, String name, String brand) {
         Thread ratingThread = new Thread(new RatingRunnable(name, brand));
         ratingThread.start();
@@ -47,22 +43,18 @@ public class JSONHandler {
         Toast.makeText(context, "Rating successful!", Toast.LENGTH_SHORT).show();
     }
 
-    // TODO: DONE
     public static void startReport(Context context, String reportProduct) {
         Thread reportThread = new Thread(new ReportRunnable(context, reportProduct));
         reportThread.start();
     }
 
-    public static void startImageUpload(String encodedImage) {
-        Thread imageUploadThread = new Thread(new ImageUploadRunnable(encodedImage));
+    public static void startImageUpload(String encodedImage, String name, String brand) {
+        Thread imageUploadThread = new Thread(new ImageUploadRunnable(encodedImage, name, brand));
         imageUploadThread.start();
-
-        while(imageUploadThread.isAlive()) {} // wait for thread to finish
     }
 
-    // TODO: DONE
-    public static void startImageDownload(ProductActivity productActivity, String productName, String productBrand) {
-        Thread imageDownloadThread = new Thread(new ImageDownloadRunnable(productActivity, productName, productBrand));
+    public static void startImageDownload(ProductActivity productActivity, String name, String brand) {
+        Thread imageDownloadThread = new Thread(new ImageDownloadRunnable(productActivity, name, brand));
         imageDownloadThread.start();
     }
 
