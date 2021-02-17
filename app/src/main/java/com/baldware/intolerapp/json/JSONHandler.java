@@ -18,14 +18,14 @@ public class JSONHandler {
     private static String json;
 
     // TODO: DONE
-    public static void startDownload(Context context, ListView listView) {
-        Thread downloadThread = new Thread(new DownloadRunnable(context, listView));
+    public static void startDownload(MainActivity mainActivity, ListView listView) {
+        Thread downloadThread = new Thread(new DownloadRunnable(mainActivity, listView));
         downloadThread.start();
     }
 
     // TODO: DONE
-    public static void startDownload(Context context, ListView listView, String productName, String productBrand) {
-        Thread downloadThread = new Thread(new DownloadRunnable(context, listView, productName, productBrand));
+    public static void startDownload(MainActivity mainActivity, ListView listView, String productName, String productBrand) {
+        Thread downloadThread = new Thread(new DownloadRunnable(mainActivity, listView, productName, productBrand));
         downloadThread.start();
     }
 

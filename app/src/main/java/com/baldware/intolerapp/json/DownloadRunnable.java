@@ -20,18 +20,18 @@ import java.net.URL;
 
 public class DownloadRunnable implements Runnable {
 
-    private Context context;
+    private MainActivity mainActivity;
     private ListView listView;
     private String productName;
     private String productBrand;
 
-    public DownloadRunnable(Context context, ListView listView) {
-        this.context = context;
+    public DownloadRunnable(MainActivity mainActivity, ListView listView) {
+        this.mainActivity = mainActivity;
         this.listView = listView;
     }
 
-    public DownloadRunnable(Context context, ListView listView, String productName, String productBrand) {
-        this.context = context;
+    public DownloadRunnable(MainActivity mainActivity, ListView listView, String productName, String productBrand) {
+        this.mainActivity = mainActivity;
         this.listView = listView;
         this.productName = productName;
         this.productBrand = productBrand;
@@ -67,10 +67,10 @@ public class DownloadRunnable implements Runnable {
             public void run() {
                 try {
                     if(JSONHandler.getJson() != null) {
-                        MainActivity.loadJSONIntoListView(context, listView);
-                        Toast.makeText(context, "Done!", Toast.LENGTH_SHORT).show();
+                        mainActivity.loadJSONIntoListView(mainActivity.getApplicationContext(), listView);
+                        Toast.makeText(mainActivity.getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mainActivity.getApplicationContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -82,7 +82,7 @@ public class DownloadRunnable implements Runnable {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.showProduct(context, productName, productBrand);
+                    mainActivity.showProduct(productName, productBrand);
                 }
             });
         }

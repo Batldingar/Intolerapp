@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class SearchViewListener implements SearchView.OnQueryTextListener {
 
-    private Context context;
+    private MainActivity mainActivity;
     private ListView listView;
     private static ArrayList<String[]> searchResult;
 
-    public SearchViewListener(Context context, ListView listView) {
-        this.context = context;
+    public SearchViewListener(MainActivity mainActivity, ListView listView) {
+        this.mainActivity = mainActivity;
         this.listView = listView;
     }
 
@@ -34,14 +34,14 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
         if(!newText.equals("")) {
             try {
                 search(newText);
-                MainActivity.loadSearchIntoListView(context, listView);
+                mainActivity.loadSearchIntoListView(mainActivity.getApplicationContext(), listView);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else if(JSONHandler.getJson() != null) {
             try {
                 searchResult = null;
-                MainActivity.loadJSONIntoListView(context, listView);
+                mainActivity.loadJSONIntoListView(mainActivity.getApplicationContext(), listView);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

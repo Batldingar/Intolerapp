@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Loads settings (main intolerance preferences)
-    private static String getMainIntolerance(Context context){
+    private String getMainIntolerance(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.settingsFlag), Context.MODE_PRIVATE);
         String mainIntolerance = sharedPreferences.getString(context.getString(R.string.settingsFlag), context.getString(R.string.radio_none));
 
@@ -128,19 +128,19 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Downloads the product data and calls loadJSONIntoListView
-    public static void loadData(Context context, ListView listView) {
+    private void loadData(Context context, ListView listView) {
         Toast.makeText(context, "Updating products...", Toast.LENGTH_SHORT).show();
-        JSONHandler.startDownload(context, listView);
+        JSONHandler.startDownload(this, listView);
     }
 
     // Downloads the product data and calls loadJSONIntoListView, then shows the product
-    public static void loadData(Context context, ListView listView, String productName, String productBrand) {
+    private void loadData(Context context, ListView listView, String productName, String productBrand) {
         Toast.makeText(context, "Updating products...", Toast.LENGTH_SHORT).show();
-        JSONHandler.startDownload(context, listView, productName, productBrand);
+        JSONHandler.startDownload(this, listView, productName, productBrand);
     }
 
     // Gets the json data from the JSONHandler and loads it into the listView
-    public static void loadJSONIntoListView(Context context, ListView listView) throws JSONException {
+    public void loadJSONIntoListView(Context context, ListView listView) throws JSONException {
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         String[] products = new String[jsonArray.length()];
         double[] ratings = new double[jsonArray.length()];
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Loads search results into the listView
-    public static void loadSearchIntoListView(Context context, ListView listView) throws JSONException {
+    public void loadSearchIntoListView(Context context, ListView listView) throws JSONException {
         JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
         ArrayList<String[]> result = SearchViewListener.getSearchResult();
         String[] resultArray = new String[result.size()];
@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity{
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        searchView.setOnQueryTextListener(new SearchViewListener(getApplicationContext(), listView));
+        searchView.setOnQueryTextListener(new SearchViewListener(this, listView));
 
         return true;
     }
@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Uses name and brand to find product in json and opens it in a product activity
-    public static void showProduct(Context context, String productName, String productBrand){
+    public void showProduct(String productName, String productBrand){
         JSONArray jsonArray = null;
         int position = -1;
 
@@ -450,11 +450,13 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        if(position!=-1) {
-            Intent intent = new Intent(context, ProductActivity.class);
+        if(position!=-1) { // if product was found
+            Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
             intent.putExtra("position", position);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necessary because showProduct is being called from the downloadRunnable (= outside of an activity)
-            context.startActivity(intent);
+            getApplication().startActivity(intent);
+        } else {
+            JSONHandler.startDownload(this, listView, productName, productBrand);
         }
     }
 }
