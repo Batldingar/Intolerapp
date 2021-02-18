@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.AdditionActivity;
+import com.baldware.intolerapp.activities.MainActivity;
 import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.json.JSONHandler;
 
@@ -22,12 +23,12 @@ import java.net.URL;
 
 public class UploadRunnable implements Runnable {
 
-    private Context context;
+    private MainActivity mainActivity;
     private String name;
     private String brand;
 
-    public UploadRunnable(Context context, String name, String brand) {
-        this.context = context;
+    public UploadRunnable(MainActivity mainActivity, String name, String brand) {
+        this.mainActivity = mainActivity;
         this.name = name;
         this.brand = brand;
     }
@@ -86,14 +87,15 @@ public class UploadRunnable implements Runnable {
                 handler.post(new Runnable() { // post on UIThread
                     @Override
                     public void run() {
-                        Toast.makeText(context, "Addition successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity.getApplicationContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
+                        mainActivity.loadData(name, brand);
                     }
                 });
             } else {
                 handler.post(new Runnable() { // post on UIThread
                     @Override
                     public void run() {
-                        Toast.makeText(context, "Currently unable to add the product!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity.getApplicationContext(), "Currently unable to add the product!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

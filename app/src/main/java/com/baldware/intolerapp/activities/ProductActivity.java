@@ -280,10 +280,14 @@ public class ProductActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            JSONHandler.startRating(getApplicationContext(), name, brand);
+            Bundle data = new Bundle();
+            data.putString("productName", name);
+            data.putString("productBrand", brand);
 
             Intent intent = new Intent();
+            intent.putExtras(data);
             setResult(RESULT_OK, intent);
+
             finish();
         }
     }

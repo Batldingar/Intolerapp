@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity{
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener(getApplicationContext()));
 
         loadFirstStartUpMessage();
-        loadData(getApplicationContext(), listView);
+        loadData();
     }
 
     @Override
@@ -88,11 +88,13 @@ public class MainActivity extends AppCompatActivity{
         if(resultCode == RESULT_OK) {
             switch(requestCode) {
                 case ADDITION_CODE:
-                    loadData(getApplicationContext(), listView, data.getStringExtra("productName"), data.getStringExtra("productBrand"));
+                    JSONHandler.startUpload(this, data.getStringExtra("productName"), data.getStringExtra("productBrand"));
                     break;
                 case PRODUCT_CODE:
+                    JSONHandler.startRating(this, data.getStringExtra("productName"), data.getStringExtra("productBrand"));
+                    break;
                 case SETTINGS_CODE:
-                    loadData(getApplicationContext(), listView);
+                    loadData();
                     break;
             }
         }
@@ -128,14 +130,14 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Downloads the product data and calls loadJSONIntoListView
-    private void loadData(Context context, ListView listView) {
-        Toast.makeText(context, "Updating products...", Toast.LENGTH_SHORT).show();
+    public void loadData() {
+        Toast.makeText(getApplicationContext(), "Updating products...", Toast.LENGTH_SHORT).show();
         JSONHandler.startDownload(this, listView);
     }
 
     // Downloads the product data and calls loadJSONIntoListView, then shows the product
-    private void loadData(Context context, ListView listView, String productName, String productBrand) {
-        Toast.makeText(context, "Updating products...", Toast.LENGTH_SHORT).show();
+    public void loadData(String productName, String productBrand) {
+        Toast.makeText(getApplicationContext(), "Updating products...", Toast.LENGTH_SHORT).show();
         JSONHandler.startDownload(this, listView, productName, productBrand);
     }
 
@@ -287,7 +289,7 @@ public class MainActivity extends AppCompatActivity{
     public class onRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         public void onRefresh() {
-            loadData(getApplicationContext(), listView);
+            loadData();
             swipeRefreshLayout.setRefreshing(false);
         }
     }

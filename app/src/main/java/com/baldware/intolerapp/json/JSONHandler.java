@@ -27,20 +27,14 @@ public class JSONHandler {
         downloadThread.start();
     }
 
-    // TODO: Make fully asynchronous (should call open the product page itself)
-    public static void startUpload(Context context, String name, String brand) {
-        Thread uploadThread = new Thread(new UploadRunnable(context, name, brand));
+    public static void startUpload(MainActivity mainActivity, String name, String brand) {
+        Thread uploadThread = new Thread(new UploadRunnable(mainActivity, name, brand));
         uploadThread.start();
     }
 
-    // TODO: Make fully asynchronous (should call reload json itself)
-    public static void startRating(Context context, String name, String brand) {
-        Thread ratingThread = new Thread(new RatingRunnable(name, brand));
+    public static void startRating(MainActivity mainActivity, String name, String brand) {
+        Thread ratingThread = new Thread(new RatingRunnable(mainActivity, name, brand));
         ratingThread.start();
-
-        while(ratingThread.isAlive()) {} // wait for thread to finish
-
-        Toast.makeText(context, "Rating successful!", Toast.LENGTH_SHORT).show();
     }
 
     public static void startReport(Context context, String reportProduct) {

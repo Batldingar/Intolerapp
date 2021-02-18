@@ -103,7 +103,6 @@ public class AdditionActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                     } else {
                         JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap), productNameInput, productBrandInput);
-                        JSONHandler.startUpload(getApplicationContext(), productNameInput, productBrandInput);
 
                         Bundle data = new Bundle();
                         data.putString("productName", productNameInput);
