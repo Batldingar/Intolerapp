@@ -36,6 +36,11 @@ import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.customTools.StarListViewAdapter;
 import com.baldware.intolerapp.json.JSONHandler;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -62,6 +67,13 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
 
         listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new onItemClickListener());

@@ -24,6 +24,8 @@ import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.json.JSONHandler;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,6 +77,11 @@ public class ProductActivity extends AppCompatActivity {
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
+
+        // Load Adds
+        AdView adView = findViewById(R.id.product_ad_view);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         initialize();
     }
