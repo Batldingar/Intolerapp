@@ -38,9 +38,22 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
+        <!-- The floating action button that starts the sorting algorithm -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sorting_floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_baseline_star_white_24"
+            android:contentDescription="@string/app_name"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="80dp"
+            app:fabCustomSize="48dp"
+            app:backgroundTint="@color/colorPrimary"/>
+
     <!-- The floating action button that starts the addition activity -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/addition_floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

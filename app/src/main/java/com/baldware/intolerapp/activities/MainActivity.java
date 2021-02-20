@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,13 +30,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.customTools.StarListViewAdapter;
 import com.baldware.intolerapp.json.JSONHandler;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -49,7 +45,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -61,6 +56,8 @@ public class MainActivity extends AppCompatActivity{
     private SwipeRefreshLayout swipeRefreshLayout;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
+    private int sortingStarNumber;
 
     // Initializes everything on start up
     @Override
@@ -82,12 +79,17 @@ public class MainActivity extends AppCompatActivity{
         swipeRefreshLayout = findViewById(R.id.SwipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new onRefreshListener());
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new onClickListener());
+        FloatingActionButton floatingSortingButton = findViewById(R.id.sorting_floating_action_button);
+        floatingSortingButton.setOnClickListener(new sortingOnClickListener());
+
+        FloatingActionButton floatingdditionButton = findViewById(R.id.addition_floating_action_button);
+        floatingdditionButton.setOnClickListener(new additionOnClickListener());
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener(getApplicationContext()));
+
+        sortingStarNumber = 0;
 
         loadFirstStartUpMessage();
         loadData();
@@ -188,6 +190,85 @@ public class MainActivity extends AppCompatActivity{
                 ratings[i] = jsonObject.getDouble("sorbitolRating");
                 counts[i] = jsonObject.getInt("sorbitolRatingCount");
             }
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, products);
+        StarListViewAdapter starListViewAdapter = new StarListViewAdapter(context, R.layout.star_listview_item, R.id.star_listView_textView, products, ratings, counts, getMainIntolerance(context));
+
+        if(getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
+            listView.setAdapter(arrayAdapter);
+        } else {
+            listView.setAdapter(starListViewAdapter);
+        }
+    }
+
+    // Gets the json data from the JSONHandler and loads it into the listView if the rating equals fullStarCount
+    public void loadJSONIntoListView(Context context, ListView listView, int fullStarCount) throws JSONException {
+        JSONArray jsonArray = new JSONArray(JSONHandler.getJson());
+
+        ArrayList<String> starProducts = new ArrayList<>();
+        ArrayList<Double> starRatings = new ArrayList<>();
+        ArrayList<Integer> starCounts = new ArrayList<>();
+
+        String[] products;
+        double[] ratings;
+        int[] counts;
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            if(getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
+                if(jsonObject.getDouble("fructoseRating") == fullStarCount || jsonObject.getDouble("fructoseRating") == (fullStarCount-0.5)) {
+                    starRatings.add(jsonObject.getDouble("fructoseRating"));
+                    starCounts.add(jsonObject.getInt("fructoseRatingCount"));
+                    starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
+                }
+            } else
+            if(getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
+                if(jsonObject.getDouble("glucoseRating") == fullStarCount || jsonObject.getDouble("glucoseRating") == (fullStarCount-0.5)) {
+                    starRatings.add(jsonObject.getDouble("glucoseRating"));
+                    starCounts.add(jsonObject.getInt("glucoseRatingCount"));
+                    starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
+                }
+            } else
+            if(getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
+                if(jsonObject.getDouble("histamineRating") == fullStarCount || jsonObject.getDouble("histamineRating") == (fullStarCount-0.5)) {
+                    starRatings.add(jsonObject.getDouble("histamineRating"));
+                    starCounts.add(jsonObject.getInt("histamineRatingCount"));
+                    starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
+                }
+            } else
+            if(getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
+                if(jsonObject.getDouble("lactoseRating") == fullStarCount || jsonObject.getDouble("lactoseRating") == (fullStarCount-0.5)) {
+                    starRatings.add(jsonObject.getDouble("lactoseRating"));
+                    starCounts.add(jsonObject.getInt("lactoseRatingCount"));
+                    starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
+                }
+            } else
+            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
+                if(jsonObject.getDouble("sucroseRating") == fullStarCount || jsonObject.getDouble("sucroseRating") == (fullStarCount-0.5)) {
+                    starRatings.add(jsonObject.getDouble("sucroseRating"));
+                    starCounts.add(jsonObject.getInt("sucroseRatingCount"));
+                    starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
+                }
+            } else
+            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
+                if(jsonObject.getDouble("sorbitolRating") == fullStarCount || jsonObject.getDouble("sorbitolRating") == (fullStarCount-0.5)) {
+                    starRatings.add(jsonObject.getDouble("sorbitolRating"));
+                    starCounts.add(jsonObject.getInt("sorbitolRatingCount"));
+                    starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
+                }
+            }
+        }
+
+        products = new String[starProducts.size()];
+        ratings = new double[starProducts.size()];
+        counts = new int[starProducts.size()];
+
+        for(int i = 0; i < starProducts.size(); i++) {
+            products[i] = starProducts.get(i);
+            ratings[i] = starRatings.get(i);
+            counts[i] = starCounts.get(i);
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, products);
@@ -306,8 +387,30 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    // For the floatingActionButton
-    public class onClickListener implements View.OnClickListener {
+    // For the first floatingActionButton
+    public class sortingOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if(sortingStarNumber<5) {
+                sortingStarNumber++;
+            } else {
+                sortingStarNumber = 0;
+            }
+
+            try {
+                if(sortingStarNumber!=0) {
+                    loadJSONIntoListView(getApplicationContext(), listView, sortingStarNumber);
+                } else {
+                    loadJSONIntoListView(getApplicationContext(), listView);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // For the second floatingActionButton
+    public class additionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, AdditionActivity.class);
