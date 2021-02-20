@@ -44,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity{
         FloatingActionButton floatingSortingButton = findViewById(R.id.sorting_floating_action_button);
         floatingSortingButton.setOnClickListener(new sortingOnClickListener());
 
-        FloatingActionButton floatingdditionButton = findViewById(R.id.addition_floating_action_button);
-        floatingdditionButton.setOnClickListener(new additionOnClickListener());
+        FloatingActionButton floatingAdditionButton = findViewById(R.id.addition_floating_action_button);
+        floatingAdditionButton.setOnClickListener(new additionOnClickListener());
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 case SETTINGS_CODE:
                     loadData();
+                    sortingStarNumber = 0;
                     break;
             }
         }
@@ -391,10 +393,14 @@ public class MainActivity extends AppCompatActivity{
     public class sortingOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(sortingStarNumber<5) {
-                sortingStarNumber++;
+            if(!getMainIntolerance(getApplicationContext()).equals(getApplicationContext().getString(R.string.radio_none))) {
+                if (sortingStarNumber < 5) {
+                    sortingStarNumber++;
+                } else {
+                    sortingStarNumber = 0;
+                }
             } else {
-                sortingStarNumber = 0;
+                Toast.makeText(getApplicationContext(), "Please select your main intolerance in the settings first!", Toast.LENGTH_SHORT).show();
             }
 
             try {
