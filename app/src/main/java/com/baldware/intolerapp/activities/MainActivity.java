@@ -6,12 +6,10 @@ import android.app.SearchManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,8 +34,6 @@ import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.customTools.StarListViewAdapter;
 import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -65,11 +61,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
+        MobileAds.initialize(this, initializationStatus -> {
 
-            }
         });
 
         listView = findViewById(R.id.listView);
@@ -474,18 +467,10 @@ public class MainActivity extends AppCompatActivity {
             String product = productName;
             builder.setTitle(title)
                     .setMessage(R.string.report_text)
-                    .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            JSONHandler.startReport(context, product);
-                        }
-                    })
-                    .setNegativeButton(R.string.negative_button_text, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (dialog != null) {
-                                dialog.dismiss();
-                            }
+                    .setPositiveButton(R.string.positive_button_text, (dialog, which) -> JSONHandler.startReport(context, product))
+                    .setNegativeButton(R.string.negative_button_text, (dialog, which) -> {
+                        if (dialog != null) {
+                            dialog.dismiss();
                         }
                     });
 
@@ -521,11 +506,8 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(title)
                     .setMessage(message)
-                    .setPositiveButton(R.string.acceptance_button_text, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                    .setPositiveButton(R.string.acceptance_button_text, (dialog, which) -> {
 
-                        }
                     });
             return builder.create();
         }
@@ -533,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Uses name and brand to find product in json and opens it in a product activity
     public void showProduct(String productName, String productBrand) {
-        JSONArray jsonArray = null;
+        JSONArray jsonArray;
         int position = -1;
 
         try {

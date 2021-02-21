@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -43,18 +42,15 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Button button = new Button(getApplicationContext());
                 button.setText(R.string.settings_button_text);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RadioButton radioButton = findViewById(group.getCheckedRadioButtonId());
-                        saveSelection(radioButton.getText().toString());
+                button.setOnClickListener(v -> {
+                    RadioButton radioButton = findViewById(group.getCheckedRadioButtonId());
+                    saveSelection(radioButton.getText().toString());
 
-                        Toast.makeText(getApplicationContext(), R.string.settings_applied_text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.settings_applied_text, Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
                 });
 
                 relativeLayout.addView(button, layoutParams);

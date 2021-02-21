@@ -58,30 +58,22 @@ public class DownloadRunnable implements Runnable {
         // ----- Download is finished -----
 
         Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
-        handler.post(new Runnable() { // post on UIThread
-
-            @Override
-            public void run() {
-                try {
-                    if (JSONHandler.getJson() != null) {
-                        mainActivity.loadJSONIntoListView(mainActivity.getApplicationContext(), listView);
-                        Toast.makeText(mainActivity.getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(mainActivity.getApplicationContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        // post on UIThread
+        handler.post(() -> {
+            try {
+                if (JSONHandler.getJson() != null) {
+                    mainActivity.loadJSONIntoListView(mainActivity.getApplicationContext(), listView);
+                    Toast.makeText(mainActivity.getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mainActivity.getApplicationContext(), "Download failed! - Is your internet connection active?", Toast.LENGTH_LONG).show();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
 
         if (productName != null && productBrand != null) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mainActivity.showProduct(productName, productBrand);
-                }
-            });
+            handler.post(() -> mainActivity.showProduct(productName, productBrand));
         }
     }
 }

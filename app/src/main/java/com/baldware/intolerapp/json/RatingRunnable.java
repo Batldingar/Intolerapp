@@ -35,7 +35,7 @@ public class RatingRunnable implements Runnable {
         OutputStream outputStream = null;
         BufferedReader bufferedReader = null;
         HttpURLConnection connection = null;
-        Boolean scriptSuccess = false;
+        boolean scriptSuccess = false;
 
         try {
             URL url = new URL(Constants.RATING_URL);
@@ -87,20 +87,14 @@ public class RatingRunnable implements Runnable {
             Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
 
             if (scriptSuccess) {
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        Toast.makeText(mainActivity.getApplicationContext(), "Rating successful!", Toast.LENGTH_SHORT).show();
-                        mainActivity.loadData();
-                    }
+                // post on UIThread
+                handler.post(() -> {
+                    Toast.makeText(mainActivity.getApplicationContext(), "Rating successful!", Toast.LENGTH_SHORT).show();
+                    mainActivity.loadData();
                 });
             } else {
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        Toast.makeText(mainActivity.getApplicationContext(), "Currently unable to rate the product!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // post on UIThread
+                handler.post(() -> Toast.makeText(mainActivity.getApplicationContext(), "Currently unable to rate the product!", Toast.LENGTH_SHORT).show());
             }
         } catch (Exception e) {
             e.printStackTrace();

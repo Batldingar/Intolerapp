@@ -1,7 +1,6 @@
 package com.baldware.intolerapp.activities;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -127,29 +126,25 @@ public class AdditionActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Select a product picture");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int itemID) {
-                switch (itemID) {
-                    case 0: // take picture
-                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                            takePicture();
-                        } else {
-                            ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.CAMERA}, 0);
-                        }
-                        break;
-                    case 1: // choose from gallery
-                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                            selectPicture();
-                        } else {
-                            ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                        }
-                        break;
-                    case 2: // cancel
-                        dialog.dismiss();
-                        break;
-                }
+        builder.setItems(options, (dialog, itemID) -> {
+            switch (itemID) {
+                case 0: // take picture
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        takePicture();
+                    } else {
+                        ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.CAMERA}, 0);
+                    }
+                    break;
+                case 1: // choose from gallery
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        selectPicture();
+                    } else {
+                        ActivityCompat.requestPermissions(AdditionActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                    }
+                    break;
+                case 2: // cancel
+                    dialog.dismiss();
+                    break;
             }
         }).show();
     }
@@ -244,6 +239,7 @@ public class AdditionActivity extends AppCompatActivity {
                                 bitmap = fixOrientation(scaledImage, file.getAbsolutePath()); // returns scaledImage if nothing has changed
                                 imageView.setImageBitmap(bitmap);
 
+                                //noinspection ResultOfMethodCallIgnored
                                 file.delete();
                             }
                         }
@@ -344,8 +340,6 @@ public class AdditionActivity extends AppCompatActivity {
                 }
             }
         }
-
-        return;
     }
 
     public static Bitmap fixOrientation(Bitmap bitmap, String image_absolute_path) {

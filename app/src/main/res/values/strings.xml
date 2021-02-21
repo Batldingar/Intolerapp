@@ -41,4 +41,7 @@
     <string name="settings_button_text">Apply selection</string>
     <string name="settings_applied_text">Your selection has been applied</string>
     <string name="settingsFlag">com.baldware.intolerapp.settingsFlag</string>
+    <string name="image_content_product">The product</string>
+    <string name="non_digestible">Non digestible</string>
+    <string name="very_digestible">Very digestible</string>
 </resources>

@@ -34,7 +34,7 @@ public class ImageDownloadRunnable implements Runnable {
         OutputStream outputStream = null;
         BufferedReader bufferedReader = null;
         HttpURLConnection connection = null;
-        Boolean scriptSuccess = false;
+        boolean scriptSuccess = false;
 
         while (!scriptSuccess) {
             try {
@@ -83,13 +83,11 @@ public class ImageDownloadRunnable implements Runnable {
                 // ----- Download is finished -----
 
                 Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        //Asynchronously sets the imageView in a product activity and picture activity
-                        if (!stringBuilder.toString().equals("")) {
-                            productActivity.setProductImage(BitmapHandler.createShowable(stringBuilder.toString()));
-                        }
+                // post on UIThread
+                handler.post(() -> {
+                    //Asynchronously sets the imageView in a product activity and picture activity
+                    if (!stringBuilder.toString().equals("")) {
+                        productActivity.setProductImage(BitmapHandler.createShowable(stringBuilder.toString()));
                     }
                 });
             } catch (Exception e) {

@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -144,7 +143,7 @@ public class ProductActivity extends AppCompatActivity {
 
         // Fill the imageView
         imageView = findViewById(R.id.product_image_view);
-        imageView.setOnClickListener(new onImageClickListener(this));
+        imageView.setOnClickListener(new onImageClickListener());
 
         if (image == null) {
             JSONHandler.startImageDownload(this, name, brand);
@@ -254,9 +253,6 @@ public class ProductActivity extends AppCompatActivity {
 
     private class onImageClickListener implements View.OnClickListener {
 
-        public onImageClickListener(ProductActivity productActivity) {
-        }
-
         @Override
         public void onClick(View v) {
             if (image != null) {
@@ -266,12 +262,7 @@ public class ProductActivity extends AppCompatActivity {
                 ImageView imageView = findViewById(R.id.picture_image_view);
                 imageView.setImageBitmap(image);
 
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        reinitialize();
-                    }
-                });
+                imageView.setOnClickListener(v1 -> reinitialize());
             }
         }
     }

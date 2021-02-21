@@ -34,7 +34,7 @@ public class UploadRunnable implements Runnable {
         OutputStream outputStream = null;
         BufferedReader bufferedReader = null;
         HttpURLConnection connection = null;
-        Boolean scriptSuccess = false;
+        boolean scriptSuccess = false;
 
         try {
             URL url = new URL(Constants.UPLOAD_URL);
@@ -80,20 +80,14 @@ public class UploadRunnable implements Runnable {
             Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
 
             if (scriptSuccess) {
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        Toast.makeText(mainActivity.getApplicationContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
-                        mainActivity.loadData(name, brand);
-                    }
+                // post on UIThread
+                handler.post(() -> {
+                    Toast.makeText(mainActivity.getApplicationContext(), "Addition successful!", Toast.LENGTH_SHORT).show();
+                    mainActivity.loadData(name, brand);
                 });
             } else {
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        Toast.makeText(mainActivity.getApplicationContext(), "Currently unable to add the product!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // post on UIThread
+                handler.post(() -> Toast.makeText(mainActivity.getApplicationContext(), "Currently unable to add the product!", Toast.LENGTH_SHORT).show());
             }
         } catch (Exception e) {
             e.printStackTrace();

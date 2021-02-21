@@ -31,8 +31,10 @@ public class StarListViewAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.star_listview_item, parent, false);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.star_listview_item, parent, false);
+        }
 
         RatingBar ratingBar = convertView.findViewById(R.id.star_listView_ratingBar);
         ratingBar.setRating((float) ratings[position]);

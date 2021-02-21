@@ -32,7 +32,7 @@ public class ReportRunnable implements Runnable {
         OutputStream outputStream = null;
         BufferedReader bufferedReader = null;
         HttpURLConnection connection = null;
-        Boolean scriptSuccess = false;
+        boolean scriptSuccess = false;
 
         try {
             URL url = new URL(Constants.REPORT_URL);
@@ -77,19 +77,11 @@ public class ReportRunnable implements Runnable {
             Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
 
             if (scriptSuccess) {
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "Product has been reported!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // post on UIThread
+                handler.post(() -> Toast.makeText(context, "Product has been reported!", Toast.LENGTH_SHORT).show());
             } else {
-                handler.post(new Runnable() { // post on UIThread
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "Currently unable to report the product!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // post on UIThread
+                handler.post(() -> Toast.makeText(context, "Currently unable to report the product!", Toast.LENGTH_SHORT).show());
             }
         } catch (Exception e) {
             e.printStackTrace();
