@@ -1,14 +1,10 @@
 package com.baldware.intolerapp.json;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.MainActivity;
 import com.baldware.intolerapp.activities.ProductActivity;
-import com.baldware.intolerapp.customTools.BitmapHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

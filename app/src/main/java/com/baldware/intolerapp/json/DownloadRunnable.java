@@ -1,15 +1,12 @@
 package com.baldware.intolerapp.json;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.style.AlignmentSpan;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.baldware.intolerapp.activities.MainActivity;
 import com.baldware.intolerapp.customTools.Constants;
-import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONException;
 
@@ -20,8 +17,8 @@ import java.net.URL;
 
 public class DownloadRunnable implements Runnable {
 
-    private MainActivity mainActivity;
-    private ListView listView;
+    private final MainActivity mainActivity;
+    private final ListView listView;
     private String productName;
     private String productBrand;
 
@@ -39,7 +36,7 @@ public class DownloadRunnable implements Runnable {
 
     @Override
     public void run() {
-        try{
+        try {
             URL url = new URL(Constants.DOWNLOAD_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             StringBuilder stringBuilder = new StringBuilder();
@@ -66,7 +63,7 @@ public class DownloadRunnable implements Runnable {
             @Override
             public void run() {
                 try {
-                    if(JSONHandler.getJson() != null) {
+                    if (JSONHandler.getJson() != null) {
                         mainActivity.loadJSONIntoListView(mainActivity.getApplicationContext(), listView);
                         Toast.makeText(mainActivity.getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
                     } else {
@@ -78,7 +75,7 @@ public class DownloadRunnable implements Runnable {
             }
         });
 
-        if(productName != null && productBrand != null) {
+        if (productName != null && productBrand != null) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {

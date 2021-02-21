@@ -8,14 +8,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.icu.util.Output;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.renderscript.ScriptGroup;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,11 +24,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.exifinterface.media.ExifInterface;
 
+import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
-import com.baldware.intolerapp.R;
-import com.baldware.intolerapp.json.ImageUploadRunnable;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONArray;
@@ -41,20 +37,15 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class AdditionActivity extends AppCompatActivity {
 
-    private static String productNameInput;
-    private static String productBrandInput;
     private ImageView imageView;
     private Bitmap bitmap;
 
@@ -70,15 +61,15 @@ public class AdditionActivity extends AppCompatActivity {
         imageView.setOnClickListener(new onImageClickListener());
     }
 
-    private class onClickListener implements View.OnClickListener{
+    private class onClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            productNameInput = ((EditText)findViewById(R.id.productName)).getText().toString();
-            productBrandInput = ((EditText)findViewById(R.id.productBrand)).getText().toString();
+            String productNameInput = ((EditText) findViewById(R.id.productName)).getText().toString();
+            String productBrandInput = ((EditText) findViewById(R.id.productBrand)).getText().toString();
 
             if (!productNameInput.equals("") && !productBrandInput.equals("")) {
-                if(bitmap != null) {
+                if (bitmap != null) {
                     boolean productExists = false;
 
                     JSONArray jsonArray;
@@ -123,7 +114,7 @@ public class AdditionActivity extends AppCompatActivity {
         }
     }
 
-    private class onImageClickListener implements View.OnClickListener{
+    private class onImageClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             showPictureOptions();
@@ -140,7 +131,7 @@ public class AdditionActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int itemID) {
-                switch(itemID) {
+                switch (itemID) {
                     case 0: // take picture
                         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                             takePicture();
@@ -170,7 +161,7 @@ public class AdditionActivity extends AppCompatActivity {
 
     private void selectPicture() {
         Intent choosePicture = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(choosePicture , 1);
+        startActivityForResult(choosePicture, 1);
     }
 
     // After calling startActivityForResults in takePicture()
@@ -178,7 +169,7 @@ public class AdditionActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode != RESULT_CANCELED) {
+        if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case 0: // take picture
                     if (resultCode == RESULT_OK && data != null) {
@@ -190,7 +181,7 @@ public class AdditionActivity extends AppCompatActivity {
                     break;
                 case 1: // choose from gallery
                     if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage =  data.getData();
+                        Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -205,7 +196,7 @@ public class AdditionActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                if(parcelFileDescriptor.getStatSize() > Constants.MAX_PICTURE_SIZE) {
+                                if (parcelFileDescriptor.getStatSize() > Constants.MAX_PICTURE_SIZE) {
                                     Toast.makeText(AdditionActivity.this, "File can't be bigger than 12MB", Toast.LENGTH_SHORT).show();
                                     break;
                                 }
@@ -213,7 +204,7 @@ public class AdditionActivity extends AppCompatActivity {
                                 File cacheDir = getApplicationContext().getCacheDir(); // cacheDir stores application specific files temporarily (android may delete them to recover space)
                                 File file = null;
                                 try {
-                                     file = File.createTempFile("picture", ".tmp", cacheDir);
+                                    file = File.createTempFile("picture", ".tmp", cacheDir);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -238,10 +229,10 @@ public class AdditionActivity extends AppCompatActivity {
                                 }
 
                                 try {
-                                    if(bufferedInputStream!=null) {
+                                    if (bufferedInputStream != null) {
                                         bufferedInputStream.close();
                                     }
-                                    if(bufferedOutputStream!=null) {
+                                    if (bufferedOutputStream != null) {
                                         bufferedOutputStream.close();
                                     }
                                 } catch (IOException e) {
@@ -262,8 +253,7 @@ public class AdditionActivity extends AppCompatActivity {
         }
     }
 
-    private void copyContent(BufferedInputStream dst, BufferedOutputStream src) throws Exception
-    {
+    private void copyContent(BufferedInputStream dst, BufferedOutputStream src) throws Exception {
         try {
             WriteRunnable writeRunnable = new WriteRunnable(src);
             Thread thread1 = new Thread(writeRunnable);
@@ -275,7 +265,7 @@ public class AdditionActivity extends AppCompatActivity {
             while ((n = dst.read()) != -1) {
                 didProcess = false;
 
-                while(!didProcess) {
+                while (!didProcess) {
                     if (!writeRunnable.hasNewByte) {
                         writeRunnable.setNextByte(n);
                         didProcess = true;
@@ -284,8 +274,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
             writeRunnable.stop();
-        }
-        finally {
+        } finally {
             if (dst != null) {
                 dst.close();
             }
@@ -295,9 +284,9 @@ public class AdditionActivity extends AppCompatActivity {
         }
     }
 
-    private class WriteRunnable implements Runnable {
+    private static class WriteRunnable implements Runnable {
 
-        private OutputStream src;
+        private final OutputStream src;
         private int nextByte;
         private boolean hasNewByte;
         private boolean isRunning;
@@ -321,8 +310,8 @@ public class AdditionActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            while(isRunning) {
-                if(hasNewByte) {
+            while (isRunning) {
+                if (hasNewByte) {
                     try {
                         src.write(nextByte);
                         hasNewByte = false;
@@ -346,7 +335,6 @@ public class AdditionActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(AdditionActivity.this, "Camera permissions denied: Unable to take a picture.", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -354,12 +342,13 @@ public class AdditionActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(AdditionActivity.this, "Gallery permissions denied: Unable to select a picture.", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
+
+        return;
     }
 
-    public static Bitmap fixOrientation(Bitmap bitmap, String image_absolute_path){
+    public static Bitmap fixOrientation(Bitmap bitmap, String image_absolute_path) {
         ExifInterface ei = null;
         try {
             ei = new ExifInterface(image_absolute_path);

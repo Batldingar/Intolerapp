@@ -35,7 +35,8 @@
         android:id="@+id/addition_image_view"
         android:layout_below="@id/productBrand"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_baseline_portrait_24" />
+        android:src="@drawable/ic_baseline_portrait_24"
+        android:contentDescription="The product to be added" />
 
     <!-- The button that triggers the data upload -->
     <Button

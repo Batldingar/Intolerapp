@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:id="@+id/star_listView_textView"
+    <TextView
+        android:id="@+id/star_listView_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name - Brand"
@@ -11,8 +13,7 @@
         android:textSize="18sp"
         android:paddingTop="8dp"
         android:paddingLeft="18dp"
-        android:paddingRight="18dp">
-    </TextView>
+        android:paddingRight="18dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,20 +24,20 @@
         android:paddingBottom="8dp"
         android:paddingTop="1.5dp">
 
-        <RatingBar android:id="@+id/star_listView_ratingBar"
+        <RatingBar
+            android:id="@+id/star_listView_ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            style="@android:style/Widget.DeviceDefault.RatingBar.Small">
-        </RatingBar>
+            style="@android:style/Widget.DeviceDefault.RatingBar.Small" />
 
-        <TextView android:id="@+id/star_listView_ratings_textView"
+        <TextView
+            android:id="@+id/star_listView_ratings_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="Intolerance (x Ratings)">
-        </TextView>
+            android:text="Intolerance (x Ratings)" />
 
     </LinearLayout>
 

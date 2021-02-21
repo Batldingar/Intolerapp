@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/relativeLayout_settings" xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/relativeLayout_settings"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,57 +19,57 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_settings">
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RadioButton
-            android:id="@+id/radio_none"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/radio_none" />
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
-            android:id="@+id/radio_fructose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_fructose" />
+            <RadioButton
+                android:id="@+id/radio_none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_none" />
 
-        <RadioButton
-            android:id="@+id/radio_glucose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_glucose" />
+            <RadioButton
+                android:id="@+id/radio_fructose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_fructose" />
 
-        <RadioButton
-            android:id="@+id/radio_histamine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_histamine" />
+            <RadioButton
+                android:id="@+id/radio_glucose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_glucose" />
 
-        <RadioButton
-            android:id="@+id/radio_lactose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_lactose" />
+            <RadioButton
+                android:id="@+id/radio_histamine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_histamine" />
 
-        <RadioButton
-            android:id="@+id/radio_sucrose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_sucrose" />
+            <RadioButton
+                android:id="@+id/radio_lactose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_lactose" />
 
-        <RadioButton
-            android:id="@+id/radio_sorbitol"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_sorbitol" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radio_sucrose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_sucrose" />
+
+            <RadioButton
+                android:id="@+id/radio_sorbitol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_sorbitol" />
+        </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

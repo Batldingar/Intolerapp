@@ -3,22 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:id="@+id/group1">
-        <item android:id="@+id/nav_settings" android:title="@string/settings"
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"
             android:icon="@drawable/ic_baseline_settings_24"
             app:showAsAction="ifRoom|withText" />
     </group>
     <group android:id="@+id/group2">
-        <item android:id="@+id/nav_legal_notice" android:title="@string/legal_notice"
+        <item
+            android:id="@+id/nav_legal_notice"
+            android:title="@string/legal_notice"
             android:icon="@drawable/ic_baseline_info_24"
             app:showAsAction="ifRoom|withText" />
     </group>
     <group android:id="@+id/group3">
-        <item android:id="@+id/nav_share_app" android:title="@string/share_app"
+        <item
+            android:id="@+id/nav_share_app"
+            android:title="@string/share_app"
             android:icon="@drawable/ic_baseline_share_24"
             app:showAsAction="ifRoom|withText" />
     </group>
     <group android:id="@+id/group4">
-        <item android:id="@+id/nav_rate_app" android:title="@string/rate_app"
+        <item
+            android:id="@+id/nav_rate_app"
+            android:title="@string/rate_app"
             android:icon="@drawable/ic_baseline_star_24"
             app:showAsAction="ifRoom|withText" />
     </group>

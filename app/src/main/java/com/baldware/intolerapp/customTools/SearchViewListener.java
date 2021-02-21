@@ -1,6 +1,5 @@
 package com.baldware.intolerapp.customTools;
 
-import android.content.Context;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -15,8 +14,8 @@ import java.util.ArrayList;
 
 public class SearchViewListener implements SearchView.OnQueryTextListener {
 
-    private MainActivity mainActivity;
-    private ListView listView;
+    private final MainActivity mainActivity;
+    private final ListView listView;
     private static ArrayList<String[]> searchResult;
 
     public SearchViewListener(MainActivity mainActivity, ListView listView) {
@@ -31,14 +30,14 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(!newText.equals("")) {
+        if (!newText.equals("")) {
             try {
                 search(newText);
                 mainActivity.loadSearchIntoListView(mainActivity.getApplicationContext(), listView);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else if(JSONHandler.getJson() != null) {
+        } else if (JSONHandler.getJson() != null) {
             try {
                 searchResult = null;
                 mainActivity.loadJSONIntoListView(mainActivity.getApplicationContext(), listView);
@@ -69,7 +68,7 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
             boolean brandContains = lowerCaseBrand.contains(lowerCasePattern);
 
             // Only check if either product or brand contain the pattern
-            if(productContains || brandContains) {
+            if (productContains || brandContains) {
                 String fullName = product + " - " + brand;
                 // Store in searchResultStrings: fullName, evaluationRating and index [0, 1, 2]
                 if (productContains && brandContains) {
@@ -86,7 +85,7 @@ public class SearchViewListener implements SearchView.OnQueryTextListener {
         }
 
         // Sort the products
-        quickSort(searchResult, 0, searchResult.size()-1);
+        quickSort(searchResult, 0, searchResult.size() - 1);
     }
 
     private void quickSort(ArrayList<String[]> stringArrayList, int low, int high) {

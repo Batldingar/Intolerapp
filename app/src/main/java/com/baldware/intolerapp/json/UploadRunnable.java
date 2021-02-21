@@ -1,20 +1,16 @@
 package com.baldware.intolerapp.json;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.baldware.intolerapp.activities.AdditionActivity;
 import com.baldware.intolerapp.activities.MainActivity;
 import com.baldware.intolerapp.customTools.Constants;
-import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -23,9 +19,9 @@ import java.net.URL;
 
 public class UploadRunnable implements Runnable {
 
-    private MainActivity mainActivity;
-    private String name;
-    private String brand;
+    private final MainActivity mainActivity;
+    private final String name;
+    private final String brand;
 
     public UploadRunnable(MainActivity mainActivity, String name, String brand) {
         this.mainActivity = mainActivity;
@@ -40,7 +36,7 @@ public class UploadRunnable implements Runnable {
         HttpURLConnection connection = null;
         Boolean scriptSuccess = false;
 
-        try{
+        try {
             URL url = new URL(Constants.UPLOAD_URL);
 
             JSONObject jsonObject = new JSONObject();
@@ -74,7 +70,7 @@ public class UploadRunnable implements Runnable {
             String serverMessage;
 
             while ((serverMessage = bufferedReader.readLine()) != null) {
-                if(serverMessage.equals(Constants.END_OF_SCRIPT)) {
+                if (serverMessage.equals(Constants.END_OF_SCRIPT)) {
                     scriptSuccess = true;
                 }
             }
@@ -83,7 +79,7 @@ public class UploadRunnable implements Runnable {
 
             Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
 
-            if(scriptSuccess) {
+            if (scriptSuccess) {
                 handler.post(new Runnable() { // post on UIThread
                     @Override
                     public void run() {
@@ -102,14 +98,14 @@ public class UploadRunnable implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection!=null) {
+            if (connection != null) {
                 connection.disconnect();
             }
             try {
-                if(outputStream!=null) {
+                if (outputStream != null) {
                     outputStream.close();
                 }
-                if(bufferedReader!=null) {
+                if (bufferedReader != null) {
                     bufferedReader.close();
                 }
             } catch (IOException e) {

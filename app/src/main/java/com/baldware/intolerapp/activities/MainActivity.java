@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,10 +45,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     public static final int ADDITION_CODE = 0;
     public static final int PRODUCT_CODE = 1;
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity{
     private ListView listView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
 
     private int sortingStarNumber;
 
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity{
         floatingAdditionButton.setOnClickListener(new additionOnClickListener());
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new onNavigationItemSelectedListener(getApplicationContext()));
 
         sortingStarNumber = 0;
@@ -100,8 +99,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK) {
-            switch(requestCode) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case ADDITION_CODE:
                     JSONHandler.startUpload(this, data.getStringExtra("productName"), data.getStringExtra("productBrand"));
                     break;
@@ -117,11 +116,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Loads message for first start up if necessary
-    private void loadFirstStartUpMessage(){
+    private void loadFirstStartUpMessage() {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         boolean firstStartUp = sharedPreferences.getBoolean(getString(R.string.firstStartUpFlag), true);
 
-        if(firstStartUp) {
+        if (firstStartUp) {
             RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.start_up_message_title), getString(R.string.start_up_message_text));
             ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.start_up_message_title));
 
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    // Disables the first start up message after the first start up has occured
+    // Disables the first start up message after the first start up has occurred
     private void disableFirstStartUpMessage() {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -138,11 +137,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Loads settings (main intolerance preferences)
-    private String getMainIntolerance(Context context){
+    private String getMainIntolerance(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.settingsFlag), Context.MODE_PRIVATE);
-        String mainIntolerance = sharedPreferences.getString(context.getString(R.string.settingsFlag), context.getString(R.string.radio_none));
 
-        return mainIntolerance;
+        return sharedPreferences.getString(context.getString(R.string.settingsFlag), context.getString(R.string.radio_none));
     }
 
     // Downloads the product data and calls loadJSONIntoListView
@@ -164,31 +162,26 @@ public class MainActivity extends AppCompatActivity{
         double[] ratings = new double[jsonArray.length()];
         int[] counts = new int[jsonArray.length()];
 
-        for(int i = 0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             products[i] = jsonObject.getString("name") + " - " + jsonObject.getString("brand");
 
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
+            if (getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
                 ratings[i] = jsonObject.getDouble("fructoseRating");
                 counts[i] = jsonObject.getInt("fructoseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
                 ratings[i] = jsonObject.getDouble("glucoseRating");
                 counts[i] = jsonObject.getInt("glucoseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
                 ratings[i] = jsonObject.getDouble("histamineRating");
                 counts[i] = jsonObject.getInt("histamineRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
                 ratings[i] = jsonObject.getDouble("lactoseRating");
                 counts[i] = jsonObject.getInt("lactoseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
                 ratings[i] = jsonObject.getDouble("sucroseRating");
                 counts[i] = jsonObject.getInt("sucroseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
                 ratings[i] = jsonObject.getDouble("sorbitolRating");
                 counts[i] = jsonObject.getInt("sorbitolRatingCount");
             }
@@ -197,7 +190,7 @@ public class MainActivity extends AppCompatActivity{
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, products);
         StarListViewAdapter starListViewAdapter = new StarListViewAdapter(context, R.layout.star_listview_item, R.id.star_listView_textView, products, ratings, counts, getMainIntolerance(context));
 
-        if(getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
+        if (getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
             listView.setAdapter(arrayAdapter);
         } else {
             listView.setAdapter(starListViewAdapter);
@@ -216,46 +209,41 @@ public class MainActivity extends AppCompatActivity{
         double[] ratings;
         int[] counts;
 
-        for(int i = 0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
-                if(jsonObject.getDouble("fructoseRating") == fullStarCount || jsonObject.getDouble("fructoseRating") == (fullStarCount-0.5)) {
+            if (getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
+                if (jsonObject.getDouble("fructoseRating") == fullStarCount || jsonObject.getDouble("fructoseRating") == (fullStarCount - 0.5)) {
                     starRatings.add(jsonObject.getDouble("fructoseRating"));
                     starCounts.add(jsonObject.getInt("fructoseRatingCount"));
                     starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
                 }
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
-                if(jsonObject.getDouble("glucoseRating") == fullStarCount || jsonObject.getDouble("glucoseRating") == (fullStarCount-0.5)) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
+                if (jsonObject.getDouble("glucoseRating") == fullStarCount || jsonObject.getDouble("glucoseRating") == (fullStarCount - 0.5)) {
                     starRatings.add(jsonObject.getDouble("glucoseRating"));
                     starCounts.add(jsonObject.getInt("glucoseRatingCount"));
                     starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
                 }
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
-                if(jsonObject.getDouble("histamineRating") == fullStarCount || jsonObject.getDouble("histamineRating") == (fullStarCount-0.5)) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
+                if (jsonObject.getDouble("histamineRating") == fullStarCount || jsonObject.getDouble("histamineRating") == (fullStarCount - 0.5)) {
                     starRatings.add(jsonObject.getDouble("histamineRating"));
                     starCounts.add(jsonObject.getInt("histamineRatingCount"));
                     starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
                 }
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
-                if(jsonObject.getDouble("lactoseRating") == fullStarCount || jsonObject.getDouble("lactoseRating") == (fullStarCount-0.5)) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
+                if (jsonObject.getDouble("lactoseRating") == fullStarCount || jsonObject.getDouble("lactoseRating") == (fullStarCount - 0.5)) {
                     starRatings.add(jsonObject.getDouble("lactoseRating"));
                     starCounts.add(jsonObject.getInt("lactoseRatingCount"));
                     starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
                 }
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
-                if(jsonObject.getDouble("sucroseRating") == fullStarCount || jsonObject.getDouble("sucroseRating") == (fullStarCount-0.5)) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
+                if (jsonObject.getDouble("sucroseRating") == fullStarCount || jsonObject.getDouble("sucroseRating") == (fullStarCount - 0.5)) {
                     starRatings.add(jsonObject.getDouble("sucroseRating"));
                     starCounts.add(jsonObject.getInt("sucroseRatingCount"));
                     starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
                 }
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
-                if(jsonObject.getDouble("sorbitolRating") == fullStarCount || jsonObject.getDouble("sorbitolRating") == (fullStarCount-0.5)) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
+                if (jsonObject.getDouble("sorbitolRating") == fullStarCount || jsonObject.getDouble("sorbitolRating") == (fullStarCount - 0.5)) {
                     starRatings.add(jsonObject.getDouble("sorbitolRating"));
                     starCounts.add(jsonObject.getInt("sorbitolRatingCount"));
                     starProducts.add(jsonObject.getString("name") + " - " + jsonObject.getString("brand"));
@@ -267,7 +255,7 @@ public class MainActivity extends AppCompatActivity{
         ratings = new double[starProducts.size()];
         counts = new int[starProducts.size()];
 
-        for(int i = 0; i < starProducts.size(); i++) {
+        for (int i = 0; i < starProducts.size(); i++) {
             products[i] = starProducts.get(i);
             ratings[i] = starRatings.get(i);
             counts[i] = starCounts.get(i);
@@ -276,7 +264,7 @@ public class MainActivity extends AppCompatActivity{
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, products);
         StarListViewAdapter starListViewAdapter = new StarListViewAdapter(context, R.layout.star_listview_item, R.id.star_listView_textView, products, ratings, counts, getMainIntolerance(context));
 
-        if(getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
+        if (getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
             listView.setAdapter(arrayAdapter);
         } else {
             listView.setAdapter(starListViewAdapter);
@@ -291,29 +279,24 @@ public class MainActivity extends AppCompatActivity{
         double[] ratings = new double[result.size()];
         int[] counts = new int[jsonArray.length()];
 
-        for(int i = 0; i < result.size(); i++) {
+        for (int i = 0; i < result.size(); i++) {
             resultArray[i] = result.get(i)[0];
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
+            if (getMainIntolerance(context).equals(context.getString(R.string.radio_fructose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("fructoseRating");
                 counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("fructoseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_glucose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("glucoseRating");
                 counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("glucoseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_histamine))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("histamineRating");
                 counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("histamineRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_lactose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("lactoseRating");
                 counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("lactoseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_sucrose))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("sucroseRating");
                 counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("sucroseRatingCount");
-            } else
-            if(getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
+            } else if (getMainIntolerance(context).equals(context.getString(R.string.radio_sorbitol))) {
                 ratings[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getDouble("sorbitolRating");
                 counts[i] = (jsonArray.getJSONObject(Integer.parseInt(result.get(i)[2]))).getInt("sorbitolRatingCount");
             }
@@ -322,7 +305,7 @@ public class MainActivity extends AppCompatActivity{
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, resultArray);
         StarListViewAdapter starListViewAdapter = new StarListViewAdapter(context, R.layout.star_listview_item, R.id.star_listView_textView, resultArray, ratings, counts, getMainIntolerance(context));
 
-        if(getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
+        if (getMainIntolerance(context).equals(context.getString(R.string.radio_none))) {
             listView.setAdapter(arrayAdapter);
         } else {
             listView.setAdapter(starListViewAdapter);
@@ -348,7 +331,7 @@ public class MainActivity extends AppCompatActivity{
     // Runs commands when pressing a button in the top bar menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menu) {
+        if (item.getItemId() == R.id.menu) {
             drawerLayout.openDrawer(GravityCompat.END);
         }
 
@@ -361,7 +344,7 @@ public class MainActivity extends AppCompatActivity{
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
 
-            if(SearchViewListener.getSearchResult()!=null) {
+            if (SearchViewListener.getSearchResult() != null) {
                 position = Integer.parseInt(SearchViewListener.getSearchResult().get(position)[2]);
             }
 
@@ -393,7 +376,7 @@ public class MainActivity extends AppCompatActivity{
     public class sortingOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(!getMainIntolerance(getApplicationContext()).equals(getApplicationContext().getString(R.string.radio_none))) {
+            if (!getMainIntolerance(getApplicationContext()).equals(getApplicationContext().getString(R.string.radio_none))) {
                 if (sortingStarNumber < 5) {
                     sortingStarNumber++;
                 } else {
@@ -404,7 +387,7 @@ public class MainActivity extends AppCompatActivity{
             }
 
             try {
-                if(sortingStarNumber!=0) {
+                if (sortingStarNumber != 0) {
                     loadJSONIntoListView(getApplicationContext(), listView, sortingStarNumber);
                 } else {
                     loadJSONIntoListView(getApplicationContext(), listView);
@@ -427,7 +410,7 @@ public class MainActivity extends AppCompatActivity{
     // For the navigationView
     public class onNavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
 
-        private Context context;
+        private final Context context;
 
         public onNavigationItemSelectedListener(Context context) {
             this.context = context;
@@ -435,32 +418,25 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch(item.getItemId()) {
-                case R.id.nav_settings:{
-                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivityForResult(intent, SETTINGS_CODE);
-                    break;
-                }
-                case R.id.nav_legal_notice:{
-                    RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.rules_title), getResources().getString(R.string.rule_text));
-                    ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.rules_title));
-                    break;
-                }
-                case R.id.nav_share_app:{
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("Share", "https://play.google.com/store/apps/details?id=com.baldware.intolerapp");
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(context, "Copied link to clipboard!", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case R.id.nav_rate_app:{
-                    Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
-                    playStoreIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.baldware.intolerapp"));
-                    startActivity(playStoreIntent);
-                    break;
-                }
+            int itemID = item.getItemId();
+
+            if (itemID == R.id.nav_settings) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(intent, SETTINGS_CODE);
+            } else if (itemID == R.id.nav_legal_notice) {
+                RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.rules_title), getResources().getString(R.string.rule_text));
+                ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.rules_title));
+            } else if (itemID == R.id.nav_share_app) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Share", "https://play.google.com/store/apps/details?id=com.baldware.intolerapp");
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "Copied link to clipboard!", Toast.LENGTH_SHORT).show();
+            } else if (itemID == R.id.nav_rate_app) {
+                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+                playStoreIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.baldware.intolerapp"));
+                startActivity(playStoreIntent);
             }
-            //drawerLayout.closeDrawer(GravityCompat.END);
+
             return false;
         }
     }
@@ -468,7 +444,7 @@ public class MainActivity extends AppCompatActivity{
     // The reportDialogFragment
     public static class ReportDialogFragment extends DialogFragment {
 
-        private Context context;
+        private final Context context;
 
         public ReportDialogFragment(Context context) {
             this.context = context;
@@ -556,13 +532,13 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // Uses name and brand to find product in json and opens it in a product activity
-    public void showProduct(String productName, String productBrand){
+    public void showProduct(String productName, String productBrand) {
         JSONArray jsonArray = null;
         int position = -1;
 
         try {
             jsonArray = new JSONArray(JSONHandler.getJson());
-            for(int i = 0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 if (productName.equals(jsonObject.getString("name")) && productBrand.equals(jsonObject.getString("brand"))) {
                     position = i;
@@ -573,11 +549,10 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        if(position!=-1) { // if product was found
+        if (position != -1) { // if product was found
             Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
             intent.putExtra("position", position);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necessary because showProduct is being called from the downloadRunnable (= outside of an activity)
-            getApplication().startActivity(intent);
+            startActivityForResult(intent, PRODUCT_CODE);
         } else {
             JSONHandler.startDownload(this, listView, productName, productBrand);
         }

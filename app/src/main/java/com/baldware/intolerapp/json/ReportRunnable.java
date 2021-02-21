@@ -5,11 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.baldware.intolerapp.activities.AdditionActivity;
-import com.baldware.intolerapp.activities.MainActivity;
 import com.baldware.intolerapp.customTools.Constants;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -22,10 +19,10 @@ import java.net.URL;
 
 public class ReportRunnable implements Runnable {
 
-    private Context context;
-    private String reportProduct;
+    private final Context context;
+    private final String reportProduct;
 
-    public ReportRunnable (Context context, String reportProduct) {
+    public ReportRunnable(Context context, String reportProduct) {
         this.context = context;
         this.reportProduct = reportProduct;
     }
@@ -37,7 +34,7 @@ public class ReportRunnable implements Runnable {
         HttpURLConnection connection = null;
         Boolean scriptSuccess = false;
 
-        try{
+        try {
             URL url = new URL(Constants.REPORT_URL);
 
             JSONObject jsonObject = new JSONObject();
@@ -70,7 +67,7 @@ public class ReportRunnable implements Runnable {
             String serverMessage;
 
             while ((serverMessage = bufferedReader.readLine()) != null) {
-                if(serverMessage.equals(Constants.END_OF_SCRIPT)) {
+                if (serverMessage.equals(Constants.END_OF_SCRIPT)) {
                     scriptSuccess = true;
                 }
             }
@@ -79,7 +76,7 @@ public class ReportRunnable implements Runnable {
 
             Handler handler = new Handler(Looper.getMainLooper()); // get Handler for UIThread
 
-            if(scriptSuccess) {
+            if (scriptSuccess) {
                 handler.post(new Runnable() { // post on UIThread
                     @Override
                     public void run() {
@@ -97,14 +94,14 @@ public class ReportRunnable implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection!=null) {
+            if (connection != null) {
                 connection.disconnect();
             }
             try {
-                if(outputStream!=null) {
+                if (outputStream != null) {
                     outputStream.close();
                 }
-                if(bufferedReader!=null) {
+                if (bufferedReader != null) {
                     bufferedReader.close();
                 }
             } catch (IOException e) {

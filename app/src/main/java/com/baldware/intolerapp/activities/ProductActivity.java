@@ -1,6 +1,5 @@
 package com.baldware.intolerapp.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -19,15 +18,11 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.baldware.intolerapp.customTools.BitmapHandler;
-import com.baldware.intolerapp.customTools.Constants;
 import com.baldware.intolerapp.R;
-import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -151,7 +146,7 @@ public class ProductActivity extends AppCompatActivity {
         imageView = findViewById(R.id.product_image_view);
         imageView.setOnClickListener(new onImageClickListener(this));
 
-        if(image==null) {
+        if (image == null) {
             JSONHandler.startImageDownload(this, name, brand);
 
             if (imageView.getDrawable() == null) {
@@ -170,7 +165,7 @@ public class ProductActivity extends AppCompatActivity {
 
     private void loadIntoRatingBars() throws JSONException {
         JSONObject jsonObject = JSONHandler.getJsonArray().getJSONObject(getIntent().getIntExtra("position", 0));
-        
+
         fructoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("fructoseRating")));
         glucoseRatingBar.setRating(Float.parseFloat(jsonObject.getString("glucoseRating")));
         histamineRatingBar.setRating(Float.parseFloat(jsonObject.getString("histamineRating")));
@@ -187,17 +182,17 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void setColor(RatingBar ratingBar) {
-            if(ratingBar.getRating()<=1.0) {
-                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsRed)));
-            } else if(ratingBar.getRating()<=2.0) {
-                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsOrange)));
-            } else if(ratingBar.getRating()<=3.0) {
-                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsYellow)));
-            } else if(ratingBar.getRating()<=4.0) {
-                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsLime)));
-            } else {
-                ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsGreen)));
-            }
+        if (ratingBar.getRating() <= 1.0) {
+            ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsRed)));
+        } else if (ratingBar.getRating() <= 2.0) {
+            ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsOrange)));
+        } else if (ratingBar.getRating() <= 3.0) {
+            ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsYellow)));
+        } else if (ratingBar.getRating() <= 4.0) {
+            ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsLime)));
+        } else {
+            ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.starsGreen)));
+        }
     }
 
     private class onRatingBarChangeListener implements RatingBar.OnRatingBarChangeListener {
@@ -205,7 +200,7 @@ public class ProductActivity extends AppCompatActivity {
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
             setColor(ratingBar);
 
-            if(fromUser) {
+            if (fromUser) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ratingBar.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
                 }
@@ -257,17 +252,14 @@ public class ProductActivity extends AppCompatActivity {
         }
     }
 
-    private class onImageClickListener implements View.OnClickListener{
-
-        private ProductActivity productActivity;
+    private class onImageClickListener implements View.OnClickListener {
 
         public onImageClickListener(ProductActivity productActivity) {
-            this.productActivity = productActivity;
         }
 
         @Override
         public void onClick(View v) {
-            if(image!=null) {
+            if (image != null) {
                 callback.setEnabled(true);
                 setContentView(R.layout.activity_picture);
 
@@ -284,7 +276,7 @@ public class ProductActivity extends AppCompatActivity {
         }
     }
 
-    private class onClickListener implements View.OnClickListener{
+    private class onClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             Bundle data = new Bundle();

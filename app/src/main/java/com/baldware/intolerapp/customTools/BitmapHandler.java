@@ -4,9 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.baldware.intolerapp.R;
-import com.baldware.intolerapp.activities.MainActivity;
-
 import java.io.ByteArrayOutputStream;
 
 public class BitmapHandler {
@@ -15,10 +12,9 @@ public class BitmapHandler {
     public static String createUploadable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-        return encodedImage;
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     // Takes a downloaded string representing image data, decodes it and converts it into a bitmap

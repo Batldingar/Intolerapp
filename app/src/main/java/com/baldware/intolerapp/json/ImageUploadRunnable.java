@@ -1,29 +1,20 @@
 package com.baldware.intolerapp.json;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.baldware.intolerapp.activities.AdditionActivity;
 import com.baldware.intolerapp.customTools.Constants;
 
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Blob;
 
 public class ImageUploadRunnable implements Runnable {
 
-    private String image;
-    private String name;
-    private String brand;
+    private final String image;
+    private final String name;
+    private final String brand;
 
     public ImageUploadRunnable(String image, String name, String brand) {
         this.image = image;
@@ -36,7 +27,7 @@ public class ImageUploadRunnable implements Runnable {
         OutputStream outputStream = null;
         HttpURLConnection connection = null;
 
-        try{
+        try {
             URL url = new URL(Constants.IMAGE_UPLOAD_URL);
 
             JSONObject jsonObject = new JSONObject();
@@ -68,11 +59,11 @@ public class ImageUploadRunnable implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection!=null) {
+            if (connection != null) {
                 connection.disconnect();
             }
             try {
-                if(outputStream!=null) {
+                if (outputStream != null) {
                     outputStream.close();
                 }
             } catch (IOException e) {

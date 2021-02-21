@@ -12,7 +12,8 @@
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
         android:padding="4dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:contentDescription="The product" />
 
     <RelativeLayout
         android:layout_width="160dp"
@@ -32,7 +33,7 @@
     <RelativeLayout
         android:layout_width="160dp"
         android:layout_height="120dp"
-        android:layout_toRightOf="@+id/product_image_view">>
+        android:layout_toRightOf="@+id/product_image_view">
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,7 +41,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
-            android:text="Very digestible"/>
+            android:text="Very digestible" />
 
     </RelativeLayout>
 
@@ -74,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_fructose"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <!-- Glucose -->
     <TextView
@@ -92,14 +93,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_glucose"
         android:numStars="5"
-        android:rating="2"/>
+        android:rating="2" />
 
     <View
         android:id="@+id/divider_glucose"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_glucose"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <!-- Histamine -->
     <TextView
@@ -117,14 +118,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_histamine"
         android:numStars="5"
-        android:rating="2"/>
+        android:rating="2" />
 
     <View
         android:id="@+id/divider_histamine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_histamine"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <!-- Lactose -->
     <TextView
@@ -142,14 +143,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_lactose"
         android:numStars="5"
-        android:rating="2"/>
+        android:rating="2" />
 
     <View
         android:id="@+id/divider_lactose"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_lactose"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <!-- Sucrose -->
     <TextView
@@ -167,14 +168,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_sucrose"
         android:numStars="5"
-        android:rating="2"/>
+        android:rating="2" />
 
     <View
         android:id="@+id/divider_sucrose"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_sucrose"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <!-- Sorbitol -->
     <TextView
@@ -192,22 +193,20 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_sorbitol"
         android:numStars="5"
-        android:rating="2"/>
+        android:rating="2" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_sorbitol"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/product_ad_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-7874592407715953/9689434364">
-    </com.google.android.gms.ads.AdView>
+        ads:adUnitId="ca-app-pub-7874592407715953/9689434364" />
 </RelativeLayout>
