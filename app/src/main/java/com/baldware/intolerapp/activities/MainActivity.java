@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -507,8 +508,45 @@ public class MainActivity extends AppCompatActivity {
             builder.setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(R.string.acceptance_button_text, (dialog, which) -> {
+                        PrivacyDialogFragment privacyDialogFragment = PrivacyDialogFragment.newInstance(getString(R.string.privacy_policy_title));
+                        privacyDialogFragment.show(getActivity().getSupportFragmentManager(), getString(R.string.privacy_policy_title));
+                    });
+            return builder.create();
+        }
+    }
+
+    // The privacyDialogFragment
+    public static class PrivacyDialogFragment extends DialogFragment {
+        public PrivacyDialogFragment() {
+            // Empty constructor required
+        }
+
+        public static PrivacyDialogFragment newInstance(String title) {
+            PrivacyDialogFragment privacyDialogFragment = new PrivacyDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            privacyDialogFragment.setArguments(args);
+            return privacyDialogFragment;
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            String title = null;
+            if (getArguments() != null) {
+                title = getArguments().getString("title");
+            }
+
+            LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+            View dialogView = layoutInflater.inflate(R.layout.privacy_policy, null);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(title)
+                    .setView(dialogView)
+                    .setPositiveButton(R.string.privacy_policy_acceptance, (dialog, which) -> {
 
                     });
+
             return builder.create();
         }
     }
