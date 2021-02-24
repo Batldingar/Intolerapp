@@ -90,7 +90,7 @@ public class RatingRunnable implements Runnable {
                 // post on UIThread
                 handler.post(() -> {
                     Toast.makeText(mainActivity.getApplicationContext(), "Rating successful!", Toast.LENGTH_SHORT).show();
-                    mainActivity.loadData();
+                    mainActivity.loadData(name, brand);
                 });
             } else {
                 // post on UIThread
