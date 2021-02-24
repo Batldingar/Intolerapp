@@ -13,10 +13,6 @@ public class Constants {
     // End of php script flag
     public static final String END_OF_SCRIPT = "IntolerappEndOfScript";
 
-    // Picture dimensions in pixel
-    public static final int PICTURE_WIDTH = 1000;
-    public static final int PICTURE_HEIGHT = 1000;
-
     // Max. picture size in byte
     public static final int MAX_PICTURE_SIZE = 12000000; // 12MB
 }

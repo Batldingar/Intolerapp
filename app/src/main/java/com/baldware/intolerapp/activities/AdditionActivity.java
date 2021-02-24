@@ -168,7 +168,7 @@ public class AdditionActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 0: // take picture
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap scaledImage = Bitmap.createScaledBitmap((Bitmap) data.getExtras().get("data"), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
+                        Bitmap scaledImage = (Bitmap) data.getExtras().get("data");
 
                         bitmap = scaledImage;
                         imageView.setImageBitmap(scaledImage);
@@ -234,7 +234,7 @@ public class AdditionActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                Bitmap scaledImage = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(file.getPath()), Constants.PICTURE_WIDTH, Constants.PICTURE_HEIGHT, false);
+                                Bitmap scaledImage = BitmapFactory.decodeFile(file.getPath());
 
                                 bitmap = fixOrientation(scaledImage, file.getAbsolutePath()); // returns scaledImage if nothing has changed
                                 imageView.setImageBitmap(bitmap);
