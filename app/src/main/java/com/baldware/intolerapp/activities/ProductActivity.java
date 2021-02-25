@@ -72,15 +72,15 @@ public class ProductActivity extends AppCompatActivity {
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
 
+        initialize();
+    }
+
+    private void initialize() {
         // Load Adds
         AdView adView = findViewById(R.id.product_ad_view);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        initialize();
-    }
-
-    private void initialize() {
         fructoseRatingBar = findViewById(R.id.rating_bar_fructose);
         glucoseRatingBar = findViewById(R.id.rating_bar_glucose);
         histamineRatingBar = findViewById(R.id.rating_bar_histamine);

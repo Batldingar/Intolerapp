@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7874592407715953/9689434364"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_ad_view"
+        android:layout_centerHorizontal="true" />
+
+<ScrollView
+    android:layout_below="@+id/product_ad_view"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+<RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/relativeLayout"
     tools:context=".activities.ProductActivity">
 
@@ -200,13 +218,6 @@
         android:layout_height="1dp"
         android:layout_below="@id/rating_bar_sorbitol"
         android:background="@android:color/darker_gray" />
-
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/product_ad_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-7874592407715953/9689434364" />
+</RelativeLayout>
+</ScrollView>
 </RelativeLayout>
