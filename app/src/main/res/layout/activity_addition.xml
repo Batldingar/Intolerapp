@@ -6,7 +6,7 @@
     tools:context=".activities.AdditionActivity">
 
     <!-- The editText (text input) for the product name -->
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/productName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:importantForAutofill="no" />
 
     <!-- The editText (text input) for the product brand -->
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/productBrand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

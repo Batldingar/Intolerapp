@@ -11,10 +11,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -48,6 +48,8 @@ public class AdditionActivity extends AppCompatActivity {
 
     private static final int CAPTURE_CODE = 0;
     private static final int GALLERY_CODE = 1;
+    private AutoCompleteTextView nameTextView;
+    private AutoCompleteTextView brandTextView;
     private ImageView imageView;
     private Bitmap bitmap;
 
@@ -59,6 +61,37 @@ public class AdditionActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new onClickListener());
 
+        // Get product- and brand-names
+        JSONArray jsonArray;
+        String[] productNames = null;
+        String[] productBrands = null;
+        try {
+            jsonArray = new JSONArray(JSONHandler.getJson());
+
+            productNames = new String[jsonArray.length()];
+            productBrands = new String[jsonArray.length()];
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                productNames[i] = jsonObject.getString("name");
+                productBrands[i] = jsonObject.getString("brand");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        nameTextView = findViewById(R.id.productName);
+        if(productNames!=null) {
+            ArrayAdapter<String> nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, productNames);
+            nameTextView.setAdapter(nameAdapter);
+        }
+
+        brandTextView = findViewById(R.id.productBrand);
+        if(productBrands!=null) {
+            ArrayAdapter<String> brandAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, productBrands);
+            brandTextView.setAdapter(brandAdapter);
+        }
+
         imageView = findViewById(R.id.addition_image_view);
         imageView.setOnClickListener(new onImageClickListener());
     }
@@ -67,8 +100,8 @@ public class AdditionActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            String productNameInput = ((EditText) findViewById(R.id.productName)).getText().toString();
-            String productBrandInput = ((EditText) findViewById(R.id.productBrand)).getText().toString();
+            String productNameInput = (nameTextView).getText().toString();
+            String productBrandInput = (brandTextView).getText().toString();
 
             if (!productNameInput.equals("") && !productBrandInput.equals("")) {
                 if (bitmap != null) {
