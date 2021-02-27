@@ -15,4 +15,7 @@ public class Constants {
 
     // Max. picture size in byte
     public static final int MAX_PICTURE_SIZE = 12000000; // 12MB
+
+    // Max. picture dimension - picture width/height can't be longer (small = lower quality picture = less storage needed)
+    public static final int MAX_PICTURE_DIMENSION = 1000;
 }

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +46,8 @@ import java.io.OutputStream;
 
 public class AdditionActivity extends AppCompatActivity {
 
+    private static final int CAPTURE_CODE = 0;
+    private static final int GALLERY_CODE = 1;
     private ImageView imageView;
     private Bitmap bitmap;
 
@@ -151,12 +154,12 @@ public class AdditionActivity extends AppCompatActivity {
 
     private void takePicture() {
         Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, 0);
+        startActivityForResult(takePicture, CAPTURE_CODE);
     }
 
     private void selectPicture() {
         Intent choosePicture = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(choosePicture, 1);
+        startActivityForResult(choosePicture, GALLERY_CODE);
     }
 
     // After calling startActivityForResults in takePicture()
@@ -166,7 +169,7 @@ public class AdditionActivity extends AppCompatActivity {
 
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
-                case 0: // take picture
+                case CAPTURE_CODE:
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap scaledImage = (Bitmap) data.getExtras().get("data");
 
@@ -174,10 +177,11 @@ public class AdditionActivity extends AppCompatActivity {
                         imageView.setImageBitmap(scaledImage);
                     }
                     break;
-                case 1: // choose from gallery
+                case GALLERY_CODE:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
                         if (selectedImage != null) {
                             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                             if (cursor != null) {
@@ -196,6 +200,9 @@ public class AdditionActivity extends AppCompatActivity {
                                     break;
                                 }
 
+                                // Read from the photo in the gallery
+                                BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(parcelFileDescriptor.getFileDescriptor()));
+
                                 File cacheDir = getApplicationContext().getCacheDir(); // cacheDir stores application specific files temporarily (android may delete them to recover space)
                                 File file = null;
                                 try {
@@ -203,9 +210,6 @@ public class AdditionActivity extends AppCompatActivity {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-
-                                // Read from the photo in the gallery
-                                BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(parcelFileDescriptor.getFileDescriptor()));
 
                                 // Write in our custom file (so we don't have to work with the real one)
                                 BufferedOutputStream bufferedOutputStream = null;
@@ -234,7 +238,22 @@ public class AdditionActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                Bitmap scaledImage = BitmapFactory.decodeFile(file.getPath());
+                                BitmapFactory.Options options = new BitmapFactory.Options();
+                                options.inJustDecodeBounds = true;
+                                BitmapFactory.decodeFile(file.getPath(), options); // only returns options
+
+                                float width = options.outWidth;
+                                float height = options.outHeight;
+                                float scaling;
+
+                                if(Constants.MAX_PICTURE_DIMENSION < width || Constants.MAX_PICTURE_DIMENSION < height) {
+                                    scaling = Constants.MAX_PICTURE_DIMENSION / Math.max(width, height);
+                                } else {
+                                    scaling = 1;
+                                }
+
+                                Bitmap image = BitmapFactory.decodeFile(file.getPath()); // only returns image
+                                Bitmap scaledImage = Bitmap.createScaledBitmap(image, (int)(width*scaling), (int)(height*scaling), false);
 
                                 bitmap = fixOrientation(scaledImage, file.getAbsolutePath()); // returns scaledImage if nothing has changed
                                 imageView.setImageBitmap(bitmap);
