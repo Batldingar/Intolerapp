@@ -383,6 +383,7 @@ public class AdditionActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(AdditionActivity.this, "Camera permissions denied: Unable to take a picture.", Toast.LENGTH_SHORT).show();
                 }
+                break;
             }
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -390,6 +391,7 @@ public class AdditionActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(AdditionActivity.this, "Gallery permissions denied: Unable to select a picture.", Toast.LENGTH_SHORT).show();
                 }
+                break;
             }
         }
     }
