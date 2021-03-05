@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.view.View;
@@ -24,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import com.baldware.intolerapp.R;
@@ -43,6 +45,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AdditionActivity extends AppCompatActivity {
 
@@ -52,6 +56,8 @@ public class AdditionActivity extends AppCompatActivity {
     private AutoCompleteTextView brandTextView;
     private ImageView imageView;
     private Bitmap bitmap;
+
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,13 +192,33 @@ public class AdditionActivity extends AppCompatActivity {
     }
 
     private void takePicture() {
-        Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAPTURE_CODE);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Toast.makeText(this, "An error occurred while preparing the image capture", Toast.LENGTH_SHORT).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.baldware.intolerapp.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAPTURE_CODE);
+            }
+        } else {
+            Toast.makeText(this, "Unable to find the local camera app", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void selectPicture() {
-        Intent choosePicture = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(choosePicture, GALLERY_CODE);
+        Intent choosePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(choosePictureIntent, GALLERY_CODE);
     }
 
     // After calling startActivityForResults in takePicture()
@@ -203,11 +229,11 @@ public class AdditionActivity extends AppCompatActivity {
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case CAPTURE_CODE:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Bitmap scaledImage = (Bitmap) data.getExtras().get("data");
-
-                        bitmap = scaledImage;
-                        imageView.setImageBitmap(scaledImage);
+                    if (resultCode == RESULT_OK) {
+                        Bitmap image = BitmapFactory.decodeFile(imagePath);
+                        //TODO: Scale and Rotate picture correctly (see all steps in the GALLERY_CODE below
+                        bitmap = image;
+                        imageView.setImageBitmap(image);
                     }
                     break;
                 case GALLERY_CODE:
@@ -369,6 +395,23 @@ public class AdditionActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES); // the returned path when calling getExternalFilesDir with DIRECTORY_PICTURES corresponds to the one given in res/xml/file_paths.xml
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        imagePath = image.getAbsolutePath();
+
+        return image;
     }
 
     // After calling ActivityCompat.requestPermissions in case 0 of showPictureOptions
