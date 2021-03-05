@@ -57,7 +57,7 @@ public class AdditionActivity extends AppCompatActivity {
     private ImageView imageView;
     private Bitmap bitmap;
 
-    private String imagePath;
+    private File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,10 +230,10 @@ public class AdditionActivity extends AppCompatActivity {
             switch (requestCode) {
                 case CAPTURE_CODE:
                     if (resultCode == RESULT_OK) {
-                        Bitmap image = BitmapFactory.decodeFile(imagePath);
-                        //TODO: Scale and Rotate picture correctly (see all steps in the GALLERY_CODE below
-                        bitmap = image;
-                        imageView.setImageBitmap(image);
+                        bitmap = scaleAndRotate(imageFile.getAbsolutePath());
+                        imageView.setImageBitmap(bitmap);
+
+                        imageFile.delete();
                     }
                     break;
                 case GALLERY_CODE:
@@ -297,24 +297,7 @@ public class AdditionActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                BitmapFactory.Options options = new BitmapFactory.Options();
-                                options.inJustDecodeBounds = true;
-                                BitmapFactory.decodeFile(file.getPath(), options); // only returns options
-
-                                float width = options.outWidth;
-                                float height = options.outHeight;
-                                float scaling;
-
-                                if(Constants.MAX_PICTURE_DIMENSION < width || Constants.MAX_PICTURE_DIMENSION < height) {
-                                    scaling = Constants.MAX_PICTURE_DIMENSION / Math.max(width, height);
-                                } else {
-                                    scaling = 1;
-                                }
-
-                                Bitmap image = BitmapFactory.decodeFile(file.getPath()); // only returns image
-                                Bitmap scaledImage = Bitmap.createScaledBitmap(image, (int)(width*scaling), (int)(height*scaling), false);
-
-                                bitmap = fixOrientation(scaledImage, file.getAbsolutePath()); // returns scaledImage if nothing has changed
+                                bitmap = scaleAndRotate(file.getAbsolutePath());
                                 imageView.setImageBitmap(bitmap);
 
                                 //noinspection ResultOfMethodCallIgnored
@@ -325,6 +308,28 @@ public class AdditionActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    private Bitmap scaleAndRotate(String imagePath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, options); // only returns options
+
+        float width = options.outWidth;
+        float height = options.outHeight;
+        float scaling;
+
+        if(Constants.MAX_PICTURE_DIMENSION < width || Constants.MAX_PICTURE_DIMENSION < height) {
+            scaling = Constants.MAX_PICTURE_DIMENSION / Math.max(width, height);
+        } else {
+            scaling = 1;
+        }
+
+        Bitmap image = BitmapFactory.decodeFile(imagePath); // only returns image
+        Bitmap scaledImage = Bitmap.createScaledBitmap(image, (int)(width*scaling), (int)(height*scaling), false);
+        Bitmap scaledAndRotatedImage = fixOrientation(scaledImage, imagePath); // returns scaledImage if nothing has changed
+
+        return scaledAndRotatedImage;
     }
 
     private void copyContent(BufferedInputStream dst, BufferedOutputStream src) throws Exception {
@@ -409,7 +414,7 @@ public class AdditionActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
 
-        imagePath = image.getAbsolutePath();
+        imageFile = image;
 
         return image;
     }
