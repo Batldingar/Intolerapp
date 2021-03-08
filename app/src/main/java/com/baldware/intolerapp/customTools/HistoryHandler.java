@@ -30,16 +30,16 @@ public class HistoryHandler {
         file = new File(context.getFilesDir(), fileName);
     }
 
-    public void writeHistory(String product, Mode mode) {
+    public void writeHistory(String productName, String productBrand, Mode mode) {
         String message = null;
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
 
         // Generate the message
         if(mode == Mode.PRODUCT_ADDED) {
-            message = "A:" + product;
+            message = "A:" + productName + " - " + productBrand;
         } else if (mode == Mode.PRODUCT_RATED) {
-            message = "R:" + product;
+            message = "R:" + productName + " - " + productBrand;
         }
 
         // Initialize the fileWriter
@@ -91,11 +91,31 @@ public class HistoryHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            Toast.makeText(context, "Unable to read history", Toast.LENGTH_SHORT).show();
         }
 
         return resultStrings;
     }
 
+    public boolean hasEntry(Context context, String productName, String productBrand, Mode mode) {
+        ArrayList<String> entryList = readHistory(context);
+        boolean entryFound = false;
+
+        if(!entryList.isEmpty()) {
+            for(String entry : entryList) {
+                if(mode == Mode.PRODUCT_ADDED) {
+                    if(entry.equals("A:" + productName + " - " + productBrand)) {
+                        entryFound = true;
+                        break;
+                    }
+                } else if (mode == Mode.PRODUCT_RATED) {
+                    if(entry.equals("R:" + productName + " - " + productBrand)) {
+                        entryFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return entryFound;
+    }
 }

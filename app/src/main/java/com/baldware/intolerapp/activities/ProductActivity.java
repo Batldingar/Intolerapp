@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -272,17 +273,22 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             HistoryHandler historyHandler = new HistoryHandler(getApplicationContext(), "history");
-            historyHandler.writeHistory(name+ " - " +brand, HistoryHandler.Mode.PRODUCT_RATED);
 
-            Bundle data = new Bundle();
-            data.putString("productName", name);
-            data.putString("productBrand", brand);
+            if(historyHandler.hasEntry(getApplicationContext(), name, brand, HistoryHandler.Mode.PRODUCT_RATED)) {
+                Toast.makeText(ProductActivity.this, "You have already rated this product!", Toast.LENGTH_SHORT).show();
+            } else {
+                historyHandler.writeHistory(name, brand, HistoryHandler.Mode.PRODUCT_RATED);
 
-            Intent intent = new Intent();
-            intent.putExtras(data);
-            setResult(RESULT_OK, intent);
+                Bundle data = new Bundle();
+                data.putString("productName", name);
+                data.putString("productBrand", brand);
 
-            finish();
+                Intent intent = new Intent();
+                intent.putExtras(data);
+                setResult(RESULT_OK, intent);
+
+                finish();
+            }
         }
     }
 

@@ -136,7 +136,7 @@ public class AdditionActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                     } else {
                         HistoryHandler historyHandler = new HistoryHandler(getApplicationContext(), "history");
-                        historyHandler.writeHistory(productNameInput + " - " + productBrandInput, HistoryHandler.Mode.PRODUCT_ADDED);
+                        historyHandler.writeHistory(productNameInput, productBrandInput, HistoryHandler.Mode.PRODUCT_ADDED);
 
                         JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap), productNameInput, productBrandInput);
 
