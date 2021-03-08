@@ -417,6 +417,9 @@ public class MainActivity extends AppCompatActivity {
             if (itemID == R.id.nav_settings) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivityForResult(intent, SETTINGS_CODE);
+            } else if (itemID == R.id.nav_history) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
             } else if (itemID == R.id.nav_legal_notice) {
                 RuleDialogFragment ruleDialogFragment = RuleDialogFragment.newInstance(getString(R.string.rules_title), getResources().getString(R.string.rule_text));
                 ruleDialogFragment.show(getSupportFragmentManager(), getString(R.string.rules_title));

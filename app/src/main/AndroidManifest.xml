@@ -67,6 +67,13 @@
             </intent-filter>
         </activity>
 
+        <!-- HistoryActivity -->
+        <activity android:name=".activities.HistoryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.HISTORY" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

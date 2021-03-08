@@ -14,6 +14,7 @@
         android:hint="@string/edit_text_name"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:textAlignment="center"
         android:importantForAutofill="no" />
 
     <!-- The editText (text input) for the product brand -->
@@ -24,11 +25,12 @@
         android:inputType="text"
         android:hint="@string/edit_text_brand"
         android:layout_below="@id/productName"
+        android:textAlignment="center"
         android:importantForAutofill="no" />
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_centerHorizontal="true"
         android:padding="4dp"
         android:id="@+id/addition_image_view"

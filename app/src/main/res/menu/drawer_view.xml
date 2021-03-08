@@ -11,19 +11,26 @@
     </group>
     <group android:id="@+id/group2">
         <item
+            android:id="@+id/nav_history"
+            android:title="@string/history"
+            android:icon="@drawable/ic_baseline_history_24"
+            app:showAsAction="ifRoom|withText" />
+    </group>
+    <group android:id="@+id/group3">
+        <item
             android:id="@+id/nav_legal_notice"
             android:title="@string/legal_notice"
             android:icon="@drawable/ic_baseline_info_24"
             app:showAsAction="ifRoom|withText" />
     </group>
-    <group android:id="@+id/group3">
+    <group android:id="@+id/group4">
         <item
             android:id="@+id/nav_share_app"
             android:title="@string/share_app"
             android:icon="@drawable/ic_baseline_share_24"
             app:showAsAction="ifRoom|withText" />
     </group>
-    <group android:id="@+id/group4">
+    <group android:id="@+id/group5">
         <item
             android:id="@+id/nav_rate_app"
             android:title="@string/rate_app"

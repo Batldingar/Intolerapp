@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.customTools.HistoryHandler;
 import com.baldware.intolerapp.json.JSONHandler;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -270,6 +271,9 @@ public class ProductActivity extends AppCompatActivity {
     private class onClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            HistoryHandler historyHandler = new HistoryHandler(getApplicationContext(), "history");
+            historyHandler.writeHistory(name+ " - " +brand, HistoryHandler.Mode.PRODUCT_RATED);
+
             Bundle data = new Bundle();
             data.putString("productName", name);
             data.putString("productBrand", brand);

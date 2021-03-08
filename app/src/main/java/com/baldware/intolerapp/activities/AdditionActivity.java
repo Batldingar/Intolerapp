@@ -31,6 +31,7 @@ import androidx.exifinterface.media.ExifInterface;
 import com.baldware.intolerapp.R;
 import com.baldware.intolerapp.customTools.BitmapHandler;
 import com.baldware.intolerapp.customTools.Constants;
+import com.baldware.intolerapp.customTools.HistoryHandler;
 import com.baldware.intolerapp.json.JSONHandler;
 
 import org.json.JSONArray;
@@ -134,6 +135,9 @@ public class AdditionActivity extends AppCompatActivity {
                     if (productExists) {
                         Toast.makeText(getApplicationContext(), "Product already exists", Toast.LENGTH_SHORT).show();
                     } else {
+                        HistoryHandler historyHandler = new HistoryHandler(getApplicationContext(), "history");
+                        historyHandler.writeHistory(productNameInput + " - " + productBrandInput, HistoryHandler.Mode.PRODUCT_ADDED);
+
                         JSONHandler.startImageUpload(BitmapHandler.createUploadable(bitmap), productNameInput, productBrandInput);
 
                         Bundle data = new Bundle();
@@ -147,7 +151,7 @@ public class AdditionActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "There has to be a product picture", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please add a product picture first", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(getApplicationContext(), "Name and brand can't be empty", Toast.LENGTH_SHORT).show();
