@@ -38,6 +38,11 @@ public class JSONHandler {
         reportThread.start();
     }
 
+    public static void startDeletion(MainActivity mainActivity, String name, String brand) {
+        Thread deletionThread = new Thread(new DeletionRunnable(mainActivity, name, brand));
+        deletionThread.start();
+    }
+
     public static void startImageUpload(String encodedImage, String name, String brand) {
         Thread imageUploadThread = new Thread(new ImageUploadRunnable(encodedImage, name, brand));
         imageUploadThread.start();

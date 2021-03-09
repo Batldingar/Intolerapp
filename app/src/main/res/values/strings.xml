@@ -17,7 +17,8 @@
     <string name="sucrose_rating">New Sucrose Rating</string>
     <string name="sorbitol_rating">New Sorbitol Rating</string>
     <string name="search_hint">Search products/brands</string>
-    <string name="report_text">Report the product?</string>
+    <string name="report_text">Are you sure that you want to report the following product?</string>
+    <string name="delete_text">Are you sure that you want to delete the following product?</string>
     <string name="rules_title">Rules</string>
     <string name="rule_text">The contents of Intolerapp are unrestrictedly user-generated.\nBaldware does not guarantee the correctness of the displayed information and is also not liable for problems that arise from the use of the app.\nIf you ever experience health problems after eating, seek professional medical advice immediately.</string>
     <string name="start_up_message_title">Welcome</string>

@@ -41,9 +41,11 @@ public class HistoryActivity extends AppCompatActivity {
                 String suffix = stringArrayList.get(i).split(":")[1];
 
                 if (prefix.equals("A")) {
-                    stringArray[(stringArrayList.size() - 1 - i)] = "You added: " + suffix;
+                    stringArray[(stringArrayList.size() - 1 - i)] = "You added: " + suffix; // reverse indexing so that the list shows the newest history entry first
                 } else if (prefix.equals("R")) {
                     stringArray[(stringArrayList.size() - 1 - i)] = "You rated: " + suffix;
+                } else if (prefix.equals("D")) {
+                    stringArray[(stringArrayList.size() - 1 - i)] = "You deleted: " + suffix;
                 }
             }
 

@@ -21,7 +21,8 @@ public class HistoryHandler {
 
     public enum Mode {
         PRODUCT_ADDED,
-        PRODUCT_RATED
+        PRODUCT_RATED,
+        PRODUCT_DELETED
     }
 
     private File file;
@@ -40,6 +41,8 @@ public class HistoryHandler {
             message = "A:" + productName + " - " + productBrand;
         } else if (mode == Mode.PRODUCT_RATED) {
             message = "R:" + productName + " - " + productBrand;
+        } else if (mode == Mode.PRODUCT_DELETED) {
+            message = "D:" + productName + " - " + productBrand;
         }
 
         // Initialize the fileWriter
@@ -109,6 +112,11 @@ public class HistoryHandler {
                     }
                 } else if (mode == Mode.PRODUCT_RATED) {
                     if(entry.equals("R:" + productName + " - " + productBrand)) {
+                        entryFound = true;
+                        break;
+                    }
+                } else if (mode == Mode.PRODUCT_DELETED) {
+                    if(entry.equals("D:" + productName + " - " + productBrand)) {
                         entryFound = true;
                         break;
                     }

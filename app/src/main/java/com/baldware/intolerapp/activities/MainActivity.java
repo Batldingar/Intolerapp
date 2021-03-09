@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +33,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baldware.intolerapp.R;
+import com.baldware.intolerapp.customTools.HistoryHandler;
 import com.baldware.intolerapp.customTools.SearchViewListener;
 import com.baldware.intolerapp.customTools.StarListViewAdapter;
 import com.baldware.intolerapp.json.JSONHandler;
@@ -351,8 +354,23 @@ public class MainActivity extends AppCompatActivity {
     public class onItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            ReportDialogFragment reportDialogFragment = ReportDialogFragment.newInstance(getApplicationContext(), "Report", listView.getItemAtPosition(position).toString());
-            reportDialogFragment.show(getSupportFragmentManager(), "report");
+
+            if (SearchViewListener.getSearchResult() != null) {
+                position = Integer.parseInt(SearchViewListener.getSearchResult().get(position)[2]);
+            }
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JSONHandler.getJsonArray().getJSONObject(position);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                showLongClickOptions(jsonObject.getString("name"), jsonObject.getString("brand"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return true;
         }
     }
@@ -438,45 +456,98 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showLongClickOptions(String name, String brand) {
+        final CharSequence[] options = {"Report the product", "Delete the product", "Cancel"};
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+        builder.setTitle("What do you want to do?");
+        builder.setItems(options, (dialog, itemID) -> {
+            switch (itemID) {
+                case 0: // report product
+                    ItemOptionsDialogFragment reportFragment = ItemOptionsDialogFragment.newInstance(this, ItemOptionsDialogFragment.Action.REPORT, "Report", name, brand);
+                    reportFragment.show(getSupportFragmentManager(), "report");
+                    break;
+                case 1: // delete product
+                    ItemOptionsDialogFragment deletionFragment = ItemOptionsDialogFragment.newInstance(this, ItemOptionsDialogFragment.Action.DELETE, "Deletion", name, brand);
+                    deletionFragment.show(getSupportFragmentManager(), "deletion");
+                    break;
+                case 2: // cancel
+                    dialog.dismiss();
+                    break;
+            }
+        }).show();
+    }
+
     // The reportDialogFragment
-    public static class ReportDialogFragment extends DialogFragment {
+    public static class ItemOptionsDialogFragment extends DialogFragment {
 
-        private final Context context;
-
-        public ReportDialogFragment(Context context) {
-            this.context = context;
+        public enum Action{
+            REPORT,
+            DELETE
         }
 
-        public static ReportDialogFragment newInstance(Context context, String title, String product) {
-            ReportDialogFragment reportDialogFragment = new ReportDialogFragment(context);
+        private final MainActivity mainActivity;
+        private Action action;
+
+        public ItemOptionsDialogFragment(MainActivity mainActivity, Action action) {
+            this.mainActivity = mainActivity;
+            this.action = action;
+        }
+
+        public static ItemOptionsDialogFragment newInstance(MainActivity mainActivity, Action action, String title, String name, String brand) {
+            ItemOptionsDialogFragment itemOptionsDialogFragment = new ItemOptionsDialogFragment(mainActivity, action);
             Bundle args = new Bundle();
             args.putString("title", title);
-            args.putString("product", product);
-            reportDialogFragment.setArguments(args);
-            return reportDialogFragment;
+            args.putString("name", name);
+            args.putString("brand", brand);
+            itemOptionsDialogFragment.setArguments(args);
+            return itemOptionsDialogFragment;
         }
 
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             String title = null;
-            String productName = null;
+            String name = null;
+            String brand = null;
 
             if (getArguments() != null) {
                 title = getArguments().getString("title");
-                productName = getArguments().getString("product");
+                name = getArguments().getString("name");
+                brand = getArguments().getString("brand");
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            String product = productName;
-            builder.setTitle(title)
-                    .setMessage(R.string.report_text)
-                    .setPositiveButton(R.string.positive_button_text, (dialog, which) -> JSONHandler.startReport(context, product))
-                    .setNegativeButton(R.string.negative_button_text, (dialog, which) -> {
-                        if (dialog != null) {
-                            dialog.dismiss();
-                        }
-                    });
+            String productName = name;
+            String productBrand = brand;
+
+            if(action == Action.REPORT) {
+                builder.setTitle(title)
+                        .setMessage(getString(R.string.report_text) + "\n\n" + productName + " - " + productBrand)
+                        .setPositiveButton(R.string.positive_button_text, (dialog, which) -> JSONHandler.startReport(mainActivity.getApplicationContext(),  (productName + " - " + productBrand)))
+                        .setNegativeButton(R.string.negative_button_text, (dialog, which) -> {
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                        });
+            } else if (action == Action.DELETE) {
+                builder.setTitle(title)
+                        .setMessage(getString(R.string.delete_text) + "\n\n" + productName + " - " + productBrand)
+                        .setPositiveButton(R.string.positive_button_text, (dialog, which) -> {
+                            HistoryHandler historyHandler = new HistoryHandler(mainActivity.getApplicationContext(), "history");
+                            if(historyHandler.hasEntry(mainActivity.getApplicationContext(), productName, productBrand, HistoryHandler.Mode.PRODUCT_ADDED)) {
+                                JSONHandler.startDeletion(mainActivity, productName, productBrand);
+                            } else {
+                                Toast.makeText(mainActivity.getApplicationContext(), "You can only delete products that you have created!", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(R.string.negative_button_text, (dialog, which) -> {
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                        });
+            }
 
             return builder.create();
         }
