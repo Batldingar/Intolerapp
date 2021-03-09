@@ -276,7 +276,7 @@ public class ProductActivity extends AppCompatActivity {
         public void onClick(View v) {
             HistoryHandler historyHandler = new HistoryHandler(getApplicationContext(), "history");
 
-            if(historyHandler.hasEntry(getApplicationContext(), name, brand, HistoryHandler.Mode.PRODUCT_RATED)) {
+            if(historyHandler.hasEntry(name, brand, HistoryHandler.Mode.PRODUCT_RATED)) {
                 Toast.makeText(ProductActivity.this, "You have already rated this product!", Toast.LENGTH_SHORT).show();
             } else {
                 historyHandler.writeHistory(name, brand, HistoryHandler.Mode.PRODUCT_RATED);

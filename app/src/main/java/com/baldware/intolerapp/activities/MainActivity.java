@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.JsonReader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -491,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private final MainActivity mainActivity;
-        private Action action;
+        private final Action action;
 
         public ItemOptionsDialogFragment(MainActivity mainActivity, Action action) {
             this.mainActivity = mainActivity;
@@ -539,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage(getString(R.string.delete_text) + "\n\n" + productName + " - " + productBrand)
                         .setPositiveButton(R.string.positive_button_text, (dialog, which) -> {
                             HistoryHandler historyHandler = new HistoryHandler(mainActivity.getApplicationContext(), "history");
-                            if(historyHandler.hasEntry(mainActivity.getApplicationContext(), productName, productBrand, HistoryHandler.Mode.PRODUCT_ADDED)) {
+                            if(historyHandler.hasEntry(productName, productBrand, HistoryHandler.Mode.PRODUCT_ADDED)) {
                                 JSONHandler.startDeletion(mainActivity, productName, productBrand);
                             } else {
                                 Toast.makeText(mainActivity.getApplicationContext(), "You can only delete products that you have created!", Toast.LENGTH_LONG).show();

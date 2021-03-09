@@ -1,7 +1,6 @@
 package com.baldware.intolerapp.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private ListView listView;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +22,10 @@ public class HistoryActivity extends AppCompatActivity {
 
         setTitle("History");
 
-        listView = findViewById(R.id.history_list_view);
+        ListView listView = findViewById(R.id.history_list_view);
 
         HistoryHandler historyHandler = new HistoryHandler(this, "history");
-        ArrayList<String> stringArrayList = historyHandler.readHistory(this);
+        ArrayList<String> stringArrayList = historyHandler.readHistory();
 
         if(stringArrayList.isEmpty()) {
             Toast.makeText(this, "Unable to read history", Toast.LENGTH_SHORT).show();
@@ -40,12 +37,17 @@ public class HistoryActivity extends AppCompatActivity {
                 String prefix = stringArrayList.get(i).split(":")[0];
                 String suffix = stringArrayList.get(i).split(":")[1];
 
-                if (prefix.equals("A")) {
-                    stringArray[(stringArrayList.size() - 1 - i)] = "You added: " + suffix; // reverse indexing so that the list shows the newest history entry first
-                } else if (prefix.equals("R")) {
-                    stringArray[(stringArrayList.size() - 1 - i)] = "You rated: " + suffix;
-                } else if (prefix.equals("D")) {
-                    stringArray[(stringArrayList.size() - 1 - i)] = "You deleted: " + suffix;
+                switch (prefix) {
+                    case "A":
+                        stringArray[(stringArrayList.size() - 1 - i)] = "You added: " + suffix; // reverse indexing so that the list shows the newest history entry first
+
+                        break;
+                    case "R":
+                        stringArray[(stringArrayList.size() - 1 - i)] = "You rated: " + suffix;
+                        break;
+                    case "D":
+                        stringArray[(stringArrayList.size() - 1 - i)] = "You deleted: " + suffix;
+                        break;
                 }
             }
 

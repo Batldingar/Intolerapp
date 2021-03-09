@@ -1,20 +1,14 @@
 package com.baldware.intolerapp.customTools;
 
 import android.content.Context;
-import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HistoryHandler {
@@ -25,7 +19,7 @@ public class HistoryHandler {
         PRODUCT_DELETED
     }
 
-    private File file;
+    private final File file;
 
     public HistoryHandler(Context context, String fileName) {
         file = new File(context.getFilesDir(), fileName);
@@ -34,7 +28,7 @@ public class HistoryHandler {
     public void writeHistory(String productName, String productBrand, Mode mode) {
         String message = null;
         FileWriter fileWriter = null;
-        BufferedWriter bufferedWriter = null;
+        BufferedWriter bufferedWriter;
 
         // Generate the message
         if(mode == Mode.PRODUCT_ADDED) {
@@ -64,14 +58,10 @@ public class HistoryHandler {
         }
     }
 
-    public ArrayList<String> readHistory(Context context) {
-        byte[] bytes;
+    public ArrayList<String> readHistory() {
         FileReader fileReader = null;
         BufferedReader bufferedReader;
         ArrayList<String> resultStrings = new ArrayList<>();
-
-        // Prepare the byte array
-        bytes = new byte[(int) file.length()];
 
         // Initialize the fileReader
         try {
@@ -99,8 +89,8 @@ public class HistoryHandler {
         return resultStrings;
     }
 
-    public boolean hasEntry(Context context, String productName, String productBrand, Mode mode) {
-        ArrayList<String> entryList = readHistory(context);
+    public boolean hasEntry(String productName, String productBrand, Mode mode) {
+        ArrayList<String> entryList = readHistory();
         boolean entryFound = false;
 
         if(!entryList.isEmpty()) {

@@ -331,9 +331,8 @@ public class AdditionActivity extends AppCompatActivity {
 
         Bitmap image = BitmapFactory.decodeFile(imagePath); // only returns image
         Bitmap scaledImage = Bitmap.createScaledBitmap(image, (int)(width*scaling), (int)(height*scaling), false);
-        Bitmap scaledAndRotatedImage = fixOrientation(scaledImage, imagePath); // returns scaledImage if nothing has changed
 
-        return scaledAndRotatedImage;
+        return fixOrientation(scaledImage, imagePath);
     }
 
     private void copyContent(BufferedInputStream dst, BufferedOutputStream src) throws Exception {
