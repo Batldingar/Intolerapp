@@ -401,6 +401,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 if (sortingStarNumber != 0) {
                     loadJSONIntoListView(getApplicationContext(), listView, sortingStarNumber);
+                    if(listView.getAdapter().isEmpty()) {
+                        onClick(v); // don't show empty sorted lists, instead reload this function
+                    }
                 } else {
                     loadJSONIntoListView(getApplicationContext(), listView);
                 }
