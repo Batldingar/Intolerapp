@@ -29,6 +29,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         if(stringArrayList.isEmpty()) {
             Toast.makeText(this, "Unable to read history", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
 
             String[] stringArray = new String[stringArrayList.size()];
