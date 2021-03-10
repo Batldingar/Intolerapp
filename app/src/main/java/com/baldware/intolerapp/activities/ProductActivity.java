@@ -90,6 +90,16 @@ public class ProductActivity extends AppCompatActivity {
         sucroseRatingBar = findViewById(R.id.rating_bar_sucrose);
         sorbitolRatingBar = findViewById(R.id.rating_bar_sorbitol);
 
+        // Seems to fix a bug with some samsung phones (disables use of hardware acceleration on the rating bars)
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
+            fructoseRatingBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            glucoseRatingBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            histamineRatingBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            lactoseRatingBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            sucroseRatingBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            sorbitolRatingBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         fructoseTextView = findViewById(R.id.text_view_fructose);
         glucoseTextView = findViewById(R.id.text_view_glucose);
         histamineTextView = findViewById(R.id.text_view_histamine);
