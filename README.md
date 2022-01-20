@@ -13,9 +13,9 @@ Du kannst selbst Produkte anhand ihrer Verträglichkeit bewerten und neue Produk
 
 Lass uns gemeinsam die großartigste Essens-Datenbank erstellen!"
 
-[store_screen_1](https://github.com/Batldingar/Intolerapp/blob/master/app/img/store_screen_1.png)
-[store_screen_2](https://github.com/Batldingar/Intolerapp/blob/master/app/img/store_screen_2.png)
-[store_screen_3](https://github.com/Batldingar/Intolerapp/blob/master/app/img/store_screen_3.png)
-[store_screen_4](https://github.com/Batldingar/Intolerapp/blob/master/app/img/store_screen_4.png)
-[store_screen_5](https://github.com/Batldingar/Intolerapp/blob/master/app/img/store_screen_5.png)
-[store_screen_6](https://github.com/Batldingar/Intolerapp/blob/master/app/img/store_screen_6.png)
+[store_screen_1](./app/img/store_screen_1.png)
+[store_screen_2](./app/img/store_screen_2.png)
+[store_screen_3](./app/img/store_screen_3.png)
+[store_screen_4](./app/img/store_screen_4.png)
+[store_screen_5](./app/img/store_screen_5.png)
+[store_screen_6](./app/img/store_screen_6.png)
